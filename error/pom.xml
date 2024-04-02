@@ -17,12 +17,14 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <version.spring-boot>3.2.4</version.spring-boot>
-        <version.spring>6.1.5</version.spring>
-        <version.jakarta-servlet>6.0.0</version.jakarta-servlet>
-        <version.jakarta-validation>3.0.2</version.jakarta-validation>
-        <version.jakarta-annotation>2.1.1</version.jakarta-annotation>
-        <version.jackson>2.17.0</version.jackson>
+        <spring.version>6.1.5</spring.version>
+        <spring-boot.version>3.2.4</spring-boot.version>
+        <spring-webmvc.version>6.1.5</spring-webmvc.version>
+        <jakarta-servlet.version>6.0.0</jakarta-servlet.version>
+        <jakarta-validation.version>3.0.2</jakarta-validation.version>
+        <jakarta-annotation.version>2.1.1</jakarta-annotation.version>
+        <jackson.version>2.17.0</jackson.version>
+        <log4j2.version>2.21.1</log4j2.version>
     </properties>
 
     <dependencies>
@@ -30,44 +32,44 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
-            <version>${version.spring-boot}</version>
+            <version>${spring-boot.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>${version.spring-boot}</version>
+            <version>${spring-boot.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${version.spring}</version>
+            <version>${spring.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>6.1.5</version>
+            <version>${spring-webmvc.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>${version.jakarta-servlet}</version>
+            <version>${jakarta-servlet.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
-            <version>${version.jakarta-validation}</version>
+            <version>${jakarta-validation.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
         <dependency>
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
-            <version>${version.jakarta-annotation}</version>
+            <version>${jakarta-annotation.version}</version>
         </dependency>
 
 
@@ -75,14 +77,14 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${version.jackson}</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.23.1</version>
+            <version>${log4j2.version}</version>
         </dependency>
     </dependencies>
 
