@@ -85,7 +85,8 @@ public class EuropeanaGlobalExceptionHandler {
      * Make sure we return 405 instead of 500 response when http method is not supported; also include error message
      */
     @ExceptionHandler
-    public ResponseEntity<EuropeanaApiErrorResponse> handleHttpMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest httpRequest) {
+    public ResponseEntity<EuropeanaApiErrorResponse> handleHttpMethodNotSupportedException(
+            HttpRequestMethodNotSupportedException e, HttpServletRequest httpRequest) {
         HttpStatus responseStatus = HttpStatus.METHOD_NOT_ALLOWED;
         EuropeanaApiErrorResponse response = new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
                 .setStatus(responseStatus.value())

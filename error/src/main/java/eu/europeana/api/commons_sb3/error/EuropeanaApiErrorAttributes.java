@@ -18,10 +18,10 @@ import static eu.europeana.api.commons_sb3.error.EuropeanaErrorConstants.*;
  * The default Spring-Boot error response where the EuropeanaGlobalExceptionHandler doesn't handle it (e.g. 404s).
  * Make sure this class is loaded by Spring.
  */
-@Component("EuropeanaApiErrorAttributes")
+@Component("europeanaApiErrorAttributes")
 public class EuropeanaApiErrorAttributes extends DefaultErrorAttributes {
 
-    @Value("${server.error.see-also:}")    
+    @Value("${server.error.see-also:#{null}}")
     private String seeAlsoValue;
   
     /**
