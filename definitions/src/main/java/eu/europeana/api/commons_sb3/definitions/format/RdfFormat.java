@@ -9,8 +9,8 @@ import java.nio.charset.Charset;
  * @since 13 Oct 2023
  */
 public enum RdfFormat {
-    JSONLD("jsonld","json",null,"application/ld+json")
-  , JSON("json","json",null,"application/json")
+    JSONLD("jsonld",null,null,"application/ld+json")
+  , JSON("json",null,null,"application/json")
   , XML("rdf","xml","utf-8","application/rdf+xml","application/xml","text/xml","rdf/xml")
   , TURTLE("ttl",null,"utf-8","text/turtle","application/turtle","application/x-turtle")
   , N3("n3",null,"utf-8","text/n3","text/rdf+n3","application/n3")
