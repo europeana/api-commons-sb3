@@ -10,6 +10,7 @@
     <modules>
         <module>error</module>
         <module>definitions</module>
+        <module>web</module>
     </modules>
 
     <name>API Commons for Spring Boot v3</name>
@@ -21,6 +22,17 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <sonar.organization>europeana</sonar.organization>
+
+        <spring.version>6.2.0</spring.version> <!-- Make sure version matches with the one used by spring-boot -->
+        <spring-boot.version>3.3.5</spring-boot.version>
+        <spring-webmvc.version>${spring.version}</spring-webmvc.version>
+        <jakarta-servlet.version>6.0.0</jakarta-servlet.version>
+        <jakarta-validation.version>3.0.2</jakarta-validation.version>
+        <jakarta-ws.rs.version>4.0.0</jakarta-ws.rs.version>
+
+        <jakarta-annotation.version>2.1.1</jakarta-annotation.version>
+        <jackson.version>2.17.2</jackson.version>
+        <log4j2.version>2.23.1</log4j2.version>
 
         <dependency-check-maven.version>10.0.2</dependency-check-maven.version>
         <apache.commomLang3.version>3.13.0</apache.commomLang3.version>
