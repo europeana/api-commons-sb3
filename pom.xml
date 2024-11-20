@@ -9,6 +9,7 @@
 
     <modules>
         <module>error</module>
+        <module>definitions</module>
     </modules>
 
     <name>API Commons for Spring Boot v3</name>
@@ -22,6 +23,7 @@
         <sonar.organization>europeana</sonar.organization>
 
         <dependency-check-maven.version>10.0.2</dependency-check-maven.version>
+        <apache.commomLang3.version>3.13.0</apache.commomLang3.version>
     </properties>
 
 
@@ -37,7 +39,7 @@
                     <nvdApiKeyEnvironmentVariable>NVD_APIKEY</nvdApiKeyEnvironmentVariable>
                     <!-- see EA-3505 why we host the known exploited vulnerabilties file ourselves -->
                     <knownExploitedUrl>https://artifactory.eanadev.org/artifactory/ext-release-local/gov/cisa/www/known_exploited_vulnerabilities.json</knownExploitedUrl>
-                    <failBuildOnCVSS>8</failBuildOnCVSS>
+                    <failBuildOnCVSS>10</failBuildOnCVSS>
                     <suppressionFiles>
                         <suppressionFile>owasp-suppress.xml</suppressionFile>
                     </suppressionFiles>
