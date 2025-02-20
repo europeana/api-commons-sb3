@@ -34,7 +34,7 @@
         <jackson.version>2.17.2</jackson.version>
         <log4j2.version>2.23.1</log4j2.version>
 
-        <dependency-check-maven.version>10.0.2</dependency-check-maven.version>
+        <dependency-check-maven.version>12.1.0</dependency-check-maven.version>
         <apache.commomLang3.version>3.13.0</apache.commomLang3.version>
     </properties>
 
