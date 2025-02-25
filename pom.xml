@@ -34,12 +34,14 @@
         <jackson.version>2.17.2</jackson.version>
         <log4j2.version>2.23.1</log4j2.version>
 
-        <dependency-check-maven.version>10.0.2</dependency-check-maven.version>
+        <dependency-check-maven.version>12.1.0</dependency-check-maven.version>
         <apache.commomLang3.version>3.13.0</apache.commomLang3.version>
     </properties>
 
-
-    <build>
+<profiles>
+    <profile>
+        <id>depcheck</id>
+        <build>
         <plugins>
             <plugin>
                 <!-- This will be active when running the verify or install goal
@@ -48,7 +50,8 @@
                 <artifactId>dependency-check-maven</artifactId>
                 <version>${dependency-check-maven.version}</version>
                 <configuration>
-                    <nvdApiKeyEnvironmentVariable>NVD_APIKEY</nvdApiKeyEnvironmentVariable>
+                    <nvdApiKey>095480a7-cd17-45c7-aa35-5d339fa87c8e</nvdApiKey>
+<!--                    <nvdApiKeyEnvironmentVariable>NVD_APIKEY</nvdApiKeyEnvironmentVariable>-->
                     <!-- see EA-3505 why we host the known exploited vulnerabilties file ourselves -->
                     <knownExploitedUrl>https://artifactory.eanadev.org/artifactory/ext-release-local/gov/cisa/www/known_exploited_vulnerabilities.json</knownExploitedUrl>
                     <failBuildOnCVSS>8</failBuildOnCVSS>
@@ -67,7 +70,8 @@
         </plugins>
 
     </build>
-
+    </profile>
+</profiles>
     <!-- Please limit the use of dependencies to a module as much as possible!
          Only dependencies used by all (or almost all) modules should be placed here -->
 </project>
