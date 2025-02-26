@@ -36,8 +36,8 @@ public class EuropeanaApiErrorAttributes extends DefaultErrorAttributes {
 
         // use LinkedHashMap to guarantee display order
         LinkedHashMap<String, Object> europeanaErrorAttributes = new LinkedHashMap<>();
-        europeanaErrorAttributes.put(CONTEXT, CONTEXT_VALUE);
-        europeanaErrorAttributes.put(TYPE, TYPE_VALUE);
+        europeanaErrorAttributes.put(CONTEXT, ERROR_CONTEXT);
+        europeanaErrorAttributes.put(TYPE, ERROR_TYPE);
         europeanaErrorAttributes.put(SUCCESS, false);
         europeanaErrorAttributes.put(STATUS, defaultErrorAttributes.get(STATUS)); // http response code
         europeanaErrorAttributes.put(ERROR, defaultErrorAttributes.get(ERROR)); // short error message
