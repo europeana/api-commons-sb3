@@ -1,7 +1,7 @@
 package eu.europeana.api.commons_sb3.error;
 
 /**
- * Constants used for generating error resposnes
+ * Constants used for generating error responses
  */
 public class EuropeanaErrorConstants {
 
@@ -16,9 +16,9 @@ public class EuropeanaErrorConstants {
     public static final String path                = "path";
     public static final String trace               = "trace";
     public static final String code                = "code";
-    public static final  String ErrorResponse      = "ErrorResponse";
-    public static final  String ERROR_CONTEXT      = "http://www.europeana.eu/schemas/context/api.jsonld";
-    public static final  String SEE_ALSO_VALUE     = "https://pro.europeana.eu/page/apis";
+    public static final String ErrorResponse       = "ErrorResponse";
+    public static final String ERROR_CONTEXT       = "http://www.europeana.eu/schemas/context/api.jsonld";
+    public static final String SEE_ALSO_VALUE      = "https://pro.europeana.eu/page/apis";
     public static final String profile             = "profile";
     public static final String COMMA               = ",";
     public static final String debug               = "debug";
