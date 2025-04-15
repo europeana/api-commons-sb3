@@ -14,8 +14,8 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.Arrays;
 import java.util.Map;
 
-import static eu.europeana.api.commons_sb3.error.EuropeanaErrorConstants.PROFILE_DEBUG;
-import static eu.europeana.api.commons_sb3.error.EuropeanaErrorConstants.QUERY_PARAM_PROFILE;
+import static eu.europeana.api.commons_sb3.error.EuropeanaErrorConstants.debug;
+import static eu.europeana.api.commons_sb3.error.EuropeanaErrorConstants.profile;
 
 /**
  * Add this controller to your application to replace the default Spring-Boot BasicErrorController that generates the
@@ -68,14 +68,14 @@ public class EuropeanaApiErrorController extends AbstractErrorController {
      */
     @Override
     protected boolean getTraceParameter(HttpServletRequest request) {
-        if (this.getBooleanParameter(request, PROFILE_DEBUG)) {
+        if (this.getBooleanParameter(request, debug)) {
             return true;
         }
-        String parameter = request.getParameter(QUERY_PARAM_PROFILE);
+        String parameter = request.getParameter(profile);
         if (parameter == null) {
             return false;
         } else {
-            return Arrays.stream(parameter.split("[+,]")).anyMatch(PROFILE_DEBUG::equalsIgnoreCase);
+            return Arrays.stream(parameter.split("[+,]")).anyMatch(debug::equalsIgnoreCase);
         }
     }
 
