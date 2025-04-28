@@ -3,8 +3,11 @@ package eu.europeana.api.commons_sb3.http;
 import eu.europeana.api.commons_sb3.auth.AuthenticationHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hc.client5.http.classic.methods.*;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.DefaultRedirectStrategy;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
@@ -34,11 +37,20 @@ public class HttpConnection {
 	 * @param withRedirect
 	 */
 	public HttpConnection(boolean withRedirect) {
-		HttpClientBuilder clientBuilder = HttpClientBuilder.create();
-		if (!withRedirect) {
+		if (withRedirect) {
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setCircularRedirectsAllowed(true)
+					.build();
+
+			this.httpClient =  HttpClients.custom()
+					.setDefaultRequestConfig(requestConfig)
+					.setRedirectStrategy(new DefaultRedirectStrategy())
+					.build();
+		} else {
+			HttpClientBuilder clientBuilder = HttpClientBuilder.create();
 			clientBuilder.disableRedirectHandling();
+			this.httpClient = clientBuilder.build();
 		}
-    	this.httpClient = clientBuilder.build();
 	}
 
 	/**
