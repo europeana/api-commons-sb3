@@ -23,6 +23,8 @@ public class EuropeanaApiErrorAttributes extends DefaultErrorAttributes {
 
     @Value("${server.error.see-also:#{null}}")
     private String seeAlsoValue;
+
+    // Todo get the context vaue as well configurable
   
     /**
      * Used by Spring to display errors with no custom handler.

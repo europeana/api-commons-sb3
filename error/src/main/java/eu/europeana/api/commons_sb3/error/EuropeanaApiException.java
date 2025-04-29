@@ -11,17 +11,20 @@ public class EuropeanaApiException extends Exception {
     private static final long serialVersionUID = -1354471712894853562L;
 
     private final String errorCode;
+    private final String error;
     private HttpStatus responseStatus;
 
     /**
-     * Initialise a new exception with error code
+     * Initialise a new exception with error, code and message
      * @param msg error message
-     * @param errorCode error code (optional)
+     * @param error A label indicating the type of error.
+     * @param errorCode error code
      * @param t root cause exception
      */
-    public EuropeanaApiException(String msg, String errorCode, Throwable t) {
+    public EuropeanaApiException(String msg, String error, String errorCode, Throwable t) {
         super(msg, t);
         this.errorCode = errorCode;
+        this.error = error;
     }
 
     /**
@@ -30,17 +33,19 @@ public class EuropeanaApiException extends Exception {
      * @param t root cause exception
      */
     public EuropeanaApiException(String msg, Throwable t) {
-        this(msg, null, t);
+        this(msg, null, null, t);
     }
 
     /**
      * Initialise a new exception with error code for which there is no root cause
      * @param msg error message
+     * @param error A label indicating the type of error.
      * @param errorCode error code (optional)
      */
-    public EuropeanaApiException(String msg, String errorCode) {
+    public EuropeanaApiException(String msg, String error, String errorCode) {
         super(msg);
         this.errorCode = errorCode;
+        this.error = error;
     }
 
     /**
@@ -50,6 +55,7 @@ public class EuropeanaApiException extends Exception {
     public EuropeanaApiException(String msg) {
         super(msg);
         this.errorCode = null;
+        this.error = null;
     }
 
     /**
@@ -84,6 +90,10 @@ public class EuropeanaApiException extends Exception {
      */
     public String getErrorCode() {
         return this.errorCode;
+    }
+
+    public String getError() {
+        return this.error;
     }
 
     /**

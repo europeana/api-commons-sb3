@@ -2,6 +2,7 @@ package eu.europeana.api.commons_sb3.error;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import eu.europeana.api.commons_sb3.error.i18n.I18nService;
 
 import java.util.List;
 import java.util.Set;
@@ -70,7 +72,6 @@ public class EuropeanaGlobalExceptionHandler {
                 .setStatus(e.getResponseStatus().value())
                 .setError(e.getResponseStatus().getReasonPhrase())
                 .setMessage(e.doExposeMessage() ? e.getMessage() : null)
-                // code only included in JSON if a value is set in exception
                 .setCode(e.getErrorCode())
                 .build();
 
@@ -79,6 +80,36 @@ public class EuropeanaGlobalExceptionHandler {
                 .headers(createHttpHeaders(httpRequest))
                 .body(response);
     }
+
+    /**
+     * Handler for EuropeanaI18nApiException types
+     *
+     * @param e caught exception
+     */
+    @ExceptionHandler(EuropeanaI18nApiException.class)
+    public ResponseEntity<EuropeanaApiErrorResponse> handleEuropeanaApiException(EuropeanaI18nApiException e, HttpServletRequest httpRequest) {
+        EuropeanaApiErrorResponse response =
+                new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
+                        .setStatus(e.getResponseStatus().value())
+                        .setError(e.getError())
+                        .setMessage(buildResponseMessage(e, e.getI18nKey(), e.getI18nParams()))
+                        .setCode(e.getErrorCode())
+                        .build();
+        LOG.error("Caught exception: {}", response.getMessage());
+        return ResponseEntity.status(e.getResponseStatus()).headers(createHttpHeaders(httpRequest))
+                .body(response);
+    }
+
+
+    protected String buildResponseMessage(Exception e, String i18nKey, String[] i18nParams) {
+        if (getI18nService() != null && StringUtils.isNotBlank(i18nKey)) {
+            System.out.println("getI18nService  created" + getI18nService());
+            return getI18nService().getMessage(i18nKey, i18nParams);
+        } else {
+            return e.getMessage();
+        }
+    }
+
 
     /**
      * Handler for HttpRequestMethodNotSupportedException errors
@@ -211,6 +242,10 @@ public class EuropeanaGlobalExceptionHandler {
      */
     AbstractRequestPathMethodService getRequestPathMethodService() {
         return requestPathMethodService;
+    }
+
+    protected I18nService getI18nService() {
+        return null;
     }
 }
 
