@@ -1,5 +1,6 @@
 package eu.europeana.api.commons_sb3.error;
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +21,7 @@ import eu.europeana.api.commons_sb3.error.i18n.I18nService;
 
 import java.util.List;
 import java.util.Set;
-
+import static eu.europeana.api.commons_sb3.error.config.ErrorConfig.BEAN_I18nService;
 
 /**
  * Global exception handler that catches all errors and logs the interesting ones
@@ -36,6 +37,9 @@ public class EuropeanaGlobalExceptionHandler {
     private static final Logger LOG = LogManager.getLogger(EuropeanaGlobalExceptionHandler.class);
 
     protected AbstractRequestPathMethodService requestPathMethodService;
+
+    @Resource(name = BEAN_I18nService)
+    protected I18nService i18nService;
 
     /**
      * Checks if {@link EuropeanaApiException} instances should be logged or not
@@ -102,9 +106,9 @@ public class EuropeanaGlobalExceptionHandler {
 
 
     protected String buildResponseMessage(Exception e, String i18nKey, String[] i18nParams) {
-        if (getI18nService() != null && StringUtils.isNotBlank(i18nKey)) {
-            System.out.println("getI18nService  created" + getI18nService());
-            return getI18nService().getMessage(i18nKey, i18nParams);
+        if (i18nService != null && StringUtils.isNotBlank(i18nKey)) {
+            System.out.println("getI18nService  created" + i18nService);
+            return i18nService.getMessage(i18nKey, i18nParams);
         } else {
             return e.getMessage();
         }
@@ -242,10 +246,6 @@ public class EuropeanaGlobalExceptionHandler {
      */
     AbstractRequestPathMethodService getRequestPathMethodService() {
         return requestPathMethodService;
-    }
-
-    protected I18nService getI18nService() {
-        return null;
     }
 }
 

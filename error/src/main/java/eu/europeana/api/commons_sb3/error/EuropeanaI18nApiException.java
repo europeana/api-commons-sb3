@@ -1,5 +1,6 @@
 package eu.europeana.api.commons_sb3.error;
 
+import eu.europeana.api.commons_sb3.error.config.ErrorMessage;
 import org.springframework.http.HttpStatus;
 
 public class EuropeanaI18nApiException extends EuropeanaApiException {

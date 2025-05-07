@@ -1,6 +1,6 @@
 package eu.europeana.api.commons_sb3.error.exceptions;
 
-import eu.europeana.api.commons_sb3.error.ErrorMessage;
+import eu.europeana.api.commons_sb3.error.config.ErrorMessage;
 import eu.europeana.api.commons_sb3.error.EuropeanaI18nApiException;
 import org.springframework.http.HttpStatus;
 
@@ -18,12 +18,4 @@ public class InvalidConfigurationException extends EuropeanaI18nApiException {
     public HttpStatus getResponseStatus() {
         return HttpStatus.BAD_REQUEST;
     }
-
-//    public InvalidConfigurationException(String message, String error, String errorCode, HttpStatus responseStatus, String i18nKey, String[] i18nParams) {
-//        super(message, error, errorCode, responseStatus, i18nKey, i18nParams);
-//    }
-//
-//    public InvalidConfigurationException(String message, String error, String errorCode, HttpStatus responseStatus, String i18nKey, String[] i18nParams, Throwable th) {
-//        super(message, error, errorCode, responseStatus, i18nKey, i18nParams, th);
-//    }
 }
