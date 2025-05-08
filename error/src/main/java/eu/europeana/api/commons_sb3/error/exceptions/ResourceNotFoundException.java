@@ -7,16 +7,16 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-public class InvalidIdException extends EuropeanaI18nApiException {
+public class ResourceNotFoundException extends EuropeanaI18nApiException {
 
     private Class theClass;
 
     /**
-     * @param theClass   -  EDM class name
-     * @param i18nParams - format, Where the <format> represents the acceptable format.
+     * @param theClass -  EDM class name
+     * @param i18nParams - identifier requested
      */
-    public InvalidIdException(@NotNull Class theClass, List<String> i18nParams) {
-        super(theClass, ErrorMessage.ID_INVALID_404, i18nParams);
+    public ResourceNotFoundException(@NotNull Class theClass, List<String> i18nParams) {
+        super(theClass, ErrorMessage.NOT_FOUND_404, i18nParams);
     }
 
     @Override

@@ -4,13 +4,16 @@ import eu.europeana.api.commons_sb3.error.config.ErrorMessage;
 import eu.europeana.api.commons_sb3.error.EuropeanaI18nApiException;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 public class InvalidConfigurationException extends EuropeanaI18nApiException {
 
     /**
-     * Three parameters should be sent - param name , expected value and the invalid value from the request ( this is optional)
-     * @param i18nParams
+     * @param i18nParams - invalid parameter name
+     *                     expected value of the parameter
+     *                     invalid value of the parameter from the request (optional)
      */
-    public InvalidConfigurationException(String[] i18nParams) {
+    public InvalidConfigurationException(List<String> i18nParams) {
         super(ErrorMessage.PARAM_INVALID_400, i18nParams);
     }
 
