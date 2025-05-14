@@ -3,11 +3,11 @@ package eu.europeana.api.commons_sb3.error.config;
 import static eu.europeana.api.commons_sb3.error.config.ErrorConfig.*;
 
 public enum ErrorMessage {
-  PARAM_INVALID_400("400_param_invalid","An invalid parameter was sent in the request",  INVALID_PARAM),
-  PARAM_MISSING_400("400_param_missing","Mandatory parameter is missing in the request", MISSING_PARAM),
-  BODY_INVALID_400 ("400_body",         "An invalid field was sent in the request body", INVALID_BODY),
-  ID_INVALID_404   ("404_id_invalid",   "Invalid %s identifier",                         INVALID_ID),
-  NOT_FOUND_404    ("404_not_found",    "%s not found!",                                NOT_FOUND);
+  PARAM_INVALID_400        ("400_param_invalid","An invalid parameter was sent in the request",  INVALID_PARAM),
+  PARAM_MISSING_400        ("400_param_missing","Mandatory parameter is missing in the request", MISSING_PARAM),
+  BODY_INVALID_400         ("400_body",         "An invalid field was sent in the request body", INVALID_BODY_MISSING),
+  ID_INVALID_404           ("404_id_invalid",   "Invalid %s identifier",                         INVALID_ID),
+  NOT_FOUND_404            ("404_not_found",    "%s not found!",                                 NOT_FOUND);
 
 
   private final String code;

@@ -1,5 +1,6 @@
 package eu.europeana.api.commons_sb3.error;
 
+import eu.europeana.api.commons_sb3.error.exceptions.InvalidBodyException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import eu.europeana.api.commons_sb3.error.i18n.I18nService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import static eu.europeana.api.commons_sb3.error.config.ErrorConfig.BEAN_I18nService;
 
@@ -85,6 +87,41 @@ public class EuropeanaGlobalExceptionHandler {
                 .body(response);
     }
 
+
+    /**
+     * Handler for InvalidBodyException types
+     *
+     * @param e caught exception
+     */
+    @ExceptionHandler(InvalidBodyException.class)
+    public ResponseEntity<EuropeanaApiErrorResponse> handleEuropeanaApiException(InvalidBodyException e, HttpServletRequest httpRequest) {
+        EuropeanaApiErrorResponse response =
+                new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
+                        .setStatus(e.getResponseStatus().value())
+                        .setError(e.getError())
+                        .setMessage(buildResponseMessage(e, e.getI18KeysAndParams()))
+                        .setCode(e.getErrorCode())
+                        .build();
+        LOG.error("Caught exception: {}", response.getMessage());
+        return ResponseEntity.status(e.getResponseStatus()).headers(createHttpHeaders(httpRequest))
+                .body(response);
+    }
+
+    private String buildResponseMessage(Exception e, Map<String, List<String>> i18KeysAndParams) {
+        System.out.println(i18KeysAndParams);
+        if (i18nService != null && !i18KeysAndParams.isEmpty()) {
+            StringBuilder message = new StringBuilder();
+            for (Map.Entry<String,List<String>> entry : i18KeysAndParams.entrySet()) {
+                message.append(buildResponseMessage(e, entry.getKey(), entry.getValue()));
+                message.append(" \n ");
+            }
+            return message.toString();
+        } else {
+            return e.getMessage();
+        }
+    }
+
+
     /**
      * Handler for EuropeanaI18nApiException types
      *
@@ -112,7 +149,6 @@ public class EuropeanaGlobalExceptionHandler {
             return e.getMessage();
         }
     }
-
 
     /**
      * Handler for HttpRequestMethodNotSupportedException errors

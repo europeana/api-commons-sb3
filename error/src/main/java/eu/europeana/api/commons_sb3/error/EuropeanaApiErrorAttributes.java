@@ -24,8 +24,9 @@ public class EuropeanaApiErrorAttributes extends DefaultErrorAttributes {
     @Value("${server.error.see-also:#{null}}")
     private String seeAlsoValue;
 
-    // Todo get the context vaue as well configurable
-  
+    @Value("${server.error.context:#{null}}")
+    private String errorContext;
+
     /**
      * Used by Spring to display errors with no custom handler.
      * Since we explicitly return {@link EuropeanaApiErrorResponse} on errors within controllers, this method is only invoked when
@@ -38,7 +39,10 @@ public class EuropeanaApiErrorAttributes extends DefaultErrorAttributes {
 
         // use LinkedHashMap to guarantee display order
         LinkedHashMap<String, Object> europeanaErrorAttributes = new LinkedHashMap<>();
-        europeanaErrorAttributes.put(context, ERROR_CONTEXT);
+
+        if (StringUtils.hasLength(errorContext)) {
+            europeanaErrorAttributes.put(context, errorContext);
+        }
         europeanaErrorAttributes.put(type, ErrorResponse);
         europeanaErrorAttributes.put(success, false);
         europeanaErrorAttributes.put(status, defaultErrorAttributes.get(status)); // http response code
