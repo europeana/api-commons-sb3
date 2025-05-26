@@ -2,6 +2,7 @@ package eu.europeana.api.commons_sb3.http;
 
 import eu.europeana.api.commons_sb3.auth.AuthenticationHandler;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.*;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.DefaultRedirectStrategy;

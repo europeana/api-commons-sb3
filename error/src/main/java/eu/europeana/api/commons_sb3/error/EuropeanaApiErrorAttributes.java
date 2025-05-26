@@ -23,7 +23,10 @@ public class EuropeanaApiErrorAttributes extends DefaultErrorAttributes {
 
     @Value("${server.error.see-also:#{null}}")
     private String seeAlsoValue;
-  
+
+    @Value("${server.error.context:#{null}}")
+    private String errorContext;
+
     /**
      * Used by Spring to display errors with no custom handler.
      * Since we explicitly return {@link EuropeanaApiErrorResponse} on errors within controllers, this method is only invoked when
@@ -36,23 +39,26 @@ public class EuropeanaApiErrorAttributes extends DefaultErrorAttributes {
 
         // use LinkedHashMap to guarantee display order
         LinkedHashMap<String, Object> europeanaErrorAttributes = new LinkedHashMap<>();
-        europeanaErrorAttributes.put(CONTEXT, ERROR_CONTEXT);
-        europeanaErrorAttributes.put(TYPE, ERROR_TYPE);
-        europeanaErrorAttributes.put(SUCCESS, false);
-        europeanaErrorAttributes.put(STATUS, defaultErrorAttributes.get(STATUS)); // http response code
-        europeanaErrorAttributes.put(ERROR, defaultErrorAttributes.get(ERROR)); // short error message
+
+        if (StringUtils.hasLength(errorContext)) {
+            europeanaErrorAttributes.put(context, errorContext);
+        }
+        europeanaErrorAttributes.put(type, ErrorResponse);
+        europeanaErrorAttributes.put(success, false);
+        europeanaErrorAttributes.put(status, defaultErrorAttributes.get(status)); // http response code
+        europeanaErrorAttributes.put(error, defaultErrorAttributes.get(error)); // short error message
         addCodeFieldIfAvailable(europeanaErrorAttributes, webRequest);
-        if (defaultErrorAttributes.get(MESSAGE) != null) {
-            europeanaErrorAttributes.put(MESSAGE, defaultErrorAttributes.get(MESSAGE)); // human readable description
+        if (defaultErrorAttributes.get(message) != null) {
+            europeanaErrorAttributes.put(message, defaultErrorAttributes.get(message)); // human readable description
         }
         //to be enabled when the URL is available, eventually through application configuration
         if (StringUtils.hasLength(seeAlsoValue)) {
-            europeanaErrorAttributes.put(SEE_ALSO, seeAlsoValue);
+            europeanaErrorAttributes.put(seeAlso, seeAlsoValue);
         }
-        europeanaErrorAttributes.put(TIMESTAMP, OffsetDateTime.now());
+        europeanaErrorAttributes.put(timestamp, OffsetDateTime.now());
         addPathRequestParameters(europeanaErrorAttributes, webRequest);
-        if (defaultErrorAttributes.get(TRACE) != null) {
-            europeanaErrorAttributes.put(TRACE, defaultErrorAttributes.get(TRACE)); // stacktrace
+        if (defaultErrorAttributes.get(trace) != null) {
+            europeanaErrorAttributes.put(trace, defaultErrorAttributes.get(trace)); // stacktrace
         }
         return europeanaErrorAttributes;
     }
@@ -64,7 +70,7 @@ public class EuropeanaApiErrorAttributes extends DefaultErrorAttributes {
         final Throwable throwable = super.getError(webRequest);
         if (throwable instanceof EuropeanaApiException apiException &&
                 StringUtils.hasLength(apiException.getErrorCode())) {
-            errorAttributes.put(CODE, apiException.getErrorCode());
+            errorAttributes.put(code, apiException.getErrorCode());
         }
     }
 
@@ -90,7 +96,7 @@ public class EuropeanaApiErrorAttributes extends DefaultErrorAttributes {
             }
         }
         if (params.length() > 0) {
-            errorAttributes.put(PATH, errorAttributes.get(PATH) + params.toString());
+            errorAttributes.put(path, errorAttributes.get(path) + params.toString());
         }
     }
 
