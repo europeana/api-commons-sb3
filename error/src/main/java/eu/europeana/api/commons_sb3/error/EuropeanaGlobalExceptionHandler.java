@@ -1,7 +1,10 @@
 package eu.europeana.api.commons_sb3.error;
 
+import eu.europeana.api.commons_sb3.error.exceptions.InvalidBodyException;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +18,12 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import eu.europeana.api.commons_sb3.error.i18n.I18nService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-
+import static eu.europeana.api.commons_sb3.error.config.ErrorConfig.BEAN_I18nService;
 
 /**
  * Global exception handler that catches all errors and logs the interesting ones
@@ -34,6 +39,9 @@ public class EuropeanaGlobalExceptionHandler {
     private static final Logger LOG = LogManager.getLogger(EuropeanaGlobalExceptionHandler.class);
 
     protected AbstractRequestPathMethodService requestPathMethodService;
+
+    @Resource(name = BEAN_I18nService)
+    protected I18nService i18nService;
 
     /**
      * Checks if {@link EuropeanaApiException} instances should be logged or not
@@ -70,7 +78,6 @@ public class EuropeanaGlobalExceptionHandler {
                 .setStatus(e.getResponseStatus().value())
                 .setError(e.getResponseStatus().getReasonPhrase())
                 .setMessage(e.doExposeMessage() ? e.getMessage() : null)
-                // code only included in JSON if a value is set in exception
                 .setCode(e.getErrorCode())
                 .build();
 
@@ -78,6 +85,69 @@ public class EuropeanaGlobalExceptionHandler {
                 .status(e.getResponseStatus())
                 .headers(createHttpHeaders(httpRequest))
                 .body(response);
+    }
+
+
+    /**
+     * Handler for InvalidBodyException types
+     *
+     * @param e caught exception
+     */
+    @ExceptionHandler(InvalidBodyException.class)
+    public ResponseEntity<EuropeanaApiErrorResponse> handleEuropeanaApiException(InvalidBodyException e, HttpServletRequest httpRequest) {
+        EuropeanaApiErrorResponse response =
+                new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
+                        .setStatus(e.getResponseStatus().value())
+                        .setError(e.getError())
+                        .setMessage(buildResponseMessage(e, e.getI18KeysAndParams()))
+                        .setCode(e.getErrorCode())
+                        .build();
+        LOG.error("Caught exception: {}", response.getMessage());
+        return ResponseEntity.status(e.getResponseStatus()).headers(createHttpHeaders(httpRequest))
+                .body(response);
+    }
+
+    private String buildResponseMessage(Exception e, Map<String, List<String>> i18KeysAndParams) {
+        System.out.println(i18KeysAndParams);
+        if (i18nService != null && !i18KeysAndParams.isEmpty()) {
+            StringBuilder message = new StringBuilder();
+            for (Map.Entry<String,List<String>> entry : i18KeysAndParams.entrySet()) {
+                message.append(buildResponseMessage(e, entry.getKey(), entry.getValue()));
+                message.append(" \n ");
+            }
+            return message.toString();
+        } else {
+            return e.getMessage();
+        }
+    }
+
+
+    /**
+     * Handler for EuropeanaI18nApiException types
+     *
+     * @param e caught exception
+     */
+    @ExceptionHandler(EuropeanaI18nApiException.class)
+    public ResponseEntity<EuropeanaApiErrorResponse> handleEuropeanaApiException(EuropeanaI18nApiException e, HttpServletRequest httpRequest) {
+        EuropeanaApiErrorResponse response =
+                new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
+                        .setStatus(e.getResponseStatus().value())
+                        .setError(e.getError())
+                        .setMessage(buildResponseMessage(e, e.getI18nKey(), e.getI18nParams()))
+                        .setCode(e.getErrorCode())
+                        .build();
+        LOG.error("Caught exception: {}", response.getMessage());
+        return ResponseEntity.status(e.getResponseStatus()).headers(createHttpHeaders(httpRequest))
+                .body(response);
+    }
+
+
+    protected String buildResponseMessage(Exception e, String i18nKey, List<String> i18nParams) {
+        if (i18nService != null && StringUtils.isNotBlank(i18nKey)) {
+            return i18nService.getMessage(i18nKey, i18nParams.toArray(new String[0]));
+        } else {
+            return e.getMessage();
+        }
     }
 
     /**
