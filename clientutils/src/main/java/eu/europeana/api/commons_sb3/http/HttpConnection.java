@@ -69,7 +69,9 @@ public class HttpConnection {
 		if(StringUtils.isNotBlank(acceptHeaderValue)) {
 		  addHeaders(get, HttpHeaders.ACCEPT, acceptHeaderValue);
 		}
-		auth.setAuthorization(get);
+		if (auth != null) {
+			auth.setAuthorization(get);
+		}
 		return executeHttpClient(get);
 	}
 
@@ -90,7 +92,7 @@ public class HttpConnection {
             addHeaders(post, HttpHeaders.CONTENT_TYPE, contentType);
         }
         auth.setAuthorization(post);
-        if(requestBody != null) {
+        if (requestBody != null) {
             post.setEntity(new StringEntity(requestBody));
         }
 		return executeHttpClient(post);
