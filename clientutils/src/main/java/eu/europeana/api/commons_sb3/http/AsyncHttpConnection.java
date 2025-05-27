@@ -35,6 +35,7 @@ public class AsyncHttpConnection {
         } else {
             this.httpClient = HttpAsyncClients.customHttp2().disableRedirectHandling().build();
         }
+        httpClient.start();
     }
 
     /**
@@ -48,16 +49,15 @@ public class AsyncHttpConnection {
 
     public SimpleHttpResponse get(String url, String acceptHeaderValue
             , AuthenticationHandler auth) throws IOException, ExecutionException, InterruptedException {
-        httpClient.start();
         SimpleHttpRequest httpRequest = new SimpleHttpRequest("GET", url);
         System.out.println("version of get  " +httpRequest.getVersion());
+
         if (StringUtils.isNotBlank(acceptHeaderValue)) {
             httpRequest.setHeader(HttpHeaders.ACCEPT, acceptHeaderValue);
         }
-        auth.setAuthorization(httpRequest);
+        if (auth!= null)         auth.setAuthorization(httpRequest);
 
         Future<SimpleHttpResponse> response =  httpClient.execute(httpRequest, null);
-        httpClient.close();
         return response.get();
     }
 
@@ -77,7 +77,7 @@ public class AsyncHttpConnection {
         if(StringUtils.isNotBlank(contentType)) {
             addHeaders(post, HttpHeaders.CONTENT_TYPE, contentType);
         }
-        auth.setAuthorization(post);
+        if (auth!= null)         auth.setAuthorization(post);
         if(requestBody != null) {
             post.setEntity(new StringEntity(requestBody));
         }
@@ -130,5 +130,9 @@ public class AsyncHttpConnection {
         if (StringUtils.isNotBlank(headerValue)) {
             url.setHeader(headerName, headerValue);
         }
+    }
+
+    public void close() throws IOException {
+        httpClient.close();
     }
 }
