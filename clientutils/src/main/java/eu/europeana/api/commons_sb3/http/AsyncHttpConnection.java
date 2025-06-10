@@ -59,6 +59,24 @@ public class AsyncHttpConnection {
     }
 
     /**
+     * Creates the async client with the desired connection pool settings
+     * This client will follow the redirects by default
+     * @param connectionPool
+     */
+    public AsyncHttpConnection(PoolingAsyncClientConnectionManager connectionPool) {
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setCircularRedirectsAllowed(true)
+                .build();
+
+        this.httpClient = HttpAsyncClients.custom()
+                .setConnectionManager(connectionPool)
+                .setDefaultRequestConfig(requestConfig)
+                .setRedirectStrategy(new DefaultRedirectStrategy()).
+                build();
+
+    }
+
+    /**
      * we need to start the async client before using it;
      * without that, we would get the following exception:
      *   java.lang.IllegalStateException: Request cannot be executed; I/O reactor status: INACTIVE
