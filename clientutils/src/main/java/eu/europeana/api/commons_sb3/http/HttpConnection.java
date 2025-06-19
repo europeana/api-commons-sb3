@@ -9,10 +9,12 @@ import org.apache.hc.client5.http.impl.DefaultRedirectStrategy;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The class encapsulating simple HTTP access.
@@ -55,25 +57,61 @@ public class HttpConnection {
 	}
 
 	/**
+	 * Creates the client with the desired connection pool settings
+	 * This client will follow the redirects by default
+	 * @param cm connectionPool param
+	 */
+	public HttpConnection(PoolingHttpClientConnectionManager cm) {
+		RequestConfig requestConfig = RequestConfig.custom()
+				.setCircularRedirectsAllowed(true)
+				.build();
+
+		this.httpClient =  HttpClients.custom()
+				.setDefaultRequestConfig(requestConfig)
+				.setConnectionManager(cm)
+				.setRedirectStrategy(new DefaultRedirectStrategy())
+				.build();
+	}
+
+	/**
 	 *This method makes GET request for given URL.
 	 * @param url
-	 * @param acceptHeaderValue
 	 * @param auth Authentication handler for the request
 	 * @return HttpResponseHandler that comprises response body as String and status code.
 	 * @throws IOException
 	 */
 
-	public HttpResponseHandler get(String url, String acceptHeaderValue
-	                             , AuthenticationHandler auth) throws IOException {
+	public HttpGet getHttpRequest(String url, String acceptHeaderValue
+			, AuthenticationHandler auth) throws IOException {
 		HttpGet get = new HttpGet(url);
-		if(StringUtils.isNotBlank(acceptHeaderValue)) {
-		  addHeaders(get, HttpHeaders.ACCEPT, acceptHeaderValue);
+		if (acceptHeaderValue != null) {
+			get.addHeader(HttpHeaders.ACCEPT, acceptHeaderValue);
 		}
-		if (auth != null) {
-			auth.setAuthorization(get);
+		if (auth != null) auth.setAuthorization(get);
+		return get;
+	}
+
+	/**
+	 *This method makes GET request for given URL.
+	 * @param url
+	 *
+	 * @param headers map of header name and value that needs to be added in the Url
+	 * @param auth Authentication handler for the request
+	 * @return HttpResponseHandler that comprises response body as String and status code.
+	 * @throws IOException
+	 */
+
+	public HttpResponseHandler get(String url, String acceptHeaderValue, Map<String, String> headers
+			, AuthenticationHandler auth) throws IOException {
+		HttpGet get = new HttpGet(url);
+		if (StringUtils.isNotEmpty(acceptHeaderValue)) {
+			get.addHeader(HttpHeaders.ACCEPT, acceptHeaderValue);
 		}
+		addHeaders(get, headers);
+		if (auth != null) auth.setAuthorization(get);
 		return executeHttpClient(get);
 	}
+
 
     /**
      * This method makes POST request for given URL and JSON body parameter.
@@ -89,7 +127,7 @@ public class HttpConnection {
                                   , AuthenticationHandler auth) throws IOException {
         HttpPost post = new HttpPost(url);
         if(StringUtils.isNotBlank(contentType)) {
-            addHeaders(post, HttpHeaders.CONTENT_TYPE, contentType);
+			post.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
         }
         auth.setAuthorization(post);
         if (requestBody != null) {
@@ -140,9 +178,10 @@ public class HttpConnection {
       return responseHandler;
 	}
 
-	private <T extends HttpUriRequestBase> void addHeaders(T url, String headerName, String headerValue) {
-		if (StringUtils.isNotBlank(headerValue)) {
-			url.setHeader(headerName, headerValue);
+	private <T extends HttpUriRequestBase> void addHeaders(T url, Map<String, String> headers) {
+		if ( headers == null ) { return; }
+		for (Map.Entry<String, String> entry : headers.entrySet()) {
+			url.setHeader(entry.getKey(), entry.getValue());
 		}
 	}
 }
