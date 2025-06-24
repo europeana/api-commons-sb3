@@ -2,7 +2,6 @@ package eu.europeana.api.commons_sb3.http;
 
 import eu.europeana.api.commons_sb3.auth.AuthenticationHandler;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.*;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.DefaultRedirectStrategy;
@@ -42,7 +41,6 @@ public class HttpConnection {
 	public HttpConnection(boolean withRedirect) {
 		if (withRedirect) {
 			RequestConfig requestConfig = RequestConfig.custom()
-					.setCircularRedirectsAllowed(true)
 					.build();
 
 			this.httpClient =  HttpClients.custom()
@@ -63,7 +61,6 @@ public class HttpConnection {
 	 */
 	public HttpConnection(PoolingHttpClientConnectionManager cm) {
 		RequestConfig requestConfig = RequestConfig.custom()
-				.setCircularRedirectsAllowed(true)
 				.build();
 
 		this.httpClient =  HttpClients.custom()
