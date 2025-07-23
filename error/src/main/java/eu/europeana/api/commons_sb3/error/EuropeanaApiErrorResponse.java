@@ -53,7 +53,7 @@ public class EuropeanaApiErrorResponse {
     @JsonProperty(EuropeanaErrorConstants.code)
     private final String code;
 
-    private EuropeanaApiErrorResponse(int status, String error, String message, String trace, String path, String code) {
+    public EuropeanaApiErrorResponse(int status, String error, String message, String trace, String path, String code) {
         this.status = status;
         this.error = error;
         this.message = message;
