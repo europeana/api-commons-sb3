@@ -7,6 +7,7 @@ import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.DefaultRedirectStrategy;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import org.apache.hc.client5.http.impl.async.HttpAsyncClientBuilder;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
 import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManager;
 import org.apache.hc.core5.http.ContentType;
@@ -58,20 +59,20 @@ public class AsyncHttpConnection {
     }
 
     /**
-     * Creates the async client with the desired connection pool settings
-     * This client will follow the redirects by default
-     * @param connectionPool
+     * Creates the async client with the desired connection pool settings and request configs
+     * @param connectionPool connection manager for the client
+     * @param requestConfig custom request config for the client
+     * @param withRedirect true, client will follow redirection
      */
-    public AsyncHttpConnection(PoolingAsyncClientConnectionManager connectionPool) {
-        RequestConfig requestConfig = RequestConfig.custom()
-                .build();
-
-        this.httpClient = HttpAsyncClients.custom()
+    public AsyncHttpConnection(PoolingAsyncClientConnectionManager connectionPool, RequestConfig requestConfig, boolean withRedirect) {
+        HttpAsyncClientBuilder builder = HttpAsyncClients.custom()
                 .setConnectionManager(connectionPool)
-                .setDefaultRequestConfig(requestConfig)
-                .setRedirectStrategy(new DefaultRedirectStrategy()).
-                build();
-
+                .setDefaultRequestConfig(requestConfig);
+        if (withRedirect) {
+            this.httpClient = builder.setRedirectStrategy(new DefaultRedirectStrategy()).build();
+        } else {
+            this.httpClient = builder.disableRedirectHandling().build();
+        }
     }
 
     /**
