@@ -12,6 +12,7 @@ import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
 import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManager;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpHeaders;
+import org.apache.hc.core5.reactor.IOReactorConfig;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -62,11 +63,16 @@ public class AsyncHttpConnection {
      * Creates the async client with the desired connection pool settings and request configs
      * @param connectionPool connection manager for the client
      * @param requestConfig custom request config for the client
+     * @param reactorConfig Custom IO Reactor config for the client
      * @param withRedirect true, client will follow redirection
      */
-    public AsyncHttpConnection(PoolingAsyncClientConnectionManager connectionPool, RequestConfig requestConfig, boolean withRedirect) {
+    public AsyncHttpConnection(PoolingAsyncClientConnectionManager connectionPool,
+                               RequestConfig requestConfig,
+                               IOReactorConfig reactorConfig,
+                               boolean withRedirect) {
         HttpAsyncClientBuilder builder = HttpAsyncClients.custom()
                 .setConnectionManager(connectionPool)
+                .setIOReactorConfig(reactorConfig)
                 .setDefaultRequestConfig(requestConfig);
         if (withRedirect) {
             this.httpClient = builder.setRedirectStrategy(new DefaultRedirectStrategy()).build();
