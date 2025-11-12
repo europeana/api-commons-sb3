@@ -133,9 +133,31 @@ public class HttpConnection {
 		return executeHttpClient(post);
 	}
 
+	/**
+	 * Makes POST request with given url,request, headers and authHandler
+	 * @param url request URL
+	 * @param requestBody body
+	 * @param headers Request headers
+	 * @param auth Authentication handler for the request
+	 * @return HttpResponseHandler that comprises response body as String and status code.
+	 * @throws IOException
+	 */
+	public HttpResponseHandler post(String url, String requestBody,Map<String, String> headers
+			, AuthenticationHandler auth) throws IOException {
+
+		HttpPost post = new HttpPost(url);
+		addHeaders(post,headers);
+		if (auth != null) auth.setAuthorization(post);
+		if (requestBody != null) {
+			post.setEntity(new StringEntity(requestBody));
+		}
+		return executeHttpClient(post);
+	}
 
 
-    /**
+
+
+	/**
      * This method makes PUT request for given URL and JSON body parameter.
      *
      * @param url

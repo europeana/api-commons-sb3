@@ -86,8 +86,6 @@ public class EuropeanaGlobalExceptionHandler {
                 .headers(createHttpHeaders(httpRequest))
                 .body(response);
     }
-
-
     /**
      * Handler for InvalidBodyException types
      *
@@ -283,4 +281,3 @@ public class EuropeanaGlobalExceptionHandler {
         return requestPathMethodService;
     }
 }
-
