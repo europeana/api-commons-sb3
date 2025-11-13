@@ -82,6 +82,12 @@
             <artifactId>commons-lang3</artifactId>
             <version>${apache.commomLang3.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>eu.europeana.api</groupId>
+            <artifactId>commons-sb3-definitions</artifactId>
+            <version>0.1.3-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

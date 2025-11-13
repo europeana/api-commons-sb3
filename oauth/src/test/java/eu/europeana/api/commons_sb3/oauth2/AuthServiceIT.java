@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import eu.europeana.api.commons_sb3.auth.AuthenticationBuilder;
 import eu.europeana.api.commons_sb3.auth.AuthenticationConfig;
 import eu.europeana.api.commons_sb3.exception.ApiKeyValidationException;
-import eu.europeana.api.commons_sb3.oauth2.model.KeyValidationResult;
+import eu.europeana.api.commons_sb3.definitions.oauth.KeyValidationResult;
 import eu.europeana.api.commons_sb3.oauth2.service.impl.EuropeanaClientDetailsService;
 import java.io.IOException;
 import java.util.Properties;

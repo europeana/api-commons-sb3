@@ -1,8 +1,10 @@
-package eu.europeana.api.commons_sb3.oauth2.model;
+package eu.europeana.api.commons_sb3.definitions.oauth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class KeyValidationError {
+import java.io.Serializable;
+
+public class KeyValidationError implements Serializable {
   @JsonProperty
   private  String code;
   @JsonProperty

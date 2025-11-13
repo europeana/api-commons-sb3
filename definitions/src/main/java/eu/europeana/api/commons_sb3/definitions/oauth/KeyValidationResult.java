@@ -1,6 +1,8 @@
-package eu.europeana.api.commons_sb3.oauth2.model;
+package eu.europeana.api.commons_sb3.definitions.oauth;
 
-public class KeyValidationResult {
+import java.io.Serializable;
+
+public class KeyValidationResult implements Serializable {
 
   private int httpStatusCode;
   private KeyValidationError validationError;

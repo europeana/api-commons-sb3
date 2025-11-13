@@ -1,6 +1,6 @@
 package eu.europeana.api.commons_sb3.exception;
 
-import eu.europeana.api.commons_sb3.oauth2.model.KeyValidationResult;
+import eu.europeana.api.commons_sb3.definitions.oauth.KeyValidationResult;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 
 public class EuropeanaClientRegistrationException extends ClientRegistrationException
