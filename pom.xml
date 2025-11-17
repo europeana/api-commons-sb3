@@ -13,6 +13,7 @@
         <module>web</module>
         <module>clientutils</module>
         <module>oauth</module>
+        <module>nosql</module>
     </modules>
 
     <name>API Commons for Spring Boot v3</name>
@@ -45,8 +46,10 @@
         <springSecurityJwt.version>1.1.1.RELEASE</springSecurityJwt.version>
         <springSecurityOauth.version>2.5.1.RELEASE</springSecurityOauth.version>
         <!--<springSecurityOauth.version>7.0.0-RC3</springSecurityOauth.version>-->
-
         <org.junit.jupiter.version>6.0.1</org.junit.jupiter.version>
+
+        <mongodb.upgrade.version>4.7.2</mongodb.upgrade.version>
+        <morphia.version>1.6.1</morphia.version>
 
     </properties>
 
