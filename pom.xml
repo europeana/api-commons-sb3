@@ -13,7 +13,10 @@
         <module>web</module>
         <module>clientutils</module>
         <module>oauth</module>
+        <module>search</module>
         <module>nosql</module>
+        <module>net</module>
+
     </modules>
 
     <name>API Commons for Spring Boot v3</name>

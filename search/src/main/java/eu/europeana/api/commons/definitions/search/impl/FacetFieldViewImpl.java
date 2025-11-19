@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
 
-import eu.europeana.api.commons.definitions.search.FacetFieldView;
+import eu.europeana.api.commons_sb3.definitions.search.FacetFieldView;
 
 public class FacetFieldViewImpl implements FacetFieldView{
 	
