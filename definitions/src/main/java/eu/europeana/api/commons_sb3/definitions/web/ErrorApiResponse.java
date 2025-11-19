@@ -1,0 +1,13 @@
+package eu.europeana.api.commons_sb3.definitions.web;
+
+public class ErrorApiResponse extends ApiResponse {
+
+
+    public ErrorApiResponse(String apiKey, String action, String errorMessage){
+        super(apiKey, action);
+        //mark as error
+        this.success = false;
+        //set error message
+        this.setError(errorMessage);
+    }
+}
