@@ -13,7 +13,6 @@ import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
