@@ -11,6 +11,8 @@
 	<artifactId>commons-sb3-nosql</artifactId>
 	<version>0.1.3-SNAPSHOT</version>
 
+	<name>API Commons for Spring Boot v3 - NoSql Module</name>
+
 	<dependencies>
 		<dependency>
 			<groupId>eu.europeana.api</groupId>

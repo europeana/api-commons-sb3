@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>commons-sb3-search</artifactId>
-	<name>Api Commons - Base for Generic Search specifications</name>
+	<name>API Commons for Spring Boot v3 - Base for Generic Search specifications</name>
 
 	<dependencies>
 		<dependency>
