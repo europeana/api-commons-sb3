@@ -1,4 +1,4 @@
-package eu.europeana.api.commons.definitions.search.impl;
+package eu.europeana.api.commons_sb3.definitions.search.impl;
 
 import java.util.Map;
 import java.util.SortedMap;

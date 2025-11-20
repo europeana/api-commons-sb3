@@ -1,4 +1,4 @@
-package eu.europeana.api.commons.search.util;
+package eu.europeana.api.commons_sb3.search.util;
 
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;

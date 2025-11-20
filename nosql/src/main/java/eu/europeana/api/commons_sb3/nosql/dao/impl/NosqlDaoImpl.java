@@ -31,7 +31,7 @@ public class NosqlDaoImpl<E extends NoSqlEntity, T extends Serializable> extends
 
 	/*
 	 * (non-Javadoc)
-	 * @see eu.europeana.api.commons.nosql.dao.NosqlDao#deleteAll()
+	 * @see eu.europeana.api.commons_sb3.nosql.dao.NosqlDao#deleteAll()
 	 */
 	@Override
 	public void deleteAll() {

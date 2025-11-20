@@ -21,7 +21,7 @@ public abstract class AbstractNoSqlServiceImpl<E extends NoSqlEntity, T extends 
 
 	/*
 	 * (non-Javadoc)
-	 * @see eu.europeana.api.commons.nosql.service.AbstractNoSqlService#remove(java.io.Serializable)
+	 * @see eu.europeana.api.commons_sb3.nosql.service.AbstractNoSqlService#remove(java.io.Serializable)
 	 */
 	@Override
 	public void remove(T id) {
@@ -30,7 +30,7 @@ public abstract class AbstractNoSqlServiceImpl<E extends NoSqlEntity, T extends 
 
 	/*
 	 * (non-Javadoc)
-	 * @see eu.europeana.api.commons.nosql.service.AbstractNoSqlService#findByID(java.io.Serializable)
+	 * @see eu.europeana.api.commons_sb3.nosql.service.AbstractNoSqlService#findByID(java.io.Serializable)
 	 */
 	@Override
 	public E findByID(T id) {
@@ -39,7 +39,7 @@ public abstract class AbstractNoSqlServiceImpl<E extends NoSqlEntity, T extends 
 
 	/*
 	 * (non-Javadoc)
-	 * @see eu.europeana.api.commons.nosql.service.AbstractNoSqlService#findAll()
+	 * @see eu.europeana.api.commons_sb3.nosql.service.AbstractNoSqlService#findAll()
 	 */
 	@Override
 	public Iterable<E> findAll() {
@@ -48,7 +48,7 @@ public abstract class AbstractNoSqlServiceImpl<E extends NoSqlEntity, T extends 
 
 	/*
 	 * (non-Javadoc)
-	 * @see eu.europeana.api.commons.nosql.service.AbstractNoSqlService#store(eu.europeana.api.commons.nosql.entity.NoSqlEntity)
+	 * @see eu.europeana.api.commons_sb3.nosql.service.AbstractNoSqlService#store(eu.europeana.api.commons_sb3.nosql.entity.NoSqlEntity)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -59,7 +59,7 @@ public abstract class AbstractNoSqlServiceImpl<E extends NoSqlEntity, T extends 
 
 	/*
 	 * (non-Javadoc)
-	 * @see eu.europeana.api.commons.nosql.service.AbstractNoSqlService#exists(java.io.Serializable)
+	 * @see eu.europeana.api.commons_sb3.nosql.service.AbstractNoSqlService#exists(java.io.Serializable)
 	 */
 	@Override
 	public boolean exists(T id) {
@@ -68,7 +68,7 @@ public abstract class AbstractNoSqlServiceImpl<E extends NoSqlEntity, T extends 
 	
 	/*
 	 * (non-Javadoc)
-	 * @see eu.europeana.api.commons.nosql.service.AbstractNoSqlService#count()
+	 * @see eu.europeana.api.commons_sb3.nosql.service.AbstractNoSqlService#count()
 	 */
 	@Override
 	public long count() {
