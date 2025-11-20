@@ -13,6 +13,7 @@ import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -191,7 +192,7 @@ public class HttpConnection {
 	}
 
 
-    private <T extends HttpUriRequestBase> HttpResponseHandler executeHttpClient(T url) throws IOException {
+    public <T extends HttpUriRequestBase> HttpResponseHandler executeHttpClient(T url) throws IOException {
       HttpResponseHandler responseHandler = new HttpResponseHandler();
       httpClient.execute(url, responseHandler); 
       return responseHandler;
