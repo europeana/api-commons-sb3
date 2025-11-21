@@ -135,7 +135,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
      * (non-Javadoc)
      *
      * @see eu.europeana.api.commons.service.authorization.AuthorizationService#
-     * authorizeWriteAccess(javax.servlet.http.HttpServletRequest, java.lang.String)
+     * authorizeWriteAccess(jakarta.servlet.http.HttpServletRequest, java.lang.String)
      */
     public Authentication authorizeWriteAccess(HttpServletRequest request, String operation)
             throws ApplicationAuthenticationException {
