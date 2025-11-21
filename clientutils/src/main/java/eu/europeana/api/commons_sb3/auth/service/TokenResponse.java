@@ -1,5 +1,6 @@
 package eu.europeana.api.commons_sb3.auth.service;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,6 +31,7 @@ public record TokenResponse(
         , @JsonProperty(scope) String tokenScope
         , @JsonProperty(session_state) String sessionState) {
 
+    @JsonCreator
     public TokenResponse {
         long now = now();
 
