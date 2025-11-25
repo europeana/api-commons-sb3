@@ -32,6 +32,15 @@ public class AuthenticationConfig extends Properties {
         putAll(properties);
     }
 
+    /**
+     * CConstructor to inject properties
+     * @param tokenEndpoint endpoint
+     * @param grantParams params
+     */
+    public AuthenticationConfig(String tokenEndpoint, String grantParams) {
+        putAll(buildAuthConfigProps(tokenEndpoint, grantParams));
+    }
+
     public String getAuthTokenEndpoitUri() {
         return getProperty(CONFIG_TOKEN_ENDPOINT);
     }
@@ -50,5 +59,18 @@ public class AuthenticationConfig extends Properties {
             return new AuthGrant(getProperty(CONFIG_GRANT_PARAMS));
         }
         return new AuthGrant(this);
+    }
+
+    /**
+     * method to build the authentication configuration properties
+     * @param tokenEndpoint endpoint
+     * @param grantParams params
+     * @return properties
+     */
+    private Properties buildAuthConfigProps(String tokenEndpoint, String grantParams) {
+        Properties properties = new Properties();
+        properties.setProperty(CONFIG_TOKEN_ENDPOINT, tokenEndpoint);
+        properties.setProperty(CONFIG_GRANT_PARAMS, grantParams);
+        return properties;
     }
 }
