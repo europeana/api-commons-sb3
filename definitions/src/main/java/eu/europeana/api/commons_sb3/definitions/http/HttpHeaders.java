@@ -1,4 +1,4 @@
-package eu.europeana.api.commons_sb3.web.http;
+package eu.europeana.api.commons_sb3.definitions.http;
 
 import org.springframework.http.MediaType;
 
@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
  * @since 20 November 2024
  *
  */
-public interface HttpHeaders extends jakarta.ws.rs.core.HttpHeaders {
+public interface HttpHeaders {
 
     /**
      * @see <a href="http://www.w3.org/wiki/LinkHeader">W3C Link Header documentation</a>.

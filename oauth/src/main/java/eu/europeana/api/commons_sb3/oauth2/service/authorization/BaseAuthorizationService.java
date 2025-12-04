@@ -1,16 +1,11 @@
-package eu.europeana.api.commons_sb3.web.service.authorization;
+package eu.europeana.api.commons_sb3.oauth2.service.authorization;
 
-import eu.europeana.api.commons_sb3.definitions.format.RdfFormat;
-import eu.europeana.api.commons_sb3.definitions.oauth.Operations;
 import eu.europeana.api.commons_sb3.definitions.oauth.Role;
-import eu.europeana.api.commons_sb3.definitions.oauth.exception.ApiWriteLockException;
 import eu.europeana.api.commons_sb3.error.config.ErrorConfig;
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
 import eu.europeana.api.commons_sb3.exception.ApiKeyExtractionException;
 import eu.europeana.api.commons_sb3.exception.AuthorizationExtractionException;
 import eu.europeana.api.commons_sb3.exception.EuropeanaClientRegistrationException;
-import eu.europeana.api.commons_sb3.nosql.entity.ApiWriteLock;
-import eu.europeana.api.commons_sb3.nosql.service.ApiWriteLockService;
 import eu.europeana.api.commons_sb3.oauth2.utils.OAuthUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +21,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 
 import java.util.*;
 
+/// TODO srishti :: must use the new ERROR Config values , check and verify that with error specs
 public abstract class BaseAuthorizationService implements AuthorizationService {
 
     RsaVerifier signatureVerifier;
@@ -272,49 +268,6 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
     }
 
     /**
-     * Check if a write lock is in effect. Returns HttpStatus.LOCKED in case the write lock is active.
-     * To be used for preventing access to the write operations when the application is locked Needs
-     * to be called explicitly in the verifyWriteAccess methods of individual apis
-     *
-     *
-     * @param operationName
-     * @throws ApplicationAuthenticationException
-     */
-    public void checkWriteLockInEffect(String operationName)
-            throws ApplicationAuthenticationException {
-        ApiWriteLock activeWriteLock;
-        try {
-            activeWriteLock = getApiWriteLockService().getLastActiveLock(ApiWriteLock.LOCK_WRITE_TYPE);
-            // refuse operation if a write lock is effective (allow only unlock and retrieve
-            // operations)
-            if (activeWriteLock == null) {
-                // the application is not locked
-                return;
-            }
-            if (!isMaintenanceOperation(operationName)) {
-                // unlock operation should be permitted when the application is locked
-                // activeWriteLock.getEnded()==null
-                throw new ApplicationAuthenticationException(ErrorConfig.LOCKED_MAINTENANCE,
-                        ErrorConfig.LOCKED_MAINTENANCE, null, HttpStatus.LOCKED, null);
-            }
-        } catch (ApiWriteLockException e) {
-            throw new ApplicationAuthenticationException(ErrorConfig.LOCKED_MAINTENANCE,
-                    ErrorConfig.LOCKED_MAINTENANCE, null, HttpStatus.LOCKED, e);
-        }
-
-    }
-
-    /**
-     * Indicates if the given operation is allowed when locked for maintenance. Basically
-     *
-     * @param operationName
-     * @return
-     */
-    protected boolean isMaintenanceOperation(String operationName) {
-        return getMaintenanceOperations().contains(operationName);
-    }
-
-    /**
      * Indicate if the resource access needs to be verified for read operations. This indicates if the resourceAccess is available in jwt tokens used for the current API
      * Default is true.
      * @return true if the resourceAceess field needs to be processed for read access
@@ -334,16 +287,6 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         return true;
     }
 
-    /**
-     * Returns the list of
-     *
-     * @return
-     */
-    protected Set<String> getMaintenanceOperations() {
-        return Set.of(Operations.WRITE_UNLOCK);
-    }
-
-    protected abstract ApiWriteLockService getApiWriteLockService();
 
     /**
      * This method returns the api specific Role for the given role name

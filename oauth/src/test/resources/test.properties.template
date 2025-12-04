@@ -1,4 +1,5 @@
 test.apikey.service.url=
+test.apikey=
 test.jwt.token=
 test.token.endpoint=
 test.grant.param=

@@ -1,11 +1,11 @@
-package eu.europeana.api.commons_sb3.web.controller;
+package eu.europeana.api.commons_sb3.oauth2;
 
+import eu.europeana.api.commons_sb3.definitions.caching.CachingHeaders;
 import eu.europeana.api.commons_sb3.error.AbstractRequestPathMethodService;
 import eu.europeana.api.commons_sb3.error.EuropeanaI18nApiException;
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
 import eu.europeana.api.commons_sb3.error.exceptions.InvalidParamException;
-import eu.europeana.api.commons_sb3.web.http.HttpHeaders;
-import eu.europeana.api.commons_sb3.web.service.authorization.AuthorizationService;
+import eu.europeana.api.commons_sb3.oauth2.service.authorization.AuthorizationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -36,8 +36,6 @@ public abstract class BaseRestController {
      * @param operation The name of current operation
      * @return authentication object containing user token
      * @throws ApplicationAuthenticationException
-     * @throws AuthorizationExtractionException
-     * @throws ApiKeyExtractionException
      */
     public Authentication verifyWriteAccess(String operation, HttpServletRequest request)
             throws ApplicationAuthenticationException {
@@ -65,10 +63,10 @@ public abstract class BaseRestController {
      * @throws EuropeanaI18nApiException
      */
     public void checkIfMatchHeader(String etag, HttpServletRequest request) throws EuropeanaI18nApiException {
-        String ifMatchHeader = request.getHeader(HttpHeaders.IF_MATCH);
+        String ifMatchHeader = request.getHeader(CachingHeaders.IF_MATCH);
         if (ifMatchHeader != null && !ifMatchHeader.equals(etag)) {
             //if the tags doesn't match throw exception
-            throw new InvalidParamException(HttpStatus.PRECONDITION_FAILED, Arrays.asList(HttpHeaders.IF_MATCH, ifMatchHeader, etag));
+            throw new InvalidParamException(HttpStatus.PRECONDITION_FAILED, Arrays.asList(CachingHeaders.IF_MATCH, ifMatchHeader, etag));
         }
     }
 

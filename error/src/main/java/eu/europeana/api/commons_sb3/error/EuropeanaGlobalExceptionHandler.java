@@ -108,6 +108,10 @@ public class EuropeanaGlobalExceptionHandler {
                 .body(response);
     }
 
+    // TODO srishti :: add handling of   ApiWriteLockException like so -
+    //  throw new ApplicationAuthenticationException(ErrorConfig.LOCKED_MAINTENANCE,
+    //                    ErrorConfig.LOCKED_MAINTENANCE, null, HttpStatus.LOCKED, e);
+
     private String buildResponseMessage(Exception e, Map<String, List<String>> i18KeysAndParams) {
         System.out.println(i18KeysAndParams);
         if (i18nService != null && !i18KeysAndParams.isEmpty()) {

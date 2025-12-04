@@ -1,4 +1,4 @@
-package eu.europeana.api.commons_sb3.web.service.authorization;
+package eu.europeana.api.commons_sb3.oauth2.service.authorization;
 
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,12 +27,12 @@ public interface AuthorizationService {
             throws ApplicationAuthenticationException;
 
 
-    /**
-     * Throws an exception in the case that the application is locked for maintenance and the request received is does not belong to maintenance operations
-     * Note, this method is not intended to verify if the user is allowed to perform the given operation
-     * @param operationName
-     * @throws ApplicationAuthenticationException
-     */
-    void checkWriteLockInEffect(String operationName) throws ApplicationAuthenticationException;
+//    /**
+//     * Throws an exception in the case that the application is locked for maintenance and the request received is does not belong to maintenance operations
+//     * Note, this method is not intended to verify if the user is allowed to perform the given operation
+//     * @param operationName
+//     * @throws ApplicationAuthenticationException
+//     */
+//    void checkWriteLockInEffect(String operationName) throws ApplicationAuthenticationException;
 
 }
