@@ -1,6 +1,5 @@
 package eu.europeana.api.commons_sb3.error.exceptions;
 
-import eu.europeana.api.commons_sb3.error.HttpException;
 import eu.europeana.api.commons_sb3.error.config.ErrorConfig;
 import org.springframework.http.HttpStatus;
 

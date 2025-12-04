@@ -1,10 +1,12 @@
 package eu.europeana.api.commons_sb3.error.exceptions;
 
 import eu.europeana.api.commons_sb3.definitions.oauth.KeyValidationResult;
-import eu.europeana.api.commons_sb3.error.HttpException;
+import eu.europeana.api.commons_sb3.error.EuropeanaI18nApiException;
 import org.springframework.http.HttpStatus;
 
- public class ApplicationAuthenticationException extends HttpException {
+import java.util.List;
+
+public class ApplicationAuthenticationException extends EuropeanaI18nApiException {
     KeyValidationResult result;
 
     public KeyValidationResult getResult() {
@@ -12,25 +14,25 @@ import org.springframework.http.HttpStatus;
     }
 
     public ApplicationAuthenticationException(String message, String i18nKey) {
-        super(message, i18nKey, null, HttpStatus.UNAUTHORIZED);
+        super(message, null, null, HttpStatus.UNAUTHORIZED, i18nKey, null);
     }
 
-    public ApplicationAuthenticationException(String message, String i18nKey, String[] i18nParams, HttpStatus status, Throwable th) {
-        super(message, i18nKey, i18nParams, status, th);
+    public ApplicationAuthenticationException(String message, String i18nKey, List<String> i18nParams, HttpStatus status, Throwable th) {
+        super(message, null, null, status, i18nKey, i18nParams, th);
 
     }
 
-    public ApplicationAuthenticationException(String message, String i18nKey, String[] i18nParams) {
-        super(message, i18nKey, i18nParams, HttpStatus.UNAUTHORIZED);
+    public ApplicationAuthenticationException(String message, String i18nKey, List<String> i18nParams) {
+        super(message, null, null, HttpStatus.UNAUTHORIZED, i18nKey, i18nParams);
     }
 
-    public ApplicationAuthenticationException(String message, String i18nKey, String[] i18nParams, HttpStatus status) {
-        super(message, i18nKey, i18nParams, status);
+    public ApplicationAuthenticationException(String message, String i18nKey, List<String> i18nParams, HttpStatus status) {
+        super(message, null, null, status, i18nKey, i18nParams);
     }
 
     public ApplicationAuthenticationException(String message, String i18nKey,
-                                              String[] i18nParams, HttpStatus status, Throwable th, KeyValidationResult result) {
-        super(message, i18nKey, i18nParams, status, th);
+                                              List<String> i18nParams, HttpStatus status, Throwable th, KeyValidationResult result) {
+        super(message, null, null, status, i18nKey, i18nParams, th);
         this.result = result;
     }
 }

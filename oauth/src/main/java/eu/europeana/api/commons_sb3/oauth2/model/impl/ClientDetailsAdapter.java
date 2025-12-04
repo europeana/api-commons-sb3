@@ -11,15 +11,11 @@ import eu.europeana.api.commons_sb3.oauth2.model.ApiKey;
 
 public class ClientDetailsAdapter implements ClientDetails {
 
-	/**
-	 * 
-	 */
  	ApiKey apiKey;
 	private String wsKey;
 
 	
 	public ClientDetailsAdapter() {
-
 	}
 
 	public ClientDetailsAdapter(ApiKey apiKey) {

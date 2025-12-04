@@ -7,10 +7,6 @@ package eu.europeana.api.commons_sb3.exception;
  */
 public class CommonServiceRuntimeException extends RuntimeException{
 
-	/**
-	 * 
-	 */
-
 	public CommonServiceRuntimeException(String message){
 		super(message);
 	}

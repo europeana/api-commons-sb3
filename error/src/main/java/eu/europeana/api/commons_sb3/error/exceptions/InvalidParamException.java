@@ -6,15 +6,20 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-public class InvalidConfigurationException extends EuropeanaI18nApiException {
+public class InvalidParamException extends EuropeanaI18nApiException {
 
     /**
      * @param i18nParams - invalid parameter name
      *                     expected value of the parameter
      *                     invalid value of the parameter from the request (optional)
      */
-    public InvalidConfigurationException(List<String> i18nParams) {
+    public InvalidParamException(List<String> i18nParams) {
         super(ErrorMessage.PARAM_INVALID_400, i18nParams);
+    }
+
+
+    public InvalidParamException(HttpStatus responseStatus, List<String> i18nParams){
+        super(ErrorMessage.PARAM_INVALID_400, i18nParams, responseStatus);
     }
 
     @Override

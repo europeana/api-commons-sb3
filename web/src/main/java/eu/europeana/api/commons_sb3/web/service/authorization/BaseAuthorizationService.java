@@ -1,5 +1,6 @@
 package eu.europeana.api.commons_sb3.web.service.authorization;
 
+import eu.europeana.api.commons_sb3.definitions.format.RdfFormat;
 import eu.europeana.api.commons_sb3.definitions.oauth.Operations;
 import eu.europeana.api.commons_sb3.definitions.oauth.Role;
 import eu.europeana.api.commons_sb3.definitions.oauth.exception.ApiWriteLockException;
@@ -70,7 +71,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
             wsKey = OAuthUtils.extractApiKey(request);
         } catch (ApiKeyExtractionException | AuthorizationExtractionException e) {
             throw new ApplicationAuthenticationException(ErrorConfig.INVALID_APIKEY,
-                    ErrorConfig.INVALID_APIKEY, new String[] {e.getMessage()}, HttpStatus.UNAUTHORIZED, e);
+                    ErrorConfig.INVALID_APIKEY, Arrays.asList(e.getMessage()), HttpStatus.UNAUTHORIZED, e);
         }
 
         // check if empty
@@ -124,7 +125,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
             }
         } catch (ApiKeyExtractionException | AuthorizationExtractionException e) {
             throw new ApplicationAuthenticationException(ErrorConfig.INVALID_JWTTOKEN,
-                    ErrorConfig.INVALID_JWTTOKEN, new String[] {e.getMessage()}, HttpStatus.UNAUTHORIZED,
+                    ErrorConfig.INVALID_JWTTOKEN, Arrays.asList(e.getMessage()), HttpStatus.UNAUTHORIZED,
                     e);
         }
 
@@ -150,7 +151,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         if (getSignatureVerifier() == null) {
             throw new ApplicationAuthenticationException(ErrorConfig.OPERATION_NOT_AUTHORIZED,
                     ErrorConfig.OPERATION_NOT_AUTHORIZED,
-                    new String[] {"No signature key configured for verification of JWT Token"},
+                    Arrays.asList("No signature key configured for verification of JWT Token"),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -162,13 +163,13 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
                     OAuthUtils.processJwtToken(request, getSignatureVerifier(), getApiName(), verifyResourceAccess);
         } catch (ApiKeyExtractionException | AuthorizationExtractionException e) {
             throw new ApplicationAuthenticationException(ErrorConfig.OPERATION_NOT_AUTHORIZED,
-                    ErrorConfig.OPERATION_NOT_AUTHORIZED, new String[] {"Invalid token or ApiKey"},
+                    ErrorConfig.OPERATION_NOT_AUTHORIZED, Arrays.asList("Invalid token or ApiKey"),
                     HttpStatus.UNAUTHORIZED, e);
         }
 
         if(authenticationList == null || authenticationList.isEmpty()) {
             throw new ApplicationAuthenticationException(ErrorConfig.OPERATION_NOT_AUTHORIZED,
-                    ErrorConfig.OPERATION_NOT_AUTHORIZED, new String[] {"Invalid token or ApiKey, resource access not granted!"},
+                    ErrorConfig.OPERATION_NOT_AUTHORIZED, Arrays.asList("Invalid token or ApiKey, resource access not granted!"),
                     HttpStatus.FORBIDDEN);
         }
 
@@ -201,7 +202,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
                 //access verification required but
                 throw new ApplicationAuthenticationException(ErrorConfig.OPERATION_NOT_AUTHORIZED,
                         ErrorConfig.OPERATION_NOT_AUTHORIZED,
-                        new String[] {"No or invalid authorization provided"}, HttpStatus.FORBIDDEN);
+                        Arrays.asList("No or invalid authorization provided"), HttpStatus.FORBIDDEN);
             } else {
                 //TODO:
                 return null;
@@ -229,8 +230,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         // not authorized
         throw new ApplicationAuthenticationException(ErrorConfig.OPERATION_NOT_AUTHORIZED,
                 ErrorConfig.OPERATION_NOT_AUTHORIZED,
-                new String[] {
-                        "Operation not permitted or not GrantedAuthority found for operation:" + operation},
+                Arrays.asList("Operation not permitted or not GrantedAuthority found for operation:" + operation),
                 HttpStatus.FORBIDDEN);
     }
 

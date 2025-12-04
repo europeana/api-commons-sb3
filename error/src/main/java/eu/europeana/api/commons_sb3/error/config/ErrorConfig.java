@@ -1,5 +1,6 @@
 package eu.europeana.api.commons_sb3.error.config;
 
+// TODO srishti ::  whatever will not be used at the end of implementation remove that
 public class ErrorConfig {
 
     /**
@@ -15,7 +16,6 @@ public class ErrorConfig {
     public static final String COMMON_MESSAGE_SOURCE = "common_messages";
 
     // i18nKeys of common_messages property file
-    public static final String INVALID_PARAM_VALUE = "error.invalid_param_value";
     public static final String INVALID_PARAM         = "error.invalid_param";
     public static final String MISSING_PARAM         = "error.missing_param";
     public static final String INVALID_BODY_MISSING  = "error.invalid_body_missing";
@@ -27,6 +27,19 @@ public class ErrorConfig {
     public static final String INVALID_APIKEY = "error.invalid_apikey";
     public static final String INVALID_ID            = "error.invalid_id";
     public static final String NOT_FOUND             = "error.not_found";
+    public static final String LIMIT_PERSONAL        = "error.limit_personal";
+    public static final String LIMIT_PROJECT         = "error.limit_project";
+
+    public static final String KEY_INVALID           = "error.key_invalid";
+    public static final String KEY_DISABLED          = "error.key_disabled";
+    public static final String TOKEN_MISSING         = "error.token_missing";
+    public static final String TOKEN_EXPIRED         = "error.token_expired";
+    public static final String TOKEN_INVALID         = "error.token_invalid";
+    public static final String SCOPE_MISSING         = "error.scope_missing";
+    public static final String CLIENT_NOT_PUBLIC     = "error.client_not_public";
+    public static final String USER_MISSING          = "error.user_missing";
+    public static final String USER_NOT_AUTHORISED   = "error.user_not_authorised";
+
 
     public static final String LOCKED_MAINTENANCE = "error.userset_lock_maintenance";
 

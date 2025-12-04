@@ -191,6 +191,13 @@ public class HttpConnection {
 	}
 
 
+	/**
+	 * Execute the http client for the url passed
+	 * @param url url to be execeuted
+	 * @param <T> class extending HttpUriRequestBase
+	 * @return response handler of the executed request
+	 * @throws IOException
+	 */
     public <T extends HttpUriRequestBase> HttpResponseHandler executeHttpClient(T url) throws IOException {
       HttpResponseHandler responseHandler = new HttpResponseHandler();
       httpClient.execute(url, responseHandler); 

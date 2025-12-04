@@ -1,16 +1,17 @@
 package eu.europeana.api.commons_sb3.web.controller;
 
 import eu.europeana.api.commons_sb3.error.AbstractRequestPathMethodService;
-import eu.europeana.api.commons_sb3.error.HttpException;
-import eu.europeana.api.commons_sb3.error.config.ErrorConfig;
+import eu.europeana.api.commons_sb3.error.EuropeanaI18nApiException;
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
-import eu.europeana.api.commons_sb3.error.exceptions.HeaderValidationException;
+import eu.europeana.api.commons_sb3.error.exceptions.InvalidParamException;
 import eu.europeana.api.commons_sb3.web.http.HttpHeaders;
 import eu.europeana.api.commons_sb3.web.service.authorization.AuthorizationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
@@ -61,13 +62,13 @@ public abstract class BaseRestController {
      *
      * @param etag    The current etag value
      * @param request The request containing If-Match header
-     * @throws HttpException
+     * @throws EuropeanaI18nApiException
      */
-    public void checkIfMatchHeader(String etag, HttpServletRequest request) throws HttpException {
+    public void checkIfMatchHeader(String etag, HttpServletRequest request) throws EuropeanaI18nApiException {
         String ifMatchHeader = request.getHeader(HttpHeaders.IF_MATCH);
         if (ifMatchHeader != null && !ifMatchHeader.equals(etag)) {
             //if the tags doesn't match throw exception
-            throw new HeaderValidationException(ErrorConfig.INVALID_PARAM_VALUE, HttpHeaders.IF_MATCH, ifMatchHeader);
+            throw new InvalidParamException(HttpStatus.PRECONDITION_FAILED, Arrays.asList(HttpHeaders.IF_MATCH, ifMatchHeader, etag));
         }
     }
 
