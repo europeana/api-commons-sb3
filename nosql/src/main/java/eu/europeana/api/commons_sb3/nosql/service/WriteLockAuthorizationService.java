@@ -6,6 +6,12 @@ import eu.europeana.api.commons_sb3.nosql.entity.ApiWriteLock;
 
 import java.util.Set;
 
+/**
+ * Checks the locks in the write db.
+ *
+ * @author Sristhti singh
+ * @since 4 December 2025
+ */
 // todo maybe rename this class
 public abstract class WriteLockAuthorizationService {
 

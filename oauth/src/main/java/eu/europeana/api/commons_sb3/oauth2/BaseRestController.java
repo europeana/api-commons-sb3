@@ -19,7 +19,6 @@ public abstract class BaseRestController {
 
     protected abstract AuthorizationService getAuthorizationService();
 
-
     /**
      * If apikey service url is empty, disable the authentication
      * @return

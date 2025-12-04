@@ -2,6 +2,7 @@ package eu.europeana.api.commons_sb3.oauth2.service.authorization;
 
 import eu.europeana.api.commons_sb3.definitions.oauth.Role;
 import eu.europeana.api.commons_sb3.error.config.ErrorConfig;
+import eu.europeana.api.commons_sb3.error.config.ErrorMessage;
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
 import eu.europeana.api.commons_sb3.exception.ApiKeyExtractionException;
 import eu.europeana.api.commons_sb3.exception.AuthorizationExtractionException;
@@ -66,21 +67,19 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         try {
             wsKey = OAuthUtils.extractApiKey(request);
         } catch (ApiKeyExtractionException | AuthorizationExtractionException e) {
-            throw new ApplicationAuthenticationException(ErrorConfig.INVALID_APIKEY,
-                    ErrorConfig.INVALID_APIKEY, Arrays.asList(e.getMessage()), HttpStatus.UNAUTHORIZED, e);
+            throw new ApplicationAuthenticationException(ErrorMessage.INVALID_KEY_401, null, null, e);
         }
 
         // check if empty
         if (StringUtils.isEmpty(wsKey))
-            throw new ApplicationAuthenticationException(ErrorConfig.EMPTY_APIKEY,
-                    ErrorConfig.EMPTY_APIKEY, null);
+            throw new ApplicationAuthenticationException(ErrorMessage.EMPTY_KEY_401);
 
         // validate api key
         try {
             getClientDetailsService().loadClientByClientId(wsKey);
         } catch (EuropeanaClientRegistrationException e) {
             // invalid api key
-            throw new ApplicationAuthenticationException(null,null,null,HttpStatus.valueOf(e.getResult().getHttpStatusCode()) , null, e.getResult());
+            throw new ApplicationAuthenticationException(null, null, null, HttpStatus.valueOf(e.getResult().getHttpStatusCode()) , null, e.getResult());
         } catch (OAuth2Exception e) {
             // validation failed through API Key service issues
             // silently approve request

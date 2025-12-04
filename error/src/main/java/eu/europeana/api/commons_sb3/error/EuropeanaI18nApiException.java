@@ -23,8 +23,9 @@ public class EuropeanaI18nApiException extends EuropeanaApiException {
         this.i18nParams.addAll(i18nParams);
     }
 
-    public EuropeanaI18nApiException(ErrorMessage errorMessage, List<String> i18nParams){
-        super(null, errorMessage.getError(), errorMessage.getCode());
+    public EuropeanaI18nApiException(ErrorMessage errorMessage, List<String> i18nParams, HttpStatus responseStatus, Throwable th){
+        super(null, errorMessage.getError(), errorMessage.getCode(), th);
+        super.setResponseStatus(responseStatus);
         this.i18nKey = errorMessage.getI18nKey();
         this.i18nParams = i18nParams;
     }

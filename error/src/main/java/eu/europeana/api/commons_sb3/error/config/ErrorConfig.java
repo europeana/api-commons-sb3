@@ -20,16 +20,15 @@ public class ErrorConfig {
     public static final String MISSING_PARAM         = "error.missing_param";
     public static final String INVALID_BODY_MISSING  = "error.invalid_body_missing";
     public static final String INVALID_BODY_PATTERN  = "error.invalid_body_pattern";
-    public static final String EMPTY_APIKEY = "error.empty_apikey";
     public static final String MISSING_APIKEY = "error.missing_apikey";
     public static final String INVALID_JWTTOKEN = "error.invalid_jwttoken";
     public static final String OPERATION_NOT_AUTHORIZED = "error.operation_not_authorized";
-    public static final String INVALID_APIKEY = "error.invalid_apikey";
     public static final String INVALID_ID            = "error.invalid_id";
     public static final String NOT_FOUND             = "error.not_found";
     public static final String LIMIT_PERSONAL        = "error.limit_personal";
     public static final String LIMIT_PROJECT         = "error.limit_project";
 
+    public static final String EMPTY_APIKEY         = "error.empty_apikey";
     public static final String KEY_INVALID           = "error.key_invalid";
     public static final String KEY_DISABLED          = "error.key_disabled";
     public static final String TOKEN_MISSING         = "error.token_missing";
