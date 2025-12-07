@@ -273,7 +273,7 @@ public class OAuthUtils {
      * @throws ApiKeyExtractionException        if the type of the Authorization header is not supported.
      * @throws AuthorizationExtractionException
      */
-    private static String extractPayloadFromAuthorizationHeader(HttpServletRequest request,
+    public static String extractPayloadFromAuthorizationHeader(HttpServletRequest request,
                                                                 String authorizationType) throws ApiKeyExtractionException, AuthorizationExtractionException {
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         return extractPayloadFromHeaderValue(authorizationType, authorization);

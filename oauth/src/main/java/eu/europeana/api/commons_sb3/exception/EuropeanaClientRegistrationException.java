@@ -11,7 +11,7 @@ public class EuropeanaClientRegistrationException extends ClientRegistrationExce
     return result;
   }
 
-  public EuropeanaClientRegistrationException(String msg,KeyValidationResult result){
+  public EuropeanaClientRegistrationException(String msg, KeyValidationResult result){
     super(msg);
     this.result = result;
   }

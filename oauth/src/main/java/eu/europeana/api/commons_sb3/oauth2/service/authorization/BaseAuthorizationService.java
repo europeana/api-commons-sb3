@@ -22,16 +22,15 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 
 import java.util.*;
 
-/// TODO srishti :: must use the new ERROR Config values , check and verify that with error specs
+/**
+ * Base Implementation class of Authorization service
+ *
+ */
 public abstract class BaseAuthorizationService implements AuthorizationService {
 
+    private Logger LOG = LogManager.getLogger(BaseAuthorizationService.class);
+
     RsaVerifier signatureVerifier;
-
-    private Logger log = LogManager.getLogger(getClass());
-
-    public Logger getLog() {
-        return log;
-    }
 
     protected RsaVerifier getSignatureVerifier() {
         if (signatureVerifier == null) {
@@ -40,11 +39,13 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         return signatureVerifier;
     }
 
-
-    @Override
     /**
-     *
+     * Authorises read access
+     * @param request the full HTTP request
+     * @return authentication
+     * @throws ApplicationAuthenticationException
      */
+    @Override
     public Authentication authorizeReadAccess(HttpServletRequest request)
             throws ApplicationAuthenticationException {
         Authentication authentication = null;
@@ -60,6 +61,12 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         return authentication;
     }
 
+    /**
+     * Authorize access via apikey
+     * @param request http request
+     * @return authentication
+     * @throws ApplicationAuthenticationException
+     */
     private Authentication authorizeReadByApiKey(HttpServletRequest request)
             throws ApplicationAuthenticationException {
         String wsKey;
@@ -83,13 +90,19 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         } catch (OAuth2Exception e) {
             // validation failed through API Key service issues
             // silently approve request
-            getLog().info("Invocation of API Key Service failed. Silently approve apikey: " + wsKey, e);
+            LOG.info("Invocation of API Key Service failed. Silently approve apikey: " + wsKey, e);
         }
 
         // anonymous user, only the client application is verified by API key
         return OAuthUtils.buildReadOnlyAuthenticationToken(getApiName(), wsKey);
     }
 
+    /**
+     * Authorize access via jwt token
+     * @param request http request
+     * @return authentication
+     * @throws ApplicationAuthenticationException
+     */
     private Authentication authorizeReadByJwtToken(HttpServletRequest request)
             throws ApplicationAuthenticationException {
         Authentication authentication = null;
@@ -101,8 +114,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
 
             // check if null
             if (wsKey == null)
-                throw new ApplicationAuthenticationException(ErrorConfig.MISSING_APIKEY,
-                        ErrorConfig.MISSING_APIKEY, null, HttpStatus.UNAUTHORIZED, null);
+                throw new ApplicationAuthenticationException(ErrorMessage.MISSING_KEY_401);
 
             if (data.containsKey(OAuthUtils.USER_ID)) {
                 // read access is provided to any authenticated user
@@ -119,9 +131,8 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
                 }
             }
         } catch (ApiKeyExtractionException | AuthorizationExtractionException e) {
-            throw new ApplicationAuthenticationException(ErrorConfig.INVALID_JWTTOKEN,
-                    ErrorConfig.INVALID_JWTTOKEN, Arrays.asList(e.getMessage()), HttpStatus.UNAUTHORIZED,
-                    e);
+            throw new ApplicationAuthenticationException(ErrorMessage.TOKEN_INVALID_401, Arrays.asList(e.getMessage()),
+                    HttpStatus.UNAUTHORIZED, e);
         }
 
         return authentication;
@@ -135,7 +146,6 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
      */
     public Authentication authorizeWriteAccess(HttpServletRequest request, String operation)
             throws ApplicationAuthenticationException {
-
         return authorizeOperation(request, operation);
     }
 
@@ -162,13 +172,13 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
                     HttpStatus.UNAUTHORIZED, e);
         }
 
-        if(authenticationList == null || authenticationList.isEmpty()) {
+        if (authenticationList == null || authenticationList.isEmpty()) {
             throw new ApplicationAuthenticationException(ErrorConfig.OPERATION_NOT_AUTHORIZED,
                     ErrorConfig.OPERATION_NOT_AUTHORIZED, Arrays.asList("Invalid token or ApiKey, resource access not granted!"),
                     HttpStatus.FORBIDDEN);
         }
 
-        if(verifyResourceAccess) {
+        if (verifyResourceAccess) {
             //verify permissions
             return checkPermissions(authenticationList, getApiName(), operation);
         } else {
@@ -192,8 +202,8 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
 
         final boolean isEmptyAuthenticationList = (authenticationList == null || authenticationList.isEmpty());
 
-        if(isEmptyAuthenticationList) {
-            if(isResourceAccessVerificationRequired(operation)){
+        if (isEmptyAuthenticationList) {
+            if (isResourceAccessVerificationRequired(operation)) {
                 //access verification required but
                 throw new ApplicationAuthenticationException(ErrorConfig.OPERATION_NOT_AUTHORIZED,
                         ErrorConfig.OPERATION_NOT_AUTHORIZED,
@@ -204,24 +214,19 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
             }
         }
 
-
         if (authenticationList == null || authenticationList.isEmpty()) {
 
         }
 
         List<GrantedAuthority> authorityList;
-
         for (Authentication authentication : authenticationList) {
-
             authorityList = (List<GrantedAuthority>) authentication.getAuthorities();
-
             if (api.equals(authentication.getDetails())
                     && isOperationAuthorized(operation, authorityList)) {
                 // access granted
                 return authentication;
             }
         }
-
         // not authorized
         throw new ApplicationAuthenticationException(ErrorConfig.OPERATION_NOT_AUTHORIZED,
                 ErrorConfig.OPERATION_NOT_AUTHORIZED,
@@ -244,14 +249,11 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
      * @return true if operation authorized
      */
     private boolean isOperationAuthorized(String operation, List<GrantedAuthority> authorities) {
-
-        if(!isResourceAccessVerificationRequired(operation)) {
+        if (!isResourceAccessVerificationRequired(operation)) {
             return true;
         }
-
         Role userRole;
         List<String> allowedOperations;
-
         for (GrantedAuthority authority : authorities) {
             userRole = getRoleByName(authority.getAuthority());
             if (userRole == null) {
@@ -262,7 +264,6 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
                 return true;
             }
         }
-
         return false;
     }
 

@@ -1,6 +1,8 @@
 package eu.europeana.api.commons_sb3.error;
 
 import eu.europeana.api.commons_sb3.definitions.oauth.KeyValidationResult;
+import eu.europeana.api.commons_sb3.definitions.oauth.exception.ApiWriteLockException;
+import eu.europeana.api.commons_sb3.error.config.ErrorConfig;
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
 import eu.europeana.api.commons_sb3.error.exceptions.InvalidBodyException;
 import jakarta.annotation.Resource;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import eu.europeana.api.commons_sb3.error.i18n.I18nService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -89,6 +92,7 @@ public class EuropeanaGlobalExceptionHandler {
                 .headers(createHttpHeaders(httpRequest))
                 .body(response);
     }
+
     /**
      * Handler for InvalidBodyException types
      *
@@ -108,12 +112,26 @@ public class EuropeanaGlobalExceptionHandler {
                 .body(response);
     }
 
-    // TODO srishti :: add handling of   ApiWriteLockException like so -
-    //  throw new ApplicationAuthenticationException(ErrorConfig.LOCKED_MAINTENANCE,
-    //                    ErrorConfig.LOCKED_MAINTENANCE, null, HttpStatus.LOCKED, e);
+    /**
+     * Handler for ApiWriteLockException types
+     *
+     * @param e caught exception
+     */
+    @ExceptionHandler(ApiWriteLockException.class)
+    public ResponseEntity<EuropeanaApiErrorResponse> handleEuropeanaApiException(ApiWriteLockException e, HttpServletRequest httpRequest) {
+        EuropeanaApiErrorResponse response =
+                new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
+                        .setStatus(HttpStatus.LOCKED.value())
+                        .setError("Locked for maintenance")
+                        .setMessage(buildResponseMessage(e, ErrorConfig.LOCKED_MAINTENANCE, Arrays.asList(e.getMessage())))
+                        .setCode("423_locked_maintenance")
+                        .build();
+        LOG.error("Caught exception: {}", response.getMessage());
+        return ResponseEntity.status(HttpStatus.LOCKED).headers(createHttpHeaders(httpRequest))
+                .body(response);
+    }
 
     private String buildResponseMessage(Exception e, Map<String, List<String>> i18KeysAndParams) {
-        System.out.println(i18KeysAndParams);
         if (i18nService != null && !i18KeysAndParams.isEmpty()) {
             StringBuilder message = new StringBuilder();
             for (Map.Entry<String,List<String>> entry : i18KeysAndParams.entrySet()) {

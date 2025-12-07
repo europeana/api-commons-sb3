@@ -13,6 +13,7 @@ import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -91,24 +92,35 @@ public class HttpConnection {
 	/**
 	 *This method makes GET request for given URL.
 	 * @param url
-	 *
 	 * @param headers map of header name and value that needs to be added in the Url
 	 * @param auth Authentication handler for the request
 	 * @return HttpResponseHandler that comprises response body as String and status code.
 	 * @throws IOException
 	 */
-
-	public HttpResponseHandler get(String url, String acceptHeaderValue, Map<String, String> headers
+	public HttpResponseHandler get(String url, Map<String, String> headers
 			, AuthenticationHandler auth) throws IOException {
 		HttpGet get = new HttpGet(url);
-		if (StringUtils.isNotEmpty(acceptHeaderValue)) {
-			get.addHeader(HttpHeaders.ACCEPT, acceptHeaderValue);
-		}
 		addHeaders(get, headers);
 		if (auth != null) auth.setAuthorization(get);
 		return executeHttpClient(get);
 	}
 
+	/**
+	 *This method makes GET request for given URL.
+	 * @param url
+	 *
+	 * @param auth Authentication handler for the request
+	 * @return HttpResponseHandler that comprises response body as String and status code.
+	 * @throws IOException
+	 */
+
+	public HttpResponseHandler get(String url, String acceptHeaderValue, AuthenticationHandler auth) throws IOException {
+		Map<String, String> headers = new HashMap<>();
+		if (StringUtils.isNotEmpty(acceptHeaderValue)) {
+			headers.put(HttpHeaders.ACCEPT, acceptHeaderValue);
+		}
+		return get(url, headers, auth);
+	}
 
     /**
      * This method makes POST request for given URL and JSON body parameter.
