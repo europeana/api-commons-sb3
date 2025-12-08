@@ -15,6 +15,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * Base class for authorization methods.
+ *
+ * other API needs to create a getAuthorizationService() implmenation with their
+ * own AuthorizationService or use the existing BaseAuthorizationService Implementation
+ */
 public abstract class BaseRestController {
 
     protected abstract AuthorizationService getAuthorizationService();
