@@ -1,24 +1,48 @@
 package eu.europeana.api.commons_sb3.error.exceptions;
 
-import eu.europeana.api.commons_sb3.error.config.ErrorMessage;
-import eu.europeana.api.commons_sb3.error.EuropeanaI18nApiException;
+import eu.europeana.api.commons_sb3.error.EuropeanaApiException;
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
+/**
+ * Invalid Configuration Exception to be used by api
+ * @author srishti singh
+ * @since 5 december 2025
+ */
+public class InvalidConfigurationException extends EuropeanaApiException {
 
-public class InvalidConfigurationException extends EuropeanaI18nApiException {
+    private static final long serialVersionUID = -3607803722931838987L;
 
     /**
-     * @param i18nParams - invalid parameter name
-     *                     expected value of the parameter
-     *                     invalid value of the parameter from the request (optional)
+     * Initialise a new exception for which there is no root cause
+     *
+     * @param message invalid configuration error message
      */
-    public InvalidConfigurationException(List<String> i18nParams) {
-        super(ErrorMessage.PARAM_INVALID_400, i18nParams);
+    public InvalidConfigurationException(String message) {
+        super("Invalid Configuration : " + message);
+    }
+
+    /**
+     * We don't want to log the stack trace for this exception
+     *
+     * @return false
+     */
+    @Override
+    public boolean doLog() {
+        return false;
+    }
+
+    /**
+     * We don't want to log the stack trace for this exception
+     *
+     * @return false
+     */
+    @Override
+    public boolean doLogStacktrace() {
+        return true;
     }
 
     @Override
     public HttpStatus getResponseStatus() {
-        return HttpStatus.BAD_REQUEST;
+        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 }

@@ -1,8 +1,13 @@
 package eu.europeana.api.commons_sb3.error;
 
+import eu.europeana.api.commons_sb3.definitions.oauth.KeyValidationResult;
+import eu.europeana.api.commons_sb3.definitions.oauth.exception.ApiWriteLockException;
+import eu.europeana.api.commons_sb3.error.config.ErrorConfig;
+import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
 import eu.europeana.api.commons_sb3.error.exceptions.InvalidBodyException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import eu.europeana.api.commons_sb3.error.i18n.I18nService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -87,7 +93,6 @@ public class EuropeanaGlobalExceptionHandler {
                 .body(response);
     }
 
-
     /**
      * Handler for InvalidBodyException types
      *
@@ -107,8 +112,26 @@ public class EuropeanaGlobalExceptionHandler {
                 .body(response);
     }
 
+    /**
+     * Handler for ApiWriteLockException types
+     *
+     * @param e caught exception
+     */
+    @ExceptionHandler(ApiWriteLockException.class)
+    public ResponseEntity<EuropeanaApiErrorResponse> handleEuropeanaApiException(ApiWriteLockException e, HttpServletRequest httpRequest) {
+        EuropeanaApiErrorResponse response =
+                new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
+                        .setStatus(HttpStatus.LOCKED.value())
+                        .setError("Locked for maintenance")
+                        .setMessage(buildResponseMessage(e, ErrorConfig.LOCKED_MAINTENANCE, Arrays.asList(e.getMessage())))
+                        .setCode("423_locked_maintenance")
+                        .build();
+        LOG.error("Caught exception: {}", response.getMessage());
+        return ResponseEntity.status(HttpStatus.LOCKED).headers(createHttpHeaders(httpRequest))
+                .body(response);
+    }
+
     private String buildResponseMessage(Exception e, Map<String, List<String>> i18KeysAndParams) {
-        System.out.println(i18KeysAndParams);
         if (i18nService != null && !i18KeysAndParams.isEmpty()) {
             StringBuilder message = new StringBuilder();
             for (Map.Entry<String,List<String>> entry : i18KeysAndParams.entrySet()) {
@@ -261,6 +284,38 @@ public class EuropeanaGlobalExceptionHandler {
                 .body(response);
     }
 
+    /**
+     * Exception throw while handling apikey validation via keycloak
+     * @param request request
+     * @param ee exception
+     * @return EuropeanaApiErrorResponse
+     */
+    @ExceptionHandler(ApplicationAuthenticationException.class)
+    public ResponseEntity<EuropeanaApiErrorResponse> clientRegistrationExceptionHandler(HttpServletRequest request,
+                                                                                        ApplicationAuthenticationException ee) {
+        if (ee.getResult() != null) {
+            KeyValidationResult result = ee.getResult();
+            return ResponseEntity.status(result.getHttpStatusCode())
+                    .headers(createHttpHeaders(request))
+                    .body(new EuropeanaApiErrorResponse.Builder(request, ee, stackTraceEnabled())
+                            .setStatus(result.getHttpStatusCode())
+                            .setError(result.getValidationError().getError())
+                            .setMessage(result.getValidationError().getMessage())
+                            .setCode(result.getValidationError().getCode())
+                            .build());
+        } else {
+            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
+                    .headers(createHttpHeaders(request))
+                    .body( new EuropeanaApiErrorResponse.Builder(request, ee, stackTraceEnabled())
+                            .setStatus(HttpServletResponse.SC_UNAUTHORIZED)
+                            .setError("Unauthorized")
+                            .setMessage(getI18nService()!=null ? getI18nService().getMessage(ee.getI18nKey()):null)
+                            .setCode(StringUtils.substringAfter(ee.getI18nKey(), "."))
+                            .build());
+
+        }
+    }
+
     protected HttpHeaders createHttpHeaders(HttpServletRequest httpRequest) {
         HttpHeaders headers = new HttpHeaders();
         //enforce application/json as content type, it is the only serialization supported for exceptions
@@ -277,10 +332,13 @@ public class EuropeanaGlobalExceptionHandler {
     /**
      * The bean needs to be defined in the individual APIs
      *
-     * @return
+     * @return RequestPathMethodService
      */
     AbstractRequestPathMethodService getRequestPathMethodService() {
         return requestPathMethodService;
     }
-}
 
+    protected I18nService getI18nService() {
+        return null;
+    }
+}

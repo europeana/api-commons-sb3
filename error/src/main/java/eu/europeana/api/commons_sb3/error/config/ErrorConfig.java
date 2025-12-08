@@ -1,5 +1,6 @@
 package eu.europeana.api.commons_sb3.error.config;
 
+// TODO srishti ::  whatever will not be used at the end of implementation remove that
 public class ErrorConfig {
 
     /**
@@ -19,8 +20,17 @@ public class ErrorConfig {
     public static final String MISSING_PARAM         = "error.missing_param";
     public static final String INVALID_BODY_MISSING  = "error.invalid_body_missing";
     public static final String INVALID_BODY_PATTERN  = "error.invalid_body_pattern";
+    public static final String MISSING_APIKEY        = "error.missing_apikey";
+    public static final String OPERATION_NOT_AUTHORIZED = "error.operation_not_authorized";
     public static final String INVALID_ID            = "error.invalid_id";
     public static final String NOT_FOUND             = "error.not_found";
+
+    public static final String EMPTY_APIKEY          = "error.empty_apikey";
+    public static final String KEY_INVALID           = "error.key_invalid";
+    public static final String TOKEN_INVALID         = "error.token_invalid";
+
+    public static final String LOCKED_MAINTENANCE      = "error.locked_maintenance";
+    public static final String SERVER_ERROR_UNEXPECTED = "error.server_unexpected_error";
 
 
 }
