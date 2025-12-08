@@ -42,15 +42,14 @@
 
         <dependency-check-maven.version>12.1.0</dependency-check-maven.version>
         <apache.commomLang3.version>3.13.0</apache.commomLang3.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
 
         <httpclient5.version>5.4.1</httpclient5.version>
         <jettison.version>1.3</jettison.version>
 
         <springSecurityJwt.version>1.1.1.RELEASE</springSecurityJwt.version>
         <springSecurityOauth.version>2.5.1.RELEASE</springSecurityOauth.version>
-        <!--<springSecurityOauth.version>7.0.0-RC3</springSecurityOauth.version>-->
         <org.junit.jupiter.version>6.0.1</org.junit.jupiter.version>
-
         <mongodb.upgrade.version>4.7.2</mongodb.upgrade.version>
         <morphia.version>1.6.1</morphia.version>
 
@@ -61,6 +60,12 @@
         <id>depcheck</id>
         <build>
         <plugins>
+            <plugin>
+                <!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+            </plugin>
             <plugin>
                 <!-- This will be active when running the verify or install goal
                      To skip (e.g. during debugging) use 'mvn clean package')-->
