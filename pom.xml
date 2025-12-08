@@ -61,12 +61,6 @@
         <build>
         <plugins>
             <plugin>
-                <!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco-maven-plugin.version}</version>
-            </plugin>
-            <plugin>
                 <!-- This will be active when running the verify or install goal
                      To skip (e.g. during debugging) use 'mvn clean package')-->
                 <groupId>org.owasp</groupId>
