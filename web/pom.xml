@@ -10,10 +10,4 @@
     <artifactId>commons-sb3-web</artifactId>
     <name>API Commons for Spring Boot v3 - Web Module</name>
 
-
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-    </properties>
-
 </project>
