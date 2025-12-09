@@ -7,27 +7,9 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
+	<groupId>eu.europeana.api</groupId>
 	<artifactId>commons-sb3-net</artifactId>
 	<name>API Commons for Spring Boot v3 - Networking utilities Module</name>
-
-
-	<dependencies>
-		<!-- Other -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${apache.commomLang3.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${log4j2.version}</version>
-		</dependency>
-	</dependencies>
-	 
-<!--	 <build>-->
-<!--	 	&lt;!&ndash; it seems that final name is not inhereted from parent pom &ndash;&gt;-->
-<!--	 	<finalName>${project.artifactId}-${project.version}</finalName>-->
-<!--	 </build>	-->
+	<version>0.1.3-SNAPSHOT</version>
 
 </project>
