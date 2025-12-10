@@ -11,5 +11,4 @@
     <artifactId>commons-sb3-web</artifactId>
     <version>0.1.3-SNAPSHOT</version>
     <name>API Commons for Spring Boot v3 - Web Module</name>
-
 </project>
