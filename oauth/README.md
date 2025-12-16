@@ -5,10 +5,10 @@ Steps to add authentication to a Spring-Boot 3 API:
 1. The oauth module depends on the error module so make sure you have that setup (see the README.md of that module)
 
 2. Define the following properties in your application.properties
-    - auth service public key		(for token validation)
     - authorization api name		(for token validation)
     - token endpoint				(for token validation)
-    - grant parameters				(for token validation) 
+    - auth service public key		(for token validation)
+    - grant parameters				(for client + user token validation) 
     - apikey endpoint               (for apikey validation)
    
    and make sure the properties are loaded in your application's configuration (see also next point)
@@ -59,7 +59,22 @@ Steps to add authentication to a Spring-Boot 3 API:
         return clientDetails;
     }
 ```
-It's also recommended to have an option to enable/disable authorization for (unit) testing.
+**Note1:** If you only need to validate client credentials and not also user credentials then you can leave out the
+`auth.token.grant.params` configuration option. In this case you also need to override the following method
+```java
+    /**
+     * To check only client credentials and not user credentials, this method should return false
+     * @param operation 
+     * @return false always
+     */
+    @Override
+    protected boolean isResourceAccessVerificationRequired(String operation) {
+        return false;
+    }
+```
+
+**Note 2:** It's recommended to have an option to enable/disable authorization, e.g. for (unit) testing.
+
 
 4. Add the following annotation to your application `@SpringBootApplication(exclude = { exclude = { ManagementWebSecurityAutoConfiguration.class, SecurityAutoConfiguration.class } })`
 
