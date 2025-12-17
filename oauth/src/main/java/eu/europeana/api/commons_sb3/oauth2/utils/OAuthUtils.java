@@ -139,7 +139,6 @@ public class OAuthUtils {
      * processJwtToken should be used instead. The services should overwrite the
      * verifyRead/WriteAccess where needed
      */
-    @Deprecated
     public static List<? extends Authentication> extractAuthenticationList(String authorization,
                                                                            RsaVerifier signatureVerifier, String api, boolean verifyResourceAccess)
             throws ApiKeyExtractionException, AuthorizationExtractionException {

@@ -45,4 +45,14 @@ public class ApplicationAuthenticationException extends EuropeanaI18nApiExceptio
         super(message, null, null, status, i18nKey, i18nParams, th);
         this.result = result;
     }
+
+    /**
+     * We do not want to log the exception stack trace just the error message
+     * @return
+     */
+    @Override
+    public boolean doLogStacktrace() {
+        return false;
+    }
+
 }
