@@ -12,18 +12,27 @@ import java.util.Set;
  * @author Sristhti singh
  * @since 4 December 2025
  */
-// todo maybe rename this class
-public abstract class WriteLockAuthorizationService {
+public class WriteLockAuthorizationService {
 
-    protected abstract ApiWriteLockService getApiWriteLockService();
+    private final ApiWriteLockService apiWriteLockService;
 
-    // todo if you ant to use this method you need to create  a bean for ApiWriteLockService
-    //  aka eu.europeana.api.commons.nosql.service.impl.ApiWriteLockServiceImpl with dao ref
+    public WriteLockAuthorizationService(ApiWriteLockService apiWriteLockService) {
+        this.apiWriteLockService = apiWriteLockService;
+    }
+
+    public ApiWriteLockService getApiWriteLockService() {
+        return apiWriteLockService;
+    }
+
+    //
 
     /**
      * Check if a write lock is in effect. Returns HttpStatus.LOCKED in case the write lock is active.
      * To be used for preventing access to the write operations when the application is locked Needs
      * to be called explicitly in the verifyWriteAccess methods of individual apis
+     *
+     * NOTE : to use this method you need to create  a bean for ApiWriteLockService
+     *        aka eu.europeana.api.commons.nosql.service.impl.ApiWriteLockServiceImpl with dao ref
      *
      * @param operationName
      * @throws ApiWriteLockException

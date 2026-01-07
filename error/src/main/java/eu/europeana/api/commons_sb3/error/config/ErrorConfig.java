@@ -30,6 +30,8 @@ public class ErrorConfig {
     public static final String TOKEN_INVALID         = "error.token_invalid";
 
     public static final String LOCKED_MAINTENANCE      = "error.locked_maintenance";
+    public static final String NO_LOCK_IN_EFFECT       = "error.lock_not_in_effect";
+
     public static final String SERVER_ERROR_UNEXPECTED = "error.server_unexpected_error";
 
 

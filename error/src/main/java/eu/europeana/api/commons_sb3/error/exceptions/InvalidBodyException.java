@@ -24,6 +24,15 @@ public class InvalidBodyException extends EuropeanaApiException {
     }
 
     /**
+     * Can contain multiple messages for the invalid body exceptions
+     * @param i18KeysAndParams map of multiple i18Keys and corresponding params for the key message
+     */
+    public InvalidBodyException(Map<String, List<String>> i18KeysAndParams, Throwable th) {
+        super(null, ErrorMessage.BODY_INVALID_400.getError(), ErrorMessage.BODY_INVALID_400.getCode(), th);
+        this.i18KeysAndParams = i18KeysAndParams;
+    }
+
+    /**
      * @param i18nParams - missing body parameter
      */
     public InvalidBodyException(String i18nParams) {
