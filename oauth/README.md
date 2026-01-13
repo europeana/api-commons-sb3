@@ -60,8 +60,17 @@ Steps to add authentication to a Spring-Boot 3 API:
     }
 ```
 **Note1:** If you only need to validate client credentials and not also user credentials then you can leave out the
-`auth.token.grant.params` configuration option. In this case you also need to override the following method
+`auth.token.grant.params` and `auth.token.endpoint` configuration option and leave the `getClientDetailsService()` method empty. In this case you also 
+need to override the `isResourceAccessVerificationRequired` method (see code snippet below).
 ```java
+    /**
+     * To check only client credentials and not user credentials, the method does not require implementation
+     * @return null always
+     */
+    public EuropeanaClientDetailsService getClientDetailsService() {
+        return null;
+    }
+    
     /**
      * To check only client credentials and not user credentials, this method should return false
      * @param operation 
