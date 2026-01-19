@@ -40,10 +40,15 @@ public abstract class BaseRestController {
      * @param request   The HTTP request
      * @param operation The name of current operation
      * @return authentication object containing user token
-     * @throws ApplicationAuthenticationException
+     * @throws ApplicationAuthenticationException will throw ApplicationAuthenticationException
+     * Can also throw ApiWriteLockException if WriteLockAuthorizationService#checkWriteLockInEffect
+     *              along with ApiWriteLockService is implemented to check if the DB is locked before writing
+     *              But ApiWriteLockException needs to be handled on the API side by throwing
+     *              ApplicationAuthenticationException or EuropeanaI18nApiException
+     *
      */
     public Authentication verifyWriteAccess(String operation, HttpServletRequest request)
-            throws ApplicationAuthenticationException {
+            throws EuropeanaI18nApiException {
         return getAuthorizationService().authorizeWriteAccess(request, operation);
     }
 

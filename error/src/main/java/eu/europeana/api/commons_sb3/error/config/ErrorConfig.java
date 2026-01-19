@@ -10,7 +10,18 @@ public class ErrorConfig {
      * Also, if the respective APIs adds their own messages properties file,
      * that should also be configured in the same bean as another message source.
      *
-     * For reference : IIIF presentation API
+     *  Example :
+     *  1. "classpath:messages" is the API's message source
+     *  2. ErrorConfig.COMMON_MESSAGE_SOURCE common message source
+     *
+     *    @Bean(name = ErrorConfig.BEAN_I18nService)
+     *   public I18nService getI18nService() {
+     *     ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+     *     messageSource.setBasenames(ErrorConfig.COMMON_MESSAGE_SOURCE, "classpath:messages");
+     *     messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
+     *     I18nServiceImpl service =  new I18nServiceImpl(messageSource);
+     *     return service;
+     *   }
      */
     public static final String BEAN_I18nService      = "i18nService";
     public static final String COMMON_MESSAGE_SOURCE = "common_messages";

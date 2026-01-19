@@ -77,8 +77,8 @@ public class ApiWriteLockImpl implements PersistentObject, ApiWriteLock {
 		return "PersistentApiWriteLockImplImpl [" 
 				+ "id:" + getId() + ", " 
 				+ "name:" + getName() + ","
-				+ "started:" + getStarted().toString() + ", " 
-				+ "ended:" + getEnded().toString() + "] " ;
+				+ "started:" + getStarted() != null ? getStarted().toString() : null + ", "
+				+ "ended:" + getEnded() != null ? getEnded().toString() : null + "] " ;
 	}
 
   @Override

@@ -118,7 +118,7 @@ public class EuropeanaGlobalExceptionHandler {
      * @param e caught exception
      */
     @ExceptionHandler(ApiWriteLockException.class)
-    public ResponseEntity<EuropeanaApiErrorResponse> handleEuropeanaApiException(ApiWriteLockException e, HttpServletRequest httpRequest) {
+    public ResponseEntity<EuropeanaApiErrorResponse> handleApiWriteLockException(ApiWriteLockException e, HttpServletRequest httpRequest) {
         EuropeanaApiErrorResponse response =
                 new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
                         .setStatus(HttpStatus.LOCKED.value())
@@ -314,7 +314,7 @@ public class EuropeanaGlobalExceptionHandler {
                     .body( new EuropeanaApiErrorResponse.Builder(request, ee, stackTraceEnabled())
                             .setStatus(HttpServletResponse.SC_UNAUTHORIZED)
                             .setError("Unauthorized")
-                            .setMessage(getI18nService() != null ? getI18nService().getMessage(ee.getI18nKey()) : null)
+                            .setMessage(buildResponseMessage(ee, ee.getI18nKey(), ee.getI18nParams()))
                             .setCode(StringUtils.substringAfter(ee.getI18nKey(), "."))
                             .build());
 
