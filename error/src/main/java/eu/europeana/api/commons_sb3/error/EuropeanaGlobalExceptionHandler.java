@@ -167,7 +167,11 @@ public class EuropeanaGlobalExceptionHandler {
 
     protected String buildResponseMessage(Exception e, String i18nKey, List<String> i18nParams) {
         if (i18nService != null && StringUtils.isNotBlank(i18nKey)) {
-            return i18nService.getMessage(i18nKey, i18nParams.toArray(new String[0]));
+            if (i18nParams != null && !i18nParams.isEmpty()) {
+                return i18nService.getMessage(i18nKey, i18nParams.toArray(new String[0]));
+            } else {
+                return i18nService.getMessage(i18nKey);
+            }
         } else {
             return e.getMessage();
         }
