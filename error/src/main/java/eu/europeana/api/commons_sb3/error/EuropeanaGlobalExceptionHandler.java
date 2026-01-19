@@ -295,7 +295,12 @@ public class EuropeanaGlobalExceptionHandler {
                                                                                         ApplicationAuthenticationException ee) {
         if (ee.getResult() != null) {
             KeyValidationResult result = ee.getResult();
-            return ResponseEntity.status(result.getHttpStatusCode())
+
+            // get the status
+            int status = isInvalidOrDisabledErrorCode(result.getValidationError().getCode()) ?
+                    HttpStatus.UNAUTHORIZED.value() : result.getHttpStatusCode();
+
+            return ResponseEntity.status(status)
                     .headers(createHttpHeaders(request))
                     .body(new EuropeanaApiErrorResponse.Builder(request, ee, stackTraceEnabled())
                             .setStatus(result.getHttpStatusCode())
