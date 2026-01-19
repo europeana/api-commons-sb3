@@ -13,6 +13,7 @@ import eu.europeana.api.commons_sb3.oauth2.model.impl.ClientDetailsAdapter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.net.URIBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -21,10 +22,12 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static eu.europeana.api.commons_sb3.oauth2.utils.OAuthUtils.VALIDATION_PARAMS;
+import static eu.europeana.api.commons_sb3.oauth2.utils.OAuthUtils.PARAM_CLIENT_ID;
 import static eu.europeana.api.commons_sb3.oauth2.utils.OAuthUtils.X_FORWARDED_PROTO;
 import static eu.europeana.api.commons_sb3.oauth2.utils.OAuthUtils.HTTPS;
 import static eu.europeana.api.commons_sb3.oauth2.utils.OAuthUtils.K8S_FQDN_SUFFIX;
@@ -95,7 +98,10 @@ public class EuropeanaClientDetailsService implements ClientDetailsService {
             if (apiKeyServiceUrl != null && apiKeyServiceUrl.contains(K8S_FQDN_SUFFIX)) {
                 headers.put(X_FORWARDED_PROTO, HTTPS);
             }
-            HttpResponseHandler response = httpConnection.post(VALIDATION_PARAMS.formatted(apiKeyServiceUrl, apikey), null,
+            URI uri = new URIBuilder(this.apiKeyServiceUrl)
+                    .addParameter(PARAM_CLIENT_ID, apikey)
+                    .build();
+            HttpResponseHandler response = httpConnection.post(uri.toString(), null,
                     headers, authHandler);
             if (response == null || response.getStatus() == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                 throw new OAuth2Exception("Invocation of api key service failed. Cannot validate ApiKey : " + apikey);
@@ -108,7 +114,7 @@ public class EuropeanaClientDetailsService implements ClientDetailsService {
                 return new KeyValidationResult(response.getStatus(),
                         getKeyValidationError(response.getResponse()));
             }
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             throw new ApiKeyValidationException(
                     "Unexpected exception occurred when trying to validate API KEY: " + apikey, e);
         }
