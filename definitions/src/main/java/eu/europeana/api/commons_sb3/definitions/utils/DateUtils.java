@@ -109,5 +109,15 @@ public class DateUtils {
     ZonedDateTime zdt = getZonedDateTime(getZonedDateTime(date));
     return zdt.format(DateTimeFormatter.RFC_1123_DATE_TIME ) ;
   }
-  
+
+  /**
+   * Convert RFC format ("Thu, 25 Aug 2016 08:59:00 GMT") to
+   * Zoned date time ("yyyy-MM-dd'T'HH:mm:ss'Z'")
+   * @param timestamp
+   * @return
+   */
+  public static ZonedDateTime parseRFCToZonedDateTime(String timestamp ) {
+    return ZonedDateTime.parse(timestamp, DateTimeFormatter.RFC_1123_DATE_TIME);
+  }
+
 }
