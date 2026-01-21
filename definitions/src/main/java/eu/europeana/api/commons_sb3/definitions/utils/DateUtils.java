@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Date;
@@ -78,7 +79,35 @@ public class DateUtils {
   public static OffsetDateTime toOffsetDateTime(Date date){
     return OffsetDateTime.ofInstant(date.toInstant(), ZoneOffset.UTC);
   }
-  
-  
+
+  /**
+   * Converts the date to zoned date time format "yyyy-MM-dd'T'HH:mm:ss'Z'"
+   * @param date  date
+   * @return String value of date in format "yyyy-MM-dd'T'HH:mm:ss'Z'"
+   */
+  public static String getZonedDateTime(Date date) {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    return format.format(date);
+  }
+
+  /**
+   * Parses the "yyyy-MM-dd'T'HH:mm:ss'Z'" to  ZonedDateTime
+   * @param timestamp should be of format "yyyy-MM-dd'T'HH:mm:ss'Z'"
+   * @return ZonedDateTime
+   */
+  public static ZonedDateTime getZonedDateTime(String timestamp) {
+    return ZonedDateTime.parse(timestamp, DateTimeFormatter.ISO_ZONED_DATE_TIME);
+  }
+
+  /**
+   * Returns the RFC 1123 format of the date.
+   *  Ex- Sun, 21 Oct 2018 12:16:24 GMT
+   * @param date date
+   * @return
+   */
+  public static String getRFC_1123_FormatDate(Date date) {
+    ZonedDateTime zdt = getZonedDateTime(getZonedDateTime(date));
+    return zdt.format(DateTimeFormatter.RFC_1123_DATE_TIME ) ;
+  }
   
 }
