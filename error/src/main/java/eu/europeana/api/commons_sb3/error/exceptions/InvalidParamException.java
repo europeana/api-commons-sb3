@@ -17,10 +17,19 @@ public class InvalidParamException extends EuropeanaI18nApiException {
         super(ErrorMessage.PARAM_INVALID_400, i18nParams);
     }
 
+    public InvalidParamException(List<String> i18nParams, Throwable th) {
+        super(ErrorMessage.PARAM_INVALID_400, i18nParams, HttpStatus.BAD_REQUEST, th);
+    }
+
 
     public InvalidParamException(HttpStatus responseStatus, List<String> i18nParams){
         super(ErrorMessage.PARAM_INVALID_400, i18nParams, responseStatus);
     }
+
+    public InvalidParamException(HttpStatus responseStatus, List<String> i18nParams, Throwable th){
+        super(ErrorMessage.PARAM_INVALID_400, i18nParams, responseStatus, th);
+    }
+
 
     @Override
     public HttpStatus getResponseStatus() {
