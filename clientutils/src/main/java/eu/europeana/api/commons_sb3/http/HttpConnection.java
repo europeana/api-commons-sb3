@@ -138,7 +138,7 @@ public class HttpConnection {
         if(StringUtils.isNotBlank(contentType)) {
 			post.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
         }
-        auth.setAuthorization(post);
+		if (auth != null) auth.setAuthorization(post);
         if (requestBody != null) {
             post.setEntity(new StringEntity(requestBody));
         }
@@ -181,7 +181,7 @@ public class HttpConnection {
     public HttpResponseHandler put(String url, String jsonParamValue
                                  , AuthenticationHandler auth) throws IOException {
 		HttpPut put = new HttpPut(url);
-        auth.setAuthorization(put);
+		if (auth != null) auth.setAuthorization(put);
 		put.setEntity(new StringEntity(jsonParamValue));
 
 		return executeHttpClient(put);
