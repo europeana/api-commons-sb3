@@ -14,7 +14,9 @@ public enum RdfFormat {
   , XML("rdf","xml","utf-8","application/rdf+xml","application/xml","text/xml","rdf/xml")
   , TURTLE("ttl",null,"utf-8","text/turtle","application/turtle","application/x-turtle")
   , N3("n3",null,"utf-8","text/n3","text/rdf+n3","application/n3")
-  , NT("nt",null,null,"application/n-triples","application/ntriples","text/nt");
+  , NT("nt",null,null,"application/n-triples","application/ntriples","text/nt")
+  , SCHEMA("schema.jsonld",null,null,"application/ld+json", "application/json");
+
 
   public static RdfFormat getFormatByExtension(String extension) {
     for ( RdfFormat format : RdfFormat.values() ) {

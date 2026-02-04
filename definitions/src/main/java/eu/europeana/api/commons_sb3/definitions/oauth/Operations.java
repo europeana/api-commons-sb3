@@ -1,6 +1,6 @@
 package eu.europeana.api.commons_sb3.definitions.oauth;
 
-public interface Operations {
+public abstract class Operations {
 
 	//crud operations
 	public static final String RETRIEVE = "retrieve";
