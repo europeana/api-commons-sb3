@@ -20,6 +20,25 @@
     </modules>
 
     <name>API Commons for Spring Boot v3</name>
+    
+    	<repositories>
+		<repository>
+			<id>artifactory.eanadev.org</id>
+			<name>artifactory.eanadev.org-releases (external and internal releases)</name>
+			<url>https://artifactory-prod.eanadev.org/artifactory/libs-release</url>
+		</repository>
+		<repository>
+			<id>libs-snapshots-local</id>
+			<name>europeana-snapshots</name>
+			<url>https://artifactory-prod.eanadev.org/artifactory/libs-snapshot</url>
+		</repository>
+		<repository>
+			<id>plugins-release</id>
+			<name>artifactory plugins-release</name>
+			<url>https://artifactory-prod.eanadev.org/artifactory/plugins-release</url>
+		</repository>
+	</repositories>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,7 +58,7 @@
         <jakarta-annotation.version>3.0.0</jakarta-annotation.version>
         <jackson.version>2.18.3</jackson.version>
         <log4j2.version>2.23.1</log4j2.version>
-        <annotationLd.version>1.1.7</annotationLd.version>
+        <annotationLd.version>1.1.9</annotationLd.version>
 
         <dependency-check-maven.version>12.1.0</dependency-check-maven.version>
         <apache.commomLang3.version>3.13.0</apache.commomLang3.version>
