@@ -3,12 +3,12 @@
     <parent>
         <artifactId>commons-sb3</artifactId>
         <groupId>eu.europeana.api</groupId>
-        <version>0.1.4-SNAPSHOT</version>
+        <version>0.1.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.europeana.api</groupId>
     <artifactId>commons-sb3-web</artifactId>
-    <version>0.1.4-SNAPSHOT</version>
+    <version>0.1.4</version>
     <name>API Commons for Spring Boot v3 - Web Module</name>
 </project>
