@@ -1,12 +1,14 @@
 package eu.europeana.api.commons_sb3.definitions.vocabulary;
 
+/**
+ * Common api constants used across
+ */
 public interface CommonApiConstants {
 
     /**
      * PARAMS
      */
     public static final String PARAM_INCLUDE_ERROR_STACK = "includeErrorStack";
-    public static final String PARAM_WSKEY = "wskey";
 
     /**
      * Search PARAMS

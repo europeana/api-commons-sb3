@@ -9,6 +9,7 @@ import org.apache.stanbol.commons.jsonld.JsonLdResource;
 
 import java.util.Map;
 import java.util.TreeMap;
+
 import static eu.europeana.api.commons_sb3.definitions.vocabulary.CommonLdConstants.*;
 
 public abstract class ResultsPageSerializer<T> extends JsonLd {
@@ -17,11 +18,11 @@ public abstract class ResultsPageSerializer<T> extends JsonLd {
 	String contextValue;
 	String type;
 
-	public ResultsPageSerializer(ResultsPage<T> resPage) {
+	protected ResultsPageSerializer(ResultsPage<T> resPage) {
 		this(resPage, null, null);
 	}
 
-	public ResultsPageSerializer(ResultsPage<T> resPage, String contextValue, String type) {
+	protected ResultsPageSerializer(ResultsPage<T> resPage, String contextValue, String type) {
 		this.resultsPage = resPage;
 		this.contextValue = contextValue;
 		this.type = type;
@@ -50,26 +51,24 @@ public abstract class ResultsPageSerializer<T> extends JsonLd {
 		setUseTypeCoercion(false);
 		setUseCuries(false);
 		setApplyNamespaces(false);
-		// if(isApplyNamespaces())
-		// setUsedNamespaces(namespacePrefixMap);
 
 		JsonLdResource jsonLdResource = new JsonLdResource();
 		jsonLdResource.setSubject("");
 		jsonLdResource.putProperty(context, getContextValue());
 		// annotation page
 		if (resultsPage.getCurrentPageUri() != null)
-			jsonLdResource.putProperty(ID, resultsPage.getCurrentPageUri());
-		jsonLdResource.putProperty(TYPE, getType());
-		jsonLdResource.putProperty(TOTAL, resultsPage.getTotalInPage());
+			jsonLdResource.putProperty(id, resultsPage.getCurrentPageUri());
+		jsonLdResource.putProperty(type, getType());
+		jsonLdResource.putProperty(total, resultsPage.getTotalInPage());
 
 		// collection
 		if (resultsPage.getCurrentPageUri() != null) {
-			JsonLdProperty collectionProp = new JsonLdProperty(PART_OF);
+			JsonLdProperty collectionProp = new JsonLdProperty(partOf);
 			JsonLdPropertyValue collectionPropValue = new JsonLdPropertyValue();
-			collectionPropValue.putProperty(new JsonLdProperty(ID, resultsPage.getCollectionUri()));
-			collectionPropValue.putProperty(new JsonLdProperty(TYPE, RESULT_LIST));
+			collectionPropValue.putProperty(new JsonLdProperty(id, resultsPage.getCollectionUri()));
+			collectionPropValue.putProperty(new JsonLdProperty(type, ResultList));
 			collectionPropValue
-					.putProperty(new JsonLdProperty(TOTAL, resultsPage.getTotalInCollection()));
+					.putProperty(new JsonLdProperty(total, resultsPage.getTotalInCollection()));
 			collectionProp.addValue(collectionPropValue);
 			jsonLdResource.putProperty(collectionProp);
 		}
@@ -80,9 +79,9 @@ public abstract class ResultsPageSerializer<T> extends JsonLd {
 
 		// nagivation
 		if (resultsPage.getPrevPageUri() != null)
-			jsonLdResource.putProperty(PREV, resultsPage.getPrevPageUri());
+			jsonLdResource.putProperty(prev, resultsPage.getPrevPageUri());
 		if (resultsPage.getNextPageUri() != null)
-			jsonLdResource.putProperty(NEXT, resultsPage.getNextPageUri());
+			jsonLdResource.putProperty(next, resultsPage.getNextPageUri());
 
 		put(jsonLdResource);
 
@@ -118,7 +117,7 @@ public abstract class ResultsPageSerializer<T> extends JsonLd {
 
 			for (Map.Entry<String, Long> valueCount : view.getValueCountMap().entrySet()) {
 				labelCountValue = new JsonLdPropertyValue();
-				valueMap = new TreeMap<String, String>();
+				valueMap = new TreeMap<>();
 				valueMap.put(CommonApiConstants.SEARCH_RESP_FACETS_LABEL, valueCount.getKey());
 				valueMap.put(CommonApiConstants.SEARCH_RESP_FACETS_COUNT, valueCount.getValue().toString());
 				labelCountValue.setValues(valueMap);
