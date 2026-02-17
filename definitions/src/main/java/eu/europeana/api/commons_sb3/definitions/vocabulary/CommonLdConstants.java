@@ -11,6 +11,7 @@ package eu.europeana.api.commons_sb3.definitions.vocabulary;
  * This also helps visualize the JSON response more easily,
  * rather than having to navigate to another class to check the exact value of the constant.
  */
+@SuppressWarnings("java:S115")
 public interface CommonLdConstants {
 
 	//** common fields **/
