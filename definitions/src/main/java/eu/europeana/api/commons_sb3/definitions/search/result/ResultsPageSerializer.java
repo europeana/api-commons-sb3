@@ -16,16 +16,16 @@ public abstract class ResultsPageSerializer<T> extends JsonLd {
 
 	ResultsPage<T> resultsPage;
 	String contextValue;
-	String type;
+	String typeValue;
 
 	protected ResultsPageSerializer(ResultsPage<T> resPage) {
 		this(resPage, null, null);
 	}
 
-	protected ResultsPageSerializer(ResultsPage<T> resPage, String contextValue, String type) {
+	protected ResultsPageSerializer(ResultsPage<T> resPage, String contextValue, String typeValue) {
 		this.resultsPage = resPage;
 		this.contextValue = contextValue;
-		this.type = type;
+		this.typeValue = typeValue;
 		registerContainerProperty(CommonApiConstants.SEARCH_RESP_FACETS);
 		registerContainerProperty(CommonApiConstants.SEARCH_RESP_FACETS_VALUES);
 	}
@@ -133,11 +133,11 @@ public abstract class ResultsPageSerializer<T> extends JsonLd {
 	protected abstract void serializeItems(JsonLdResource jsonLdResource, String profile);
 
 	public String getType() {
-		return type;
+		return typeValue;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setType(String typeValue) {
+		this.typeValue = typeValue;
 	}
 
 }
