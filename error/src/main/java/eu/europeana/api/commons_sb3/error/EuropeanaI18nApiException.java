@@ -1,6 +1,7 @@
 package eu.europeana.api.commons_sb3.error;
 
 import eu.europeana.api.commons_sb3.error.config.ErrorMessage;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
@@ -85,6 +86,10 @@ public class EuropeanaI18nApiException extends EuropeanaApiException {
   @Override
   public String getErrorCode() {
     //fallback error code on internationalization key if not set explicitly 
-    return super.getErrorCode() != null ? super.getErrorCode() : getI18nKey() ;
+    if (super.getErrorCode() != null)  {
+        return super.getErrorCode();
+    }
+    // extract the code from i18nKey
+    return i18nKey.contains(".") ? StringUtils.substringAfterLast(i18nKey, ".") : i18nKey;
   }
 }
