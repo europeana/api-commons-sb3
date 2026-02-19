@@ -100,6 +100,7 @@ public class EuropeanaGlobalExceptionHandler {
      */
     @ExceptionHandler(InvalidBodyException.class)
     public ResponseEntity<EuropeanaApiErrorResponse> handleEuropeanaApiException(InvalidBodyException e, HttpServletRequest httpRequest) {
+        logException(e);
         EuropeanaApiErrorResponse response =
                 new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
                         .setStatus(e.getResponseStatus().value())
@@ -107,7 +108,6 @@ public class EuropeanaGlobalExceptionHandler {
                         .setMessage(buildResponseMessage(e, e.getI18KeysAndParams()))
                         .setCode(e.getErrorCode())
                         .build();
-        LOG.error("Caught exception: {}", response.getMessage());
         return ResponseEntity.status(e.getResponseStatus()).headers(createHttpHeaders(httpRequest))
                 .body(response);
     }
@@ -126,6 +126,7 @@ public class EuropeanaGlobalExceptionHandler {
                         .setMessage(buildResponseMessage(e, ErrorConfig.LOCKED_MAINTENANCE, Arrays.asList(e.getMessage())))
                         .setCode("423_locked_maintenance")
                         .build();
+        // logging separately as it's not a EuropeanaApiException
         LOG.error("Caught exception: {}", response.getMessage());
         return ResponseEntity.status(HttpStatus.LOCKED).headers(createHttpHeaders(httpRequest))
                 .body(response);
@@ -152,6 +153,7 @@ public class EuropeanaGlobalExceptionHandler {
      */
     @ExceptionHandler(EuropeanaI18nApiException.class)
     public ResponseEntity<EuropeanaApiErrorResponse> handleEuropeanaApiException(EuropeanaI18nApiException e, HttpServletRequest httpRequest) {
+        logException(e);
         EuropeanaApiErrorResponse response =
                 new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
                         .setStatus(e.getResponseStatus().value())
@@ -159,7 +161,6 @@ public class EuropeanaGlobalExceptionHandler {
                         .setMessage(buildResponseMessage(e, e.getI18nKey(), e.getI18nParams()))
                         .setCode(e.getErrorCode())
                         .build();
-        LOG.error("Caught exception: {}", response.getMessage());
         return ResponseEntity.status(e.getResponseStatus()).headers(createHttpHeaders(httpRequest))
                 .body(response);
     }
