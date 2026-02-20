@@ -32,7 +32,6 @@ public class ErrorConfig {
     public static final String INVALID_BODY_MISSING  = "error.invalid_body_missing";
     public static final String INVALID_BODY_PATTERN  = "error.invalid_body_pattern";
     public static final String MISSING_APIKEY        = "error.missing_apikey";
-    public static final String OPERATION_NOT_AUTHORIZED = "error.operation_not_authorized";
     public static final String INVALID_ID            = "error.invalid_id";
     public static final String NOT_FOUND             = "error.not_found";
 

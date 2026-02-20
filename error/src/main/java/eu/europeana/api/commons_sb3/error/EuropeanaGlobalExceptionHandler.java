@@ -320,7 +320,7 @@ public class EuropeanaGlobalExceptionHandler {
                             .setStatus(HttpServletResponse.SC_UNAUTHORIZED)
                             .setError("Unauthorized")
                             .setMessage(buildResponseMessage(ee, ee.getI18nKey(), ee.getI18nParams()))
-                            .setCode(StringUtils.substringAfter(ee.getI18nKey(), "."))
+                            .setCode(ee.getErrorCode())
                             .build());
 
         }
