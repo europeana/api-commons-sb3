@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>commons-sb3</artifactId>
 		<groupId>eu.europeana.api</groupId>
-		<version>0.1.5-SNAPSHOT</version>
+		<version>0.1.5</version>
 	</parent>
 
 	<artifactId>commons-sb3-search</artifactId>
@@ -14,7 +14,7 @@
 		<dependency>
 			<groupId>eu.europeana.api</groupId>
 			<artifactId>commons-sb3-definitions</artifactId>
-			<version>0.1.5-SNAPSHOT</version>
+			<version>0.1.5</version>
 		</dependency>
 		
 		<dependency>
