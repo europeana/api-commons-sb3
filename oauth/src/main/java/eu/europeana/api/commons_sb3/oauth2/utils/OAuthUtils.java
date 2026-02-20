@@ -135,7 +135,7 @@ public class OAuthUtils {
      * @return
      * @throws ApiKeyExtractionException
      * @throws AuthorizationExtractionException
-     * @deprecated the visibility of this method should be reduced in the future and the
+     * The visibility of this method should be reduced in the future and the
      * processJwtToken should be used instead. The services should overwrite the
      * verifyRead/WriteAccess where needed
      */
@@ -287,7 +287,8 @@ public class OAuthUtils {
         }
 
         // validate header format first
-        if (!authorization.startsWith(TYPE_BEARER) && !authorization.startsWith(TYPE_APIKEY))
+        boolean validBearerTokenType = isValidBearerToken(authorization);
+        if (!validBearerTokenType && !authorization.startsWith(TYPE_APIKEY))
             throw new ApiKeyExtractionException(
                     "Unsupported type in Auhtorization header: " + authorization);
 
@@ -489,5 +490,17 @@ public class OAuthUtils {
                                                                                 String wsKey) {
         return new EuropeanaAuthenticationToken(null, apiName, EuropeanaApiCredentials.USER_ANONYMOUS,
                 new EuropeanaApiCredentials(EuropeanaApiCredentials.USER_ANONYMOUS, EuropeanaApiCredentials.CLIENT_UNKNOWN, wsKey));
+    }
+
+    /**
+     * Method ensures the Authorization header value starts with correct token type.
+     * It also validates there is space between the token type and the actual token value.
+     * e.g.("Bearer <token_string>" ,"bearer <token_string>")   *
+     * @param authorization provided in Authorization header
+     * @return boolean true if the token type is valid.
+     */
+    public static boolean isValidBearerToken(String authorization) {
+        return (authorization != null &&
+                authorization.regionMatches(true,0, (TYPE_BEARER + " "),0,7));
     }
 }
