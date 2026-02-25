@@ -10,9 +10,9 @@ import eu.europeana.api.commons_sb3.definitions.search.Query;
 
 public class QueryImpl implements Cloneable, Query{
 
-	private int pageNr;
-	private int pageSize;
-	private long limit;
+	private int pageNr = -1;
+	private int pageSize = -1;
+	private long limit = -1;
 //	private String sort;
 //	private String sortOrder;
 	String[] sortCriteria;
