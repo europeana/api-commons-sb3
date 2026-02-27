@@ -3,7 +3,7 @@
     <parent>
         <groupId>eu.europeana.api</groupId>
         <artifactId>commons-sb3</artifactId>
-        <version>0.1.5-SNAPSHOT</version>
+        <version>0.1.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -54,7 +54,7 @@
 				</exclusion>
 				<exclusion>
 					<groupId>org.apache.logging.log4j</groupId>
-					<artifactId>log4j-core</artifactId>
+					<artifactId>log4j-api</artifactId>
 				</exclusion>
 			</exclusions>
         </dependency>
