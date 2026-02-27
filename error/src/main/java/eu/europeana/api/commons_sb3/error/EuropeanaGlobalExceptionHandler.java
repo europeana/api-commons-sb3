@@ -314,15 +314,17 @@ public class EuropeanaGlobalExceptionHandler {
                             .setCode(result.getValidationError().getCode())
                             .build());
         } else {
-            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
+            //If the error reason is not specified in the exception, use the default from the HttpStatus.
+            String error = (ee.getError() == null) ? ee.getResponseStatus().getReasonPhrase() : ee.getError();
+
+            return ResponseEntity.status(ee.getResponseStatus().value())
                     .headers(createHttpHeaders(request))
                     .body( new EuropeanaApiErrorResponse.Builder(request, ee, stackTraceEnabled())
-                            .setStatus(HttpServletResponse.SC_UNAUTHORIZED)
-                            .setError("Unauthorized")
+                            .setStatus(ee.getResponseStatus().value())
+                            .setError(error)
                             .setMessage(buildResponseMessage(ee, ee.getI18nKey(), ee.getI18nParams()))
                             .setCode(ee.getErrorCode())
                             .build());
-
         }
     }
 

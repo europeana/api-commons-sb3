@@ -44,5 +44,7 @@ public class ErrorConfig {
 
     public static final String SERVER_ERROR_UNEXPECTED = "error.server_unexpected_error";
 
+    public static final String USER_NOT_AUTHORISED= "error.user_not_authorised";
+
 
 }

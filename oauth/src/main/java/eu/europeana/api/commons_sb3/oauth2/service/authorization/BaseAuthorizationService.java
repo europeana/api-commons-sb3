@@ -169,7 +169,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
 
         if (authenticationList == null || authenticationList.isEmpty()) {
             LOG.error("Invalid token or ApiKey, resource access not granted! ");
-            throw new ApplicationAuthenticationException(ErrorMessage.TOKEN_INVALID_401);
+            throw new ApplicationAuthenticationException(ErrorMessage.USER_NOT_AUTHORISED_403,null,HttpStatus.FORBIDDEN);
         }
 
         if (verifyResourceAccess) {
@@ -200,7 +200,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
             if (isResourceAccessVerificationRequired(operation)) {
                 //access verification required but
                 LOG.error("No or invalid authorization provided. ");
-                throw new ApplicationAuthenticationException(ErrorMessage.TOKEN_INVALID_401);
+                throw new ApplicationAuthenticationException(ErrorMessage.USER_NOT_AUTHORISED_403,null,HttpStatus.FORBIDDEN);
             } else {
                 //TODO:
                 return null;
@@ -222,7 +222,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         }
         // not authorized
         LOG.error("Operation not permitted or not GrantedAuthority found for operation:" + operation);
-        throw new ApplicationAuthenticationException(ErrorMessage.TOKEN_INVALID_401);
+        throw new ApplicationAuthenticationException(ErrorMessage.USER_NOT_AUTHORISED_403,null,HttpStatus.FORBIDDEN);
     }
 
 

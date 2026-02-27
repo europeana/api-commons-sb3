@@ -11,7 +11,10 @@ public enum ErrorMessage {
   INVALID_KEY_401          ("401_key_invalid",  "API key is invalid", KEY_INVALID),
   EMPTY_KEY_401            ("401_empty_apikey",  "Unauthorized", EMPTY_APIKEY),
   MISSING_KEY_401          ("401_missing_apikey",  "Unauthorized", MISSING_APIKEY),
-  TOKEN_INVALID_401        ("401_token_invalid",  "Token is invalid",  TOKEN_INVALID);
+  TOKEN_INVALID_401        ("401_token_invalid",  "Token is invalid",  TOKEN_INVALID),
+
+  USER_NOT_AUTHORISED_403("403_user_not_authorised",  "User not authorised to access the resource", USER_NOT_AUTHORISED);
+
 
   private final String code;
   private final String error;

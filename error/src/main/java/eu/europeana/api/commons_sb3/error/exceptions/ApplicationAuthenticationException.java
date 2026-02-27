@@ -18,6 +18,10 @@ public class ApplicationAuthenticationException extends EuropeanaI18nApiExceptio
         super(errorMessage, null, HttpStatus.UNAUTHORIZED);
     }
 
+    public ApplicationAuthenticationException(ErrorMessage errorMessage, List<String> i18nParams, HttpStatus responseStatus){
+        super(errorMessage, i18nParams, responseStatus);
+    }
+
     public ApplicationAuthenticationException(ErrorMessage errorMessage, List<String> i18nParams, HttpStatus responseStatus, Throwable th){
         super(errorMessage, i18nParams, responseStatus, th);
     }
