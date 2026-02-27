@@ -3,6 +3,7 @@ package eu.europeana.api.commons_sb3.oauth2;
 import eu.europeana.api.commons_sb3.definitions.caching.CachingHeaders;
 import eu.europeana.api.commons_sb3.error.AbstractRequestPathMethodService;
 import eu.europeana.api.commons_sb3.error.EuropeanaI18nApiException;
+import eu.europeana.api.commons_sb3.error.config.ErrorMessage;
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
 import eu.europeana.api.commons_sb3.error.exceptions.InvalidParamException;
 import eu.europeana.api.commons_sb3.oauth2.service.authorization.AuthorizationService;
@@ -75,8 +76,10 @@ public abstract class BaseRestController {
     public void checkIfMatchHeader(String etag, HttpServletRequest request) throws EuropeanaI18nApiException {
         String ifMatchHeader = request.getHeader(CachingHeaders.IF_MATCH);
         if (ifMatchHeader != null && !ifMatchHeader.equals(etag)) {
-            //if the tags doesn't match throw exception
-            throw new InvalidParamException(HttpStatus.PRECONDITION_FAILED, Arrays.asList(CachingHeaders.IF_MATCH, ifMatchHeader, etag));
+            //if the tags don't match return 412
+            throw new EuropeanaI18nApiException(ErrorMessage.PARAM_INVALID_400,
+                    Arrays.asList(CachingHeaders.IF_MATCH, etag, ifMatchHeader),
+                    HttpStatus.PRECONDITION_FAILED);
         }
     }
 
