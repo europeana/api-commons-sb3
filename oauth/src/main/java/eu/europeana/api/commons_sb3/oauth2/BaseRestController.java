@@ -68,6 +68,7 @@ public abstract class BaseRestController {
 
     /**
      * This method compares If-Match header with the current etag value.
+     * If the tags don't match, return 412
      *
      * @param etag    The current etag value
      * @param request The request containing If-Match header
@@ -76,10 +77,7 @@ public abstract class BaseRestController {
     public void checkIfMatchHeader(String etag, HttpServletRequest request) throws EuropeanaI18nApiException {
         String ifMatchHeader = request.getHeader(CachingHeaders.IF_MATCH);
         if (ifMatchHeader != null && !ifMatchHeader.equals(etag)) {
-            //if the tags don't match return 412
-            throw new EuropeanaI18nApiException(ErrorMessage.PARAM_INVALID_400,
-                    Arrays.asList(CachingHeaders.IF_MATCH, etag, ifMatchHeader),
-                    HttpStatus.PRECONDITION_FAILED);
+            throw new EuropeanaI18nApiException(ErrorMessage.ETAG_MISMATCH_412, null, HttpStatus.PRECONDITION_FAILED);
         }
     }
 

@@ -35,6 +35,8 @@ public class ErrorConfig {
     public static final String OPERATION_NOT_AUTHORIZED = "error.operation_not_authorized";
     public static final String INVALID_ID            = "error.invalid_id";
     public static final String NOT_FOUND             = "error.not_found";
+    public static final String ETAG_MISMATCH         = "error.etag_mismatch";
+    public static final String MODIFIED_SINCE         = "error.modified_since";
 
     public static final String EMPTY_APIKEY          = "error.empty_apikey";
     public static final String KEY_INVALID           = "error.key_invalid";
