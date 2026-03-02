@@ -73,7 +73,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         try {
             wsKey = OAuthUtils.extractApiKey(request);
         } catch (ApiKeyExtractionException | AuthorizationExtractionException e) {
-            throw new ApplicationAuthenticationException(ErrorMessage.INVALID_KEY_401, null, null, e);
+            throw new ApplicationAuthenticationException(ErrorMessage.INVALID_KEY_401, null, HttpStatus.UNAUTHORIZED, e);
         }
 
         // check if empty

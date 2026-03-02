@@ -14,6 +14,11 @@ public class ApplicationAuthenticationException extends EuropeanaI18nApiExceptio
         return result;
     }
 
+    /**
+     * By default, the parent class 'EuropeanaApiException' returns the http status 500 if no http status is set.
+     * Method considers the status to be 'UNAUTHORIZED'.
+     * @param errorMessage
+     */
     public ApplicationAuthenticationException(ErrorMessage errorMessage){
         super(errorMessage, null, HttpStatus.UNAUTHORIZED);
     }
@@ -58,5 +63,8 @@ public class ApplicationAuthenticationException extends EuropeanaI18nApiExceptio
     public boolean doLogStacktrace() {
         return false;
     }
+
+
+
 
 }
