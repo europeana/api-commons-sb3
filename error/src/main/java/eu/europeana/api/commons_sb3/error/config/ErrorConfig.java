@@ -32,7 +32,6 @@ public class ErrorConfig {
     public static final String INVALID_BODY_MISSING  = "error.invalid_body_missing";
     public static final String INVALID_BODY_PATTERN  = "error.invalid_body_pattern";
     public static final String MISSING_APIKEY        = "error.missing_apikey";
-    public static final String OPERATION_NOT_AUTHORIZED = "error.operation_not_authorized";
     public static final String INVALID_ID            = "error.invalid_id";
     public static final String NOT_FOUND             = "error.not_found";
     public static final String ETAG_MISMATCH         = "error.etag_mismatch";
@@ -46,6 +45,8 @@ public class ErrorConfig {
     public static final String NO_LOCK_IN_EFFECT       = "error.lock_not_in_effect";
 
     public static final String SERVER_ERROR_UNEXPECTED = "error.server_unexpected_error";
+
+    public static final String USER_NOT_AUTHORISED= "error.user_not_authorised";
 
 
 }
