@@ -1,18 +1,16 @@
 package eu.europeana.api.commons_sb3.oauth2;
 
 import eu.europeana.api.commons_sb3.definitions.caching.CachingHeaders;
-import eu.europeana.api.commons_sb3.error.AbstractRequestPathMethodService;
+import eu.europeana.api.commons_sb3.error.ApiRequestPathMethodService;
 import eu.europeana.api.commons_sb3.error.EuropeanaI18nApiException;
 import eu.europeana.api.commons_sb3.error.config.ErrorMessage;
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
-import eu.europeana.api.commons_sb3.error.exceptions.InvalidParamException;
 import eu.europeana.api.commons_sb3.oauth2.service.authorization.AuthorizationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
@@ -107,7 +105,7 @@ public abstract class BaseRestController {
      * responses
      */
     protected String getMethodsForRequestPattern(HttpServletRequest request,
-                                                 AbstractRequestPathMethodService requestMethodService) {
+                                                 ApiRequestPathMethodService requestMethodService) {
         if(requestMethodService != null) {
             Optional<String> methodsForRequestPattern =
                     requestMethodService.getMethodsForRequestPattern(request);

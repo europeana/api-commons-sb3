@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  *   For more reference: User Set API
  * */
 @Component
-public class AbstractRequestPathMethodService implements ApplicationListener<ContextRefreshedEvent> {
+public class ApiRequestPathMethodService implements ApplicationListener<ContextRefreshedEvent> {
 
     /**
     * Map request urls to Http request methods (implemented across the application) with the url
