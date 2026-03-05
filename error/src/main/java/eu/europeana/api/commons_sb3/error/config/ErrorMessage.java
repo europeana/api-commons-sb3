@@ -8,6 +8,8 @@ public enum ErrorMessage {
   BODY_INVALID_400         ("400_body",         "An invalid field was sent in the request body", INVALID_BODY_MISSING),
   ID_INVALID_404           ("404_id_invalid",   "Invalid %s identifier",                         INVALID_ID),
   NOT_FOUND_404            ("404_not_found",    "%s not found!",                                 NOT_FOUND),
+  ETAG_MISMATCH_412        ("412_etag_mismatch","Update conflict due to ETag mismatch",          ETAG_MISMATCH),
+  MODIFIED_SINCE_412       ("412_modified_since","Update conflict due to resource modification since retrieval", MODIFIED_SINCE),
   INVALID_KEY_401          ("401_key_invalid",  "API key is invalid", KEY_INVALID),
   EMPTY_KEY_401            ("401_empty_apikey",  "Unauthorized", EMPTY_APIKEY),
   MISSING_KEY_401          ("401_missing_apikey",  "Unauthorized", MISSING_APIKEY),

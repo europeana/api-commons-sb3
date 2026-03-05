@@ -44,7 +44,7 @@ public class EuropeanaGlobalExceptionHandler {
 
     private static final Logger LOG = LogManager.getLogger(EuropeanaGlobalExceptionHandler.class);
 
-    protected AbstractRequestPathMethodService requestPathMethodService;
+    protected ApiRequestPathMethodService requestPathMethodService;
 
     @Resource(name = BEAN_I18nService)
     protected I18nService i18nService;
@@ -361,7 +361,7 @@ public class EuropeanaGlobalExceptionHandler {
      *
      * @return RequestPathMethodService
      */
-    AbstractRequestPathMethodService getRequestPathMethodService() {
+    ApiRequestPathMethodService getRequestPathMethodService() {
         return requestPathMethodService;
     }
 

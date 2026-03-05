@@ -1,11 +1,13 @@
 package eu.europeana.api.commons_sb3.error;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -21,11 +23,19 @@ import java.util.stream.Collectors;
  *  This is useful for populating the HTTP Allow header, when generating API responses.
  *
  *  To use:
- *   - extend this class within your project;
- *   - instantiate the subclass with the Spring WebApplicationContext;
- *   - pass the instance as an argument to BaseRestController.createAllowHeader()
+ *   Either
+ *    1. extend this class within your project;
+ *    2. create a bean in your project
+ *      @Bean
+ *      public ApiRequestPathMethodService getApiRequestPathMethodService(){
+ *         return new ApiRequestPathMethodService();
+ *     }
+ *     later the class can be used to createAllowHeader via
+ *             requestMethodService.getMethodsForRequestPattern(request);
+ *   For more reference: User Set API
  * */
-public abstract class AbstractRequestPathMethodService implements InitializingBean {
+@Component
+public class ApiRequestPathMethodService implements ApplicationListener<ContextRefreshedEvent> {
 
     /**
     * Map request urls to Http request methods (implemented across the application) with the url
@@ -33,43 +43,29 @@ public abstract class AbstractRequestPathMethodService implements InitializingBe
     */
     private final Map<String, Set<String>> requestPathMethodMap = new HashMap<>();
 
-    protected final WebApplicationContext applicationContext;
-
-    protected AbstractRequestPathMethodService(WebApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
     /**
-    * For Services or APIs using spring boot version > 2.7.x
-    * Spring Boot 2.7 no longer defines MVC’s main requestMappingHandlerMapping bean as @Primary bean.
-    * In the unlikely event that we are injecting RequestMappingHandlerMapping bean, we need to be specific
-    * about the bean name.
-    * We need the bean of name - "requestMappingHandlerMapping"
-    *
-    * @see <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.7-Release-Notes#spring-mvcs-requestmappinghandlermapping-is-no-longer-primary">Dcoumentation</a>
-    *
-    * Otherwise we get -   org.springframework.beans.factory.NoUniqueBeanDefinitionException:
-    * No qualifying bean of type 'org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping'
-    * available: expected single matching bean but found 2: requestMappingHandlerMapping,controllerEndpointHandlerMapping
-    *
-    * Populate request url pattern - request methods map */
+     * Populate request url pattern - request methods map
+     * */
     @Override
-    public void afterPropertiesSet() {
-        RequestMappingHandlerMapping mapping = applicationContext
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        ApplicationContext applicationContext = event.getApplicationContext();
+        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext
                 .getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
-        Map<RequestMappingInfo, HandlerMethod> handlerMethods = mapping.getHandlerMethods();
+
+        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping
+                .getHandlerMethods();
+
         for (RequestMappingInfo info : handlerMethods.keySet()) {
-            PatternsRequestCondition p = info.getPatternsCondition();
+            PathPatternsRequestCondition p = info.getPathPatternsCondition();
 
             // get all request methods for this pattern
             final Set<String> requestMethods = info.getMethodsCondition().getMethods().stream()
-                  .map(Enum::toString)
-                  .collect(Collectors.toSet());
+                    .map(Enum::toString)
+                    .collect(Collectors.toSet());
 
             if (p != null) {
-                for (String url : p.getPatterns()) {
-                    addToMap(requestPathMethodMap, url, requestMethods);
-                }
+                p.getPatterns().forEach(pattern ->
+                    addToMap(requestPathMethodMap, pattern.getPatternString(), requestMethods));
             }
         }
     }

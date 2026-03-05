@@ -1,18 +1,16 @@
 package eu.europeana.api.commons_sb3.oauth2;
 
 import eu.europeana.api.commons_sb3.definitions.caching.CachingHeaders;
-import eu.europeana.api.commons_sb3.error.AbstractRequestPathMethodService;
+import eu.europeana.api.commons_sb3.error.ApiRequestPathMethodService;
 import eu.europeana.api.commons_sb3.error.EuropeanaI18nApiException;
 import eu.europeana.api.commons_sb3.error.config.ErrorMessage;
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
-import eu.europeana.api.commons_sb3.error.exceptions.InvalidParamException;
 import eu.europeana.api.commons_sb3.oauth2.service.authorization.AuthorizationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
@@ -68,6 +66,7 @@ public abstract class BaseRestController {
 
     /**
      * This method compares If-Match header with the current etag value.
+     * If the tags don't match, return 412
      *
      * @param etag    The current etag value
      * @param request The request containing If-Match header
@@ -76,10 +75,7 @@ public abstract class BaseRestController {
     public void checkIfMatchHeader(String etag, HttpServletRequest request) throws EuropeanaI18nApiException {
         String ifMatchHeader = request.getHeader(CachingHeaders.IF_MATCH);
         if (ifMatchHeader != null && !ifMatchHeader.equals(etag)) {
-            //if the tags don't match return 412
-            throw new EuropeanaI18nApiException(ErrorMessage.PARAM_INVALID_400,
-                    Arrays.asList(CachingHeaders.IF_MATCH, etag, ifMatchHeader),
-                    HttpStatus.PRECONDITION_FAILED);
+            throw new EuropeanaI18nApiException(ErrorMessage.ETAG_MISMATCH_412, null, HttpStatus.PRECONDITION_FAILED);
         }
     }
 
@@ -109,7 +105,7 @@ public abstract class BaseRestController {
      * responses
      */
     protected String getMethodsForRequestPattern(HttpServletRequest request,
-                                                 AbstractRequestPathMethodService requestMethodService) {
+                                                 ApiRequestPathMethodService requestMethodService) {
         if(requestMethodService != null) {
             Optional<String> methodsForRequestPattern =
                     requestMethodService.getMethodsForRequestPattern(request);
