@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
  *    1. extend this class within your project;
  *    2. create a bean in your project
  *      @Bean
- *      public AbstractRequestPathMethodService getAbstractRequestPathMethodService(){
- *         return new AbstractRequestPathMethodService();
+ *      public ApiRequestPathMethodService getApiRequestPathMethodService(){
+ *         return new ApiRequestPathMethodService();
  *     }
  *     later the class can be used to createAllowHeader via
  *             requestMethodService.getMethodsForRequestPattern(request);
