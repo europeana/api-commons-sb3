@@ -286,11 +286,11 @@ public class OAuthUtils {
                     "No authentication information provided, Authorization header not submitted with the request! ");
         }
         // validate header format first
-        if (!isValidBearerToken(authorization) && !authorization.startsWith(TYPE_APIKEY)) {
-            throw new ApiKeyExtractionException(
-                    "Unsupported type in Authorization header: " + authorization);
+        if (isValidBearerToken(authorization) || authorization.startsWith(TYPE_APIKEY)) {
+            return authorization.substring(authorizationType.length()).trim();
         }
-        return authorization.substring(authorizationType.length()).trim();
+        throw new ApiKeyExtractionException(
+                "Unsupported type in Authorization header: " + authorization);
     }
 
     /**
