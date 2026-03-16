@@ -1,6 +1,5 @@
 package eu.europeana.api.commons_sb3.error.config;
 
-// TODO srishti ::  whatever will not be used at the end of implementation remove that
 public class ErrorConfig {
 
     /**
@@ -30,6 +29,7 @@ public class ErrorConfig {
     public static final String INVALID_PARAM         = "error.invalid_param";
     public static final String MISSING_PARAM         = "error.missing_param";
     public static final String INVALID_BODY_MISSING  = "error.invalid_body_missing";
+    public static final String DUPLICATE_CLASS_FOUND = "error.duplicate_class_found";
     public static final String INVALID_BODY_PATTERN  = "error.invalid_body_pattern";
     public static final String MISSING_APIKEY        = "error.missing_apikey";
     public static final String INVALID_ID            = "error.invalid_id";
