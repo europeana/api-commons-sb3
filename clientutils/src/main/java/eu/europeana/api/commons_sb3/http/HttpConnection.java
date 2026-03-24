@@ -6,8 +6,10 @@ import org.apache.hc.client5.http.classic.methods.*;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.DefaultRedirectStrategy;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.BasicHttpClientConnectionManager;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpHeaders;
@@ -80,7 +82,7 @@ public class HttpConnection {
 	 * @return HttpResponseHandler that comprises response body as String and status code.
 	 * @throws IOException
 	 */
-	public ClassicHttpResponse get(String url, Map<String, String> headers
+	public CloseableHttpResponse get(String url, Map<String, String> headers
 			, AuthenticationHandler auth) throws IOException {
 		HttpGet get = new HttpGet(url);
 		addHeaders(get, headers);
@@ -100,7 +102,7 @@ public class HttpConnection {
      * @return HttpResponseHandler that comprises response body as String and status code.
      * @throws IOException
      */
-    public ClassicHttpResponse post(String url, String requestBody, String contentType
+    public CloseableHttpResponse post(String url, String requestBody, String contentType
                                   , AuthenticationHandler auth) throws IOException {
         HttpPost post = new HttpPost(url);
         if(StringUtils.isNotBlank(contentType)) {
@@ -122,7 +124,7 @@ public class HttpConnection {
 	 * @return HttpResponseHandler that comprises response body as String and status code.
 	 * @throws IOException
 	 */
-	public ClassicHttpResponse post(String url, String requestBody,Map<String, String> headers
+	public CloseableHttpResponse post(String url, String requestBody,Map<String, String> headers
 			, AuthenticationHandler auth) throws IOException {
 
 		HttpPost post = new HttpPost(url);
@@ -146,7 +148,7 @@ public class HttpConnection {
      * @return HttpResponseHandler that comprises response body as String and status code.
      * @throws IOException
      */
-    public ClassicHttpResponse put(String url, String jsonParamValue
+    public CloseableHttpResponse put(String url, String jsonParamValue
                                  , AuthenticationHandler auth) throws IOException {
 		HttpPut put = new HttpPut(url);
 		if (auth != null) auth.setAuthorization(put);
@@ -164,7 +166,7 @@ public class HttpConnection {
 	 * @return HttpResponseHandler that comprises response body as String and status code.
      * @throws IOException
      */
-    public ClassicHttpResponse deleteURL(String url, AuthenticationHandler auth) throws IOException {
+    public CloseableHttpResponse deleteURL(String url, AuthenticationHandler auth) throws IOException {
 		HttpDelete delete = new HttpDelete(url);
 		auth.setAuthorization(delete);
 		return executeHttpClient(delete);
@@ -178,7 +180,7 @@ public class HttpConnection {
 	 * @return response handler of the executed request
 	 * @throws IOException
 	 */
-	public <T extends HttpUriRequestBase> ClassicHttpResponse executeHttpClient(T url) throws IOException {
+	public <T extends HttpUriRequestBase> CloseableHttpResponse executeHttpClient(T url) throws IOException {
 		return httpClient.execute(url);
 	}
 
@@ -187,5 +189,9 @@ public class HttpConnection {
 		for (Map.Entry<String, String> entry : headers.entrySet()) {
 			url.setHeader(entry.getKey(), entry.getValue());
 		}
+	}
+
+	public void close() throws IOException {
+		httpClient.close();
 	}
 }

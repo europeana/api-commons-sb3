@@ -10,6 +10,7 @@ import eu.europeana.api.commons_sb3.exception.EuropeanaClientRegistrationExcepti
 import eu.europeana.api.commons_sb3.http.HttpConnection;
 import eu.europeana.api.commons_sb3.oauth2.model.impl.ClientDetailsAdapter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.HttpStatus;
@@ -101,7 +102,7 @@ public class EuropeanaClientDetailsService implements ClientDetailsService {
             URI uri = new URIBuilder(this.apiKeyServiceUrl)
                     .addParameter(PARAM_CLIENT_ID, apikey)
                     .build();
-            ClassicHttpResponse response = httpConnection.post(uri.toString(), null,
+            CloseableHttpResponse response = httpConnection.post(uri.toString(), null,
                     headers, authHandler);
             if (response == null || response.getCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                 throw new OAuth2Exception("Invocation of api key service failed. Cannot validate ApiKey : " + apikey);
@@ -121,7 +122,7 @@ public class EuropeanaClientDetailsService implements ClientDetailsService {
         return null;
     }
 
-    private static KeyValidationError getKeyValidationError(ClassicHttpResponse response)
+    private static KeyValidationError getKeyValidationError(CloseableHttpResponse response)
             throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readerFor(KeyValidationError.class).readValue(response.getEntity().getContent());

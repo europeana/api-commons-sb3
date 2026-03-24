@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import eu.europeana.api.commons_sb3.auth.AuthenticationException;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpStatus;
@@ -32,8 +33,7 @@ public class AuthenticationService {
 
     public TokenResponse newToken(AuthGrant grant) throws AuthenticationException {
 
-        try {
-            ClassicHttpResponse rsp = this.httpClient.execute(newTokenRequest(grant));
+        try (CloseableHttpResponse rsp = this.httpClient.execute(newTokenRequest(grant))) {
             if (rsp.getCode() != HttpStatus.SC_OK) {
                 AuthenticationException e = this.objMapper.readerFor(AuthenticationException.class).readValue(rsp.getEntity().getContent());
                 throw e;
