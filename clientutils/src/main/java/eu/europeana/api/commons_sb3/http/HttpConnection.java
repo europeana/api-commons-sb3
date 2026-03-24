@@ -9,6 +9,7 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
@@ -74,30 +75,12 @@ public class HttpConnection {
 	/**
 	 *This method makes GET request for given URL.
 	 * @param url
-	 * @param auth Authentication handler for the request
-	 * @return HttpResponseHandler that comprises response body as String and status code.
-	 * @throws IOException
-	 */
-
-	public HttpGet getHttpRequest(String url, String acceptHeaderValue
-			, AuthenticationHandler auth) throws IOException {
-		HttpGet get = new HttpGet(url);
-		if (acceptHeaderValue != null) {
-			get.addHeader(HttpHeaders.ACCEPT, acceptHeaderValue);
-		}
-		if (auth != null) auth.setAuthorization(get);
-		return get;
-	}
-
-	/**
-	 *This method makes GET request for given URL.
-	 * @param url
 	 * @param headers map of header name and value that needs to be added in the Url
 	 * @param auth Authentication handler for the request
 	 * @return HttpResponseHandler that comprises response body as String and status code.
 	 * @throws IOException
 	 */
-	public HttpResponseHandler get(String url, Map<String, String> headers
+	public ClassicHttpResponse get(String url, Map<String, String> headers
 			, AuthenticationHandler auth) throws IOException {
 		HttpGet get = new HttpGet(url);
 		addHeaders(get, headers);
@@ -105,22 +88,7 @@ public class HttpConnection {
 		return executeHttpClient(get);
 	}
 
-	/**
-	 *This method makes GET request for given URL.
-	 * @param url
-	 *
-	 * @param auth Authentication handler for the request
-	 * @return HttpResponseHandler that comprises response body as String and status code.
-	 * @throws IOException
-	 */
 
-	public HttpResponseHandler get(String url, String acceptHeaderValue, AuthenticationHandler auth) throws IOException {
-		Map<String, String> headers = new HashMap<>();
-		if (StringUtils.isNotEmpty(acceptHeaderValue)) {
-			headers.put(HttpHeaders.ACCEPT, acceptHeaderValue);
-		}
-		return get(url, headers, auth);
-	}
 
     /**
      * This method makes POST request for given URL and JSON body parameter.
@@ -132,7 +100,7 @@ public class HttpConnection {
      * @return HttpResponseHandler that comprises response body as String and status code.
      * @throws IOException
      */
-    public HttpResponseHandler post(String url, String requestBody, String contentType
+    public ClassicHttpResponse post(String url, String requestBody, String contentType
                                   , AuthenticationHandler auth) throws IOException {
         HttpPost post = new HttpPost(url);
         if(StringUtils.isNotBlank(contentType)) {
@@ -154,7 +122,7 @@ public class HttpConnection {
 	 * @return HttpResponseHandler that comprises response body as String and status code.
 	 * @throws IOException
 	 */
-	public HttpResponseHandler post(String url, String requestBody,Map<String, String> headers
+	public ClassicHttpResponse post(String url, String requestBody,Map<String, String> headers
 			, AuthenticationHandler auth) throws IOException {
 
 		HttpPost post = new HttpPost(url);
@@ -178,7 +146,7 @@ public class HttpConnection {
      * @return HttpResponseHandler that comprises response body as String and status code.
      * @throws IOException
      */
-    public HttpResponseHandler put(String url, String jsonParamValue
+    public ClassicHttpResponse put(String url, String jsonParamValue
                                  , AuthenticationHandler auth) throws IOException {
 		HttpPut put = new HttpPut(url);
 		if (auth != null) auth.setAuthorization(put);
@@ -196,7 +164,7 @@ public class HttpConnection {
 	 * @return HttpResponseHandler that comprises response body as String and status code.
      * @throws IOException
      */
-    public HttpResponseHandler deleteURL(String url, AuthenticationHandler auth) throws IOException {
+    public ClassicHttpResponse deleteURL(String url, AuthenticationHandler auth) throws IOException {
 		HttpDelete delete = new HttpDelete(url);
 		auth.setAuthorization(delete);
 		return executeHttpClient(delete);
@@ -210,10 +178,8 @@ public class HttpConnection {
 	 * @return response handler of the executed request
 	 * @throws IOException
 	 */
-    public <T extends HttpUriRequestBase> HttpResponseHandler executeHttpClient(T url) throws IOException {
-      HttpResponseHandler responseHandler = new HttpResponseHandler();
-      httpClient.execute(url, responseHandler); 
-      return responseHandler;
+	public <T extends HttpUriRequestBase> ClassicHttpResponse executeHttpClient(T url) throws IOException {
+		return httpClient.execute(url);
 	}
 
 	private <T extends HttpUriRequestBase> void addHeaders(T url, Map<String, String> headers) {
