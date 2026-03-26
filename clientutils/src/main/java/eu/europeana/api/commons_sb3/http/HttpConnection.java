@@ -91,30 +91,6 @@ public class HttpConnection {
 	}
 
 
-
-    /**
-     * This method makes POST request for given URL and JSON body parameter.
-     *
-     * @param url
-     * @param requestBody
-     * @param contentType
-	 * @param auth Authentication handler for the request
-     * @return HttpResponseHandler that comprises response body as String and status code.
-     * @throws IOException
-     */
-    public CloseableHttpResponse post(String url, String requestBody, String contentType
-                                  , AuthenticationHandler auth) throws IOException {
-        HttpPost post = new HttpPost(url);
-        if(StringUtils.isNotBlank(contentType)) {
-			post.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
-        }
-		if (auth != null) auth.setAuthorization(post);
-        if (requestBody != null) {
-            post.setEntity(new StringEntity(requestBody));
-        }
-		return executeHttpClient(post);
-	}
-
 	/**
 	 * Makes POST request with given url,request, headers and authHandler
 	 * @param url request URL
@@ -124,7 +100,7 @@ public class HttpConnection {
 	 * @return HttpResponseHandler that comprises response body as String and status code.
 	 * @throws IOException
 	 */
-	public CloseableHttpResponse post(String url, String requestBody,Map<String, String> headers
+	public CloseableHttpResponse post(String url, String requestBody, Map<String, String> headers
 			, AuthenticationHandler auth) throws IOException {
 
 		HttpPost post = new HttpPost(url);

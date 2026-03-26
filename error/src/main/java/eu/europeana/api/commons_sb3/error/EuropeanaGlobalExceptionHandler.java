@@ -77,7 +77,7 @@ public class EuropeanaGlobalExceptionHandler {
      *
      * @param e caught exception
      */
-    @ExceptionHandler
+    @ExceptionHandler(EuropeanaApiException.class)
     public ResponseEntity<EuropeanaApiErrorResponse> handleEuropeanaBaseException(EuropeanaApiException e, HttpServletRequest httpRequest) {
         logException(e);
         EuropeanaApiErrorResponse response = new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
@@ -182,7 +182,7 @@ public class EuropeanaGlobalExceptionHandler {
      * Handler for HttpRequestMethodNotSupportedException errors
      * Make sure we return 405 instead of 500 response when http method is not supported; also include error message
      */
-    @ExceptionHandler
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<EuropeanaApiErrorResponse> handleHttpMethodNotSupportedException(
             HttpRequestMethodNotSupportedException e, HttpServletRequest httpRequest) {
         HttpStatus responseStatus = HttpStatus.METHOD_NOT_ALLOWED;
@@ -209,7 +209,7 @@ public class EuropeanaGlobalExceptionHandler {
      * Handler for ConstraintValidation errors
      * Make sure we return 400 instead of 500 response when input validation fails; also include error message
      */
-    @ExceptionHandler
+    @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<EuropeanaApiErrorResponse> handleInputValidationError(ConstraintViolationException e, HttpServletRequest httpRequest) {
         HttpStatus responseStatus = HttpStatus.BAD_REQUEST;
         EuropeanaApiErrorResponse response = new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
@@ -227,7 +227,7 @@ public class EuropeanaGlobalExceptionHandler {
     /**
      * MissingServletRequestParameterException thrown when a required parameter is not included in a request.
      */
-    @ExceptionHandler
+    @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<EuropeanaApiErrorResponse> handleInputValidationError(MissingServletRequestParameterException e, HttpServletRequest httpRequest) {
         HttpStatus responseStatus = HttpStatus.BAD_REQUEST;
         EuropeanaApiErrorResponse response = (new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled()))
@@ -326,6 +326,30 @@ public class EuropeanaGlobalExceptionHandler {
                             .setCode(ee.getErrorCode())
                             .build());
         }
+    }
+
+    /**
+     * Default handler for all other exception types
+     *
+     * @param e caught exception
+     */
+    @ExceptionHandler
+    public ResponseEntity<EuropeanaApiErrorResponse> handleOtherExceptionTypes(Exception e, HttpServletRequest httpRequest) {
+        HttpStatus responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        EuropeanaApiErrorResponse response =
+                new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
+                .setStatus(responseStatus.value())
+                .setError(responseStatus.getReasonPhrase())
+                .setMessage(e.getMessage())
+                .setCode("500_internal_server_error")
+                .build();
+
+        // logging separately as it's not a EuropeanaApiException
+        LOG.error("Unexpected Internal Server Error (500): {}", response.getMessage(), e);
+        return ResponseEntity
+                .status(responseStatus)
+                .headers(createHttpHeaders(httpRequest))
+                .body(response);
     }
 
     /**
