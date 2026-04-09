@@ -137,8 +137,6 @@ public class AsyncHttpConnection extends AbstractHttpConnection {
     return executeRequest(httpRequest, auth);
   }
 
-
-
   /**
    * This method makes PUT request for given URL and JSON body parameter.
    *
