@@ -28,7 +28,7 @@ public class AsyncHttpConnection extends AbstractHttpConnection {
   private final CloseableHttpAsyncClient httpClient;
 
   /**
-   * Creates a AsyncHttpConnection without redirect strategy
+   * Creates an AsyncHttpConnection without redirect strategy
    */
   public AsyncHttpConnection() {
     this(false);
@@ -37,7 +37,7 @@ public class AsyncHttpConnection extends AbstractHttpConnection {
 
   /**
    * By default - DefaultRedirectStrategy is initialised if nothing is set. To create a connection
-   * without following redirects set 'redirectHandlingDisabled' to false
+   * without following redirects, set 'redirectHandlingDisabled' to false
    * 
    * @param withRedirect whether the redirects should be followed or not
    */
@@ -105,17 +105,8 @@ public class AsyncHttpConnection extends AbstractHttpConnection {
     return executeRequest(httpRequest, auth);
   }
 
-
-  SimpleHttpResponse executeRequest(SimpleHttpRequest httpRequest, AuthenticationHandler auth)
-      throws InterruptedException, ExecutionException {
-    if (auth != null) {
-      auth.setAuthorization(httpRequest);
-    }
-    return httpClient.execute(httpRequest, null).get();
-  }
-
   /**
-   * This method makes POST request for given URL and JSON body parameter.
+   * This method makes a POST request for given URL and JSON body parameter.
    *
    * @param url request url
    * @param requestBody body
@@ -138,7 +129,7 @@ public class AsyncHttpConnection extends AbstractHttpConnection {
   }
 
   /**
-   * This method makes PUT request for given URL and JSON body parameter.
+   * This method makes a PUT request for given URL and JSON body parameter.
    *
    * @param url the request URL
    * @param jsonBody the body
@@ -156,10 +147,10 @@ public class AsyncHttpConnection extends AbstractHttpConnection {
   }
 
   /**
-   * This method makes DELETE request for given identifier URL.
+   * This method makes a DELETE request for a given identifier URL.
    *
    * @param url The identifier URL
-   * @param auth Authentication handler for the request ( should not be null for deletion)
+   * @param auth Authentication handler for the request (should not be null for deletion)
    * @return HttpResponseHandler that comprises response body as String and status code.
    * @throws IOException if the request execution fails
    */
@@ -167,6 +158,24 @@ public class AsyncHttpConnection extends AbstractHttpConnection {
       throws ExecutionException, InterruptedException {
     SimpleHttpRequest httpRequest = new SimpleHttpRequest("DELETE", url);
     return executeRequest(httpRequest, auth);
+  }
+
+  /**
+   * Executes the provided HTTP request using the configured HTTP client. If an {@code AuthenticationHandler}
+   * is provided, it will set the necessary authorization headers for the request before execution.
+   *
+   * @param httpRequest the HTTP request to be executed
+   * @param auth the authentication handler used to set authorization for the request; can be null
+   * @return the response of the HTTP request execution
+   * @throws InterruptedException if the execution is interrupted
+   * @throws ExecutionException if an execution error occurs during the request
+   */
+  SimpleHttpResponse executeRequest(SimpleHttpRequest httpRequest, AuthenticationHandler auth)
+          throws InterruptedException, ExecutionException {
+    if (auth != null) {
+      auth.setAuthorization(httpRequest);
+    }
+    return httpClient.execute(httpRequest, null).get();
   }
 
   /**

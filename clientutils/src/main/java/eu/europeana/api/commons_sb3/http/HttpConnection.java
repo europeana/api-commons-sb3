@@ -87,21 +87,6 @@ public class HttpConnection extends AbstractHttpConnection{
   }
 
   /**
-   * execute request with authentication handler
-   * @param request a post, get, delete, put request
-   * @param auth authentication handler
-   * @return the response
-   * @throws IOException if the request execution fails 
-   */
-  public CloseableHttpResponse executeRequest(HttpUriRequestBase request, AuthenticationHandler auth)
-      throws IOException {
-    if (auth != null)
-      auth.setAuthorization(request);
-    return executeHttpClient(request);
-  }
-
-
-  /**
    * Makes POST request with given url,request, headers and authHandler
    * 
    * @param url request URL
@@ -156,6 +141,20 @@ public class HttpConnection extends AbstractHttpConnection{
 
 
   /**
+   * execute a request with an authentication handler
+   * @param request a post, get, delete, put request
+   * @param auth authentication handler
+   * @return the response
+   * @throws IOException if the request execution fails
+   */
+  public CloseableHttpResponse executeRequest(HttpUriRequestBase request, AuthenticationHandler auth)
+          throws IOException {
+    if (auth != null)
+      auth.setAuthorization(request);
+    return executeHttpClient(request);
+  }
+
+  /**
    * Execute the http client for the url passed
    * 
    * @param request url to be execeuted
@@ -178,4 +177,5 @@ public class HttpConnection extends AbstractHttpConnection{
   public void close() throws IOException {
     httpClient.close();
   }
+
 }

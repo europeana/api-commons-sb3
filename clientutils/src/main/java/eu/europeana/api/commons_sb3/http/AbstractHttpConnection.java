@@ -4,10 +4,17 @@ import java.util.List;
 import java.util.Map;
 import org.apache.hc.core5.http.HttpRequest;
 
+/**
+ * Abstract base class for managing HTTP connections and requests.
+ * Provides methods to add headers to HTTP requests, both single-value and multi-value headers.
+ *
+ * @author Sergiu Gordea
+ * @since 09 April 2026
+ */
 public class AbstractHttpConnection {
 
   /**
-   * add single valued, or  serialized multivalue headers to request 
+   * add single valued, or serialized multivalue headers to the request
    * @param request the request
    * @param headers headers to append
    */
