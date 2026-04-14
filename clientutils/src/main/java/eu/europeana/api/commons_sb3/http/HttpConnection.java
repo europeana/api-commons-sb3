@@ -1,23 +1,22 @@
 package eu.europeana.api.commons_sb3.http;
 
-import eu.europeana.api.commons_sb3.auth.AuthenticationHandler;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.hc.client5.http.classic.methods.*;
+import java.io.IOException;
+import java.util.Map;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.DefaultRedirectStrategy;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.io.BasicHttpClientConnectionManager;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.HttpHeaders;
+import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import eu.europeana.api.commons_sb3.auth.AuthenticationHandler;
 
 /**
  * The class encapsulating simple HTTP access.
@@ -107,7 +106,7 @@ public class HttpConnection {
 		addHeaders(post,headers);
 		if (auth != null) auth.setAuthorization(post);
 		if (requestBody != null) {
-			post.setEntity(new StringEntity(requestBody));
+			post.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
 		}
 		return executeHttpClient(post);
 	}
@@ -128,7 +127,7 @@ public class HttpConnection {
                                  , AuthenticationHandler auth) throws IOException {
 		HttpPut put = new HttpPut(url);
 		if (auth != null) auth.setAuthorization(put);
-		put.setEntity(new StringEntity(jsonParamValue));
+		put.setEntity(new StringEntity(jsonParamValue, ContentType.APPLICATION_JSON));
 
 		return executeHttpClient(put);
 
