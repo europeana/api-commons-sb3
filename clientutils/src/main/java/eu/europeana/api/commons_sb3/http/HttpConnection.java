@@ -112,8 +112,8 @@ public class HttpConnection extends AbstractHttpConnection{
   /**
    * This method makes PUT request for given URL and JSON body parameter.
    *
-   * @param url
-   * @param jsonBody
+   * @param url The url to call for remote request
+   * @param jsonBody to be submitted with the request
    * @param auth Authentication handler for the request
    * @return HttpResponseHandler that comprises response body as String and status code.
    * @throws IOException if the request execution fails
@@ -129,7 +129,7 @@ public class HttpConnection extends AbstractHttpConnection{
   /**
    * This method makes DELETE request for given identifier URL.
    *
-   * @param url The identifier URL
+   * @param url The url to call for remote request
    * @param auth Authentication handler for the request
    * @return HttpResponseHandler that comprises response body as String and status code.
    * @throws IOException if the request execution fails
@@ -137,6 +137,22 @@ public class HttpConnection extends AbstractHttpConnection{
   public CloseableHttpResponse deleteURL(String url, AuthenticationHandler auth)
       throws IOException {
     HttpUriRequestBase delete = new HttpDelete(url);
+    return executeRequest(delete, auth);
+  }
+
+  /**
+   * This method makes DELETE request for given identifier URL.
+   *
+   * @param url The url to call for remote request
+   * @param jsonBody to be submitted with the request
+   * @param auth Authentication handler for the request
+   * @return HttpResponseHandler that comprises response body as String and status code.
+   * @throws IOException if the request execution fails
+   */
+  public CloseableHttpResponse delete(String url, String jsonBody, AuthenticationHandler auth)
+      throws IOException {
+    HttpUriRequestBase delete = new HttpDelete(url);
+    delete.setEntity(new StringEntity(jsonBody, ContentType.APPLICATION_JSON));
     return executeRequest(delete, auth);
   }
 
