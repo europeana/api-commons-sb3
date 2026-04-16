@@ -51,6 +51,7 @@ Steps to add authentication to a Spring-Boot 3 API:
     public EuropeanaClientDetailsService getClientDetailsService() {
         EuropeanaClientDetailsService clientDetails = new EuropeanaClientDetailsService();
         if (StringUtils.isNotEmpty(authTokenEndpoint) && StringUtils.isNotEmpty(authTokenGrantParams)) {
+            clientDetails.setApiKeyServiceUrl(authApiKeyEndpoint);
             AuthenticationConfig config = new AuthenticationConfig(authTokenEndpoint, authTokenGrantParams);
             clientDetails.setAuthHandler(AuthenticationBuilder.newAuthentication(config));
         } else {
