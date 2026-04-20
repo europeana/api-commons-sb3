@@ -10,13 +10,10 @@
     <modules>
         <module>error</module>
         <module>definitions</module>
-        <module>web</module>
         <module>clientutils</module>
         <module>oauth</module>
         <module>search</module>
         <module>nosql</module>
-        <module>net</module>
-
     </modules>
 
     <name>API Commons for Spring Boot v3</name>
@@ -43,73 +40,58 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <sonar.organization>europeana</sonar.organization>
-        <apacheSolr.version>8.11.3</apacheSolr.version>
-        <spring.version>6.2.17</spring.version> <!-- Make sure version matches with the one used by spring-boot -->
-        <spring-boot.version>3.5.12</spring-boot.version>
-        <spring-webmvc.version>${spring.version}</spring-webmvc.version>
-        <jakarta-servlet.version>6.0.0</jakarta-servlet.version>
-        <jakarta-validation.version>3.0.2</jakarta-validation.version>
-        <jakarta-ws.rs.version>4.0.0</jakarta-ws.rs.version>
 
+        <!-- Used in many modules -->
+        <log4j2.version>2.25.4</log4j2.version>
+        <apache.commonsLang3.version>3.17.0</apache.commonsLang3.version>
+
+        <spring-boot.version>3.5.12</spring-boot.version>
+        <spring.version>6.2.17</spring.version> <!-- Make sure version matches with the one used by spring-boot -->
+        <jakarta-servlet.version>6.0.0</jakarta-servlet.version> <!-- same as in Spring framework-->
+        <jackson.version>2.19.4</jackson.version> <!-- Same as in Spring framework -->
+
+        <!-- <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version> -->
+        <org.junit.jupiter.version>6.0.1</org.junit.jupiter.version>
+
+        <!-- Used in error module -->
+        <spring-webmvc.version>${spring.version}</spring-webmvc.version> <!-- also used in oauth module -->
+        <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <jakarta-annotation.version>3.0.0</jakarta-annotation.version>
-        <!--jackson.version: currently the same as in spring dependencies -->
-        <jackson.version>2.19.4</jackson.version>
-        <log4j2.version>2.23.1</log4j2.version>
+
+        <!-- Used in clientutils module -->
+        <httpclient5.version>5.5.2</httpclient5.version> <!-- also used in oauth module -->
+        <jettison.version>1.5.4</jettison.version>
+
+        <!-- Used in oauth module -->
+        <springSecurityJwt.version>1.1.1.RELEASE</springSecurityJwt.version>
+        <springSecurityOauth.version>2.5.1.RELEASE</springSecurityOauth.version>
+
+        <!-- Used in definitions module -->
         <annotationLd.version>1.1.9</annotationLd.version>
         <jena.version>5.6.0</jena.version>
 
-        <dependency-check-maven.version>12.1.0</dependency-check-maven.version>
-        <apache.commomLang3.version>3.13.0</apache.commomLang3.version>
-        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-
-        <httpclient5.version>5.5.2</httpclient5.version>
-        <jettison.version>1.5.4</jettison.version>
-
-        <springSecurityJwt.version>1.1.1.RELEASE</springSecurityJwt.version>
-        <springSecurityOauth.version>2.5.1.RELEASE</springSecurityOauth.version>
-        <org.junit.jupiter.version>6.0.1</org.junit.jupiter.version>
+        <!-- Used in nosql module -->
         <mongodb.upgrade.version>4.7.2</mongodb.upgrade.version>
         <morphia.version>1.6.1</morphia.version>
 
+        <!-- For search module -->
+        <apacheSolr.version>8.11.3</apacheSolr.version>
+
     </properties>
 
-<profiles>
-    <profile>
-        <id>depcheck</id>
-        <build>
-        <plugins>
-            <plugin>
-                <!-- This will be active when running the verify or install goal
-                     To skip (e.g. during debugging) use 'mvn clean package')-->
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>${dependency-check-maven.version}</version>
-                <configuration>
-                    <nvdApiKeyEnvironmentVariable>NVD_APIKEY</nvdApiKeyEnvironmentVariable>
-                    <!-- see EA-3505 why we host the known exploited vulnerabilties file ourselves -->
-                    <knownExploitedUrl>https://artifactory.eanadev.org/artifactory/ext-release-local/gov/cisa/www/known_exploited_vulnerabilities.json</knownExploitedUrl>
-                    <failBuildOnCVSS>8</failBuildOnCVSS>
-                    <suppressionFiles>
-                        <suppressionFile>owasp-suppress.xml</suppressionFile>
-                    </suppressionFiles>
-                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-
-    </build>
-    </profile>
-</profiles>
     <!-- Please limit the use of dependencies to a module as much as possible!
          Only dependencies used by all (or almost all) modules should be placed here -->
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j2.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>

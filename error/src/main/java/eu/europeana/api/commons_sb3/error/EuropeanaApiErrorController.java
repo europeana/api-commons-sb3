@@ -14,8 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.Arrays;
 import java.util.Map;
 
-import static eu.europeana.api.commons_sb3.error.EuropeanaErrorConstants.debug;
-import static eu.europeana.api.commons_sb3.error.EuropeanaErrorConstants.profile;
+import static eu.europeana.api.commons_sb3.error.EuropeanaErrorConstants.*;
 
 /**
  * Add this controller to your application to replace the default Spring-Boot BasicErrorController that generates the
@@ -68,14 +67,14 @@ public class EuropeanaApiErrorController extends AbstractErrorController {
      */
     @Override
     protected boolean getTraceParameter(HttpServletRequest request) {
-        if (this.getBooleanParameter(request, debug)) {
+        if (this.getBooleanParameter(request, DEBUG) || this.getBooleanParameter(request, TRACE)) {
             return true;
         }
         String parameter = request.getParameter(profile);
         if (parameter == null) {
             return false;
         } else {
-            return Arrays.stream(parameter.split("[+,]")).anyMatch(debug::equalsIgnoreCase);
+            return Arrays.stream(parameter.split("[+,]")).anyMatch(DEBUG::equalsIgnoreCase);
         }
     }
 

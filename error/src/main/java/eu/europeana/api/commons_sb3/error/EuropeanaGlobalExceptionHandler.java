@@ -333,24 +333,25 @@ public class EuropeanaGlobalExceptionHandler {
      *
      * @param e caught exception
      */
-    @ExceptionHandler
-    public ResponseEntity<EuropeanaApiErrorResponse> handleOtherExceptionTypes(Exception e, HttpServletRequest httpRequest) {
-        HttpStatus responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        EuropeanaApiErrorResponse response =
-                new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
-                .setStatus(responseStatus.value())
-                .setError(responseStatus.getReasonPhrase())
-                .setMessage(e.getMessage())
-                .setCode("500_internal_server_error")
-                .build();
-
-        // logging separately as it's not a EuropeanaApiException
-        LOG.error("Unexpected Internal Server Error (500): {}", response.getMessage(), e);
-        return ResponseEntity
-                .status(responseStatus)
-                .headers(createHttpHeaders(httpRequest))
-                .body(response);
-    }
+//    @ExceptionHandler
+//    public ResponseEntity<EuropeanaApiErrorResponse> handleOtherExceptionTypes(Exception e, HttpServletRequest httpRequest) {
+//        LOG.error("Other error caught", e);
+//        HttpStatus responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+//        EuropeanaApiErrorResponse response =
+//                new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
+//                .setStatus(responseStatus.value())
+//                .setError(responseStatus.getReasonPhrase())
+//                .setMessage(e.getMessage())
+//                .setCode("500_internal_server_error")
+//                .build();
+//
+//        // logging separately as it's not a EuropeanaApiException
+//        LOG.error("Unexpected Internal Server Error (500): {}", response.getMessage(), e);
+//        return ResponseEntity
+//                .status(responseStatus)
+//                .headers(createHttpHeaders(httpRequest))
+//                .body(response);
+//    }
 
     /**
      * If key does not exist (or it does not have either a “client_owner” or “shared_owner” role)

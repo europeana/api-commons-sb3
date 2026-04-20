@@ -10,17 +10,12 @@
     <artifactId>commons-sb3-definitions</artifactId>
     <name>API Commons for Spring Boot v3 - Definitions module</name>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <!-- StringUtils -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${apache.commomLang3.version}</version>
+            <version>${apache.commonsLang3.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

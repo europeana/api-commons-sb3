@@ -121,7 +121,7 @@ public class EuropeanaApiErrorResponse {
             // check if profile contains debug
             if (StringUtils.hasLength(profileParamString)) {
                 includeErrorStack = List.of(profileParamString.split(COMMA))
-                        .contains(debug);
+                        .contains(DEBUG);
             }
             if (stacktraceEnabled && includeErrorStack) {
                 this.trace = ResponseUtils.getExceptionStackTrace(e);

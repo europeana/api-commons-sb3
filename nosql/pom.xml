@@ -73,12 +73,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>${apache.commomLang3.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${log4j2.version}</version>
+			<version>${apache.commonsLang3.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>

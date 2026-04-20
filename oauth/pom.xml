@@ -14,17 +14,12 @@
 
     <name>API Commons for Spring Boot v3 - OAuth Module</name>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-     </properties>
-
     <dependencies>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${apache.commomLang3.version}</version>
+            <version>${apache.commonsLang3.version}</version>
         </dependency>
 
         <dependency>
@@ -43,12 +38,6 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-jwt</artifactId>
             <version>${springSecurityJwt.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j2.version}</version>
         </dependency>
 
         <dependency>
