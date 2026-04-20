@@ -24,6 +24,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import eu.europeana.api.commons_sb3.error.i18n.I18nService;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -254,6 +255,26 @@ public class EuropeanaGlobalExceptionHandler {
                 .setStatus(responseStatus.value())
                 .setError(responseStatus.getReasonPhrase())
                 .setMessage("Server could not generate a response that is acceptable by the client")
+                .build();
+
+        return ResponseEntity
+                .status(responseStatus)
+                .headers(createHttpHeaders(httpRequest))
+                .body(response);
+    }
+
+    /**
+     * Customise the response for {@link org.springframework.web.servlet.resource.NoResourceFoundException}
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<EuropeanaApiErrorResponse> handleNoResourceFoundException(
+            NoResourceFoundException e, HttpServletRequest httpRequest) {
+
+        HttpStatus responseStatus = HttpStatus.NOT_FOUND;
+        EuropeanaApiErrorResponse response = new EuropeanaApiErrorResponse.Builder(httpRequest, e, stackTraceEnabled())
+                .setStatus(responseStatus.value())
+                .setError(responseStatus.getReasonPhrase())
+                .setMessage("Server could not find the requested resource")
                 .build();
 
         return ResponseEntity
