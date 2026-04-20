@@ -67,8 +67,10 @@
         <jettison.version>1.5.4</jettison.version>
 
         <!-- Used in oauth module -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
         <springSecurityJwt.version>1.1.1.RELEASE</springSecurityJwt.version>
-        <springSecurityOauth.version>2.5.1.RELEASE</springSecurityOauth.version>
+        <!-- https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2 -->
+        <springSecurityOauth.version>2.5.2.RELEASE</springSecurityOauth.version>
 
         <!-- Used in definitions module -->
         <annotationLd.version>1.1.9</annotationLd.version>
