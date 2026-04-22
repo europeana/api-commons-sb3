@@ -3,20 +3,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.europeana.api</groupId>
-    <artifactId>commons-sb3</artifactId>
-    <version>0.1.7-SNAPSHOT</version>
+    <artifactId>commons-sb</artifactId>
+    <version>0.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>error</module>
         <module>definitions</module>
+        <module>error</module>
         <module>clientutils</module>
         <module>oauth</module>
         <module>search</module>
         <module>nosql</module>
     </modules>
 
-    <name>API Commons for Spring Boot v3</name>
+    <name>API Commons for Spring Boot v4</name>
     
     	<repositories>
 		<repository>
@@ -49,10 +49,11 @@
         <log4j2.version>2.25.4</log4j2.version>
         <apache.commonsLang3.version>3.17.0</apache.commonsLang3.version>
 
-        <spring-boot.version>3.5.12</spring-boot.version>
-        <spring.version>6.2.17</spring.version> <!-- Make sure version matches with the one used by spring-boot -->
-        <jakarta-servlet.version>6.0.0</jakarta-servlet.version> <!-- same as in Spring framework-->
-        <jackson.version>2.19.4</jackson.version> <!-- Same as in Spring framework -->
+        <spring-boot.version>4.0.5</spring-boot.version>
+        <spring.version>7.0.6</spring.version> <!-- Make sure version matches with the one used by spring-boot -->
+        <jakarta-servlet.version>6.1.0</jakarta-servlet.version> <!-- Preferably same as in Spring framework-->
+        <jackson2.version>2.21</jackson2.version>
+        <jackson3.version>3.1.0</jackson3.version> <!-- Preferably same as in Spring framework -->
 
         <!-- <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version> -->
         <org.junit.jupiter.version>6.0.1</org.junit.jupiter.version>
@@ -80,7 +81,7 @@
         <mongodb.upgrade.version>4.7.2</mongodb.upgrade.version>
         <morphia.version>1.6.1</morphia.version>
 
-        <!-- For search module -->
+        <!-- Used in search module -->
         <apacheSolr.version>8.11.3</apacheSolr.version>
 
     </properties>

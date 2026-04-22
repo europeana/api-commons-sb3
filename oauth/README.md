@@ -1,4 +1,4 @@
-# API Commons for Spring Boot v3 - OAuth module
+# API Commons for Spring Boot v4 - OAuth module
 
 Steps to add authentication to a Spring-Boot 3 API:
 

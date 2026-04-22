@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>eu.europeana.api</groupId>
-        <artifactId>commons-sb3</artifactId>
-        <version>0.1.7-SNAPSHOT</version>
+        <artifactId>commons-sb</artifactId>
+        <version>0.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>commons-sb3-definitions</artifactId>
-    <name>API Commons for Spring Boot v3 - Definitions module</name>
+    <artifactId>commons-sb-definitions</artifactId>
+    <name>API Commons for Spring Boot v4 - Definitions module</name>
 
     <dependencies>
         <!-- StringUtils -->
@@ -29,12 +29,19 @@
             <version>${jakarta-servlet.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
+            <version>${jackson2.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/tools.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson3.version}</version>
+        </dependency>
 
      <!--   The Stanbol JSON-LD API to create JSON-LD structures with extensions
            for Open Annotation-LD. Parse them from String representation and to serialize them to Strings.-->

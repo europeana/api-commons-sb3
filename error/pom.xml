@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>eu.europeana.api</groupId>
-        <artifactId>commons-sb3</artifactId>
-        <version>0.1.7-SNAPSHOT</version>
+        <artifactId>commons-sb</artifactId>
+        <version>0.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>commons-sb3-error</artifactId>
-    <name>API Commons for Spring Boot v3 - Error module</name>
+    <artifactId>commons-sb-error</artifactId>
+    <name>API Commons for Spring Boot v4 - Error module</name>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot -->
@@ -23,18 +23,18 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-webmvc</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring-webmvc.version}</version>
-        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
         <dependency>
@@ -55,14 +55,19 @@
             <version>${jakarta-annotation.version}</version>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
+            <version>${jackson2.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/tools.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson3.version}</version>
+        </dependency>
 
         <!-- StringUtils -->
         <dependency>
@@ -73,9 +78,10 @@
 
         <dependency>
             <groupId>eu.europeana.api</groupId>
-            <artifactId>commons-sb3-definitions</artifactId>
-            <version>0.1.7-SNAPSHOT</version>
+            <artifactId>commons-sb-definitions</artifactId>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
 
 </project>

@@ -1,0 +1,118 @@
+package eu.europeana.api.commons_sb.oauth2;
+
+import eu.europeana.api.commons_sb.definitions.caching.CachingHeaders;
+import eu.europeana.api.commons_sb.error.ApiRequestPathMethodService;
+import eu.europeana.api.commons_sb.error.EuropeanaI18nApiException;
+import eu.europeana.api.commons_sb.error.config.ErrorMessage;
+import eu.europeana.api.commons_sb.error.exceptions.ApplicationAuthenticationException;
+import eu.europeana.api.commons_sb.oauth2.service.authorization.AuthorizationService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+
+import java.util.Date;
+import java.util.Optional;
+
+/**
+ * Base class for authorization methods.
+ *
+ * other API needs to create a getAuthorizationService() implmenation with their
+ * own AuthorizationService or use the existing BaseAuthorizationService Implementation
+ */
+public abstract class BaseRestController {
+
+    protected abstract AuthorizationService getAuthorizationService();
+
+    /**
+     * If apikey service url is empty, disable the authentication
+     * @return
+     */
+    public boolean isAuthEnabled(String apikyServiceUrl) {
+        return StringUtils.isNotEmpty(apikyServiceUrl);
+    }
+
+    /**
+     * This method adopts KeyCloack token from HTTP request and verifies write
+     * access rights for particular api and operation
+     *
+     * @param request   The HTTP request
+     * @param operation The name of current operation
+     * @return authentication object containing user token
+     * @throws ApplicationAuthenticationException will throw ApplicationAuthenticationException
+     * Can also throw ApiWriteLockException if WriteLockAuthorizationService#checkWriteLockInEffect
+     *              along with ApiWriteLockService is implemented to check if the DB is locked before writing
+     *              But ApiWriteLockException needs to be handled on the API side by throwing
+     *              ApplicationAuthenticationException or EuropeanaI18nApiException
+     *
+     */
+    public Authentication verifyWriteAccess(String operation, HttpServletRequest request)
+            throws EuropeanaI18nApiException {
+        return getAuthorizationService().authorizeWriteAccess(request, operation);
+    }
+
+    /**
+     * Processes the HTTP request and validates the provided APIKey (see also
+     * Europeana APIKEY service)
+     *
+     * @param request the full HTTP request
+     * @throws ApplicationAuthenticationException if the APIKey was not submitted
+     *                                            with the request or the APIKey
+     *                                            could not be validated
+     */
+    public Authentication verifyReadAccess(HttpServletRequest request) throws ApplicationAuthenticationException {
+        return getAuthorizationService().authorizeReadAccess(request);
+    }
+
+    /**
+     * This method compares If-Match header with the current etag value.
+     * If the tags don't match, return 412
+     *
+     * @param etag    The current etag value
+     * @param request The request containing If-Match header
+     * @throws EuropeanaI18nApiException
+     */
+    public void checkIfMatchHeader(String etag, HttpServletRequest request) throws EuropeanaI18nApiException {
+        String ifMatchHeader = request.getHeader(CachingHeaders.IF_MATCH);
+        if (ifMatchHeader != null && !ifMatchHeader.equals(etag)) {
+            throw new EuropeanaI18nApiException(ErrorMessage.ETAG_MISMATCH_412, null, HttpStatus.PRECONDITION_FAILED);
+        }
+    }
+
+    /**
+     * This method generates etag for response header.
+     *
+     * @param timestamp The date of the last modification
+     * @param format    The MIME format
+     * @param version   The API version
+     * @return etag value
+     */
+    public String generateETag(Date timestamp, String format, String version) {
+        // add timestamp, format and version to an etag
+        long serialCode = timestamp.getTime() + format.hashCode();
+        if(version != null) {
+            serialCode += version.hashCode();
+        } else {
+            serialCode += "0.0.1-SNAPSHOT".hashCode();
+        }
+
+        return "\"" + Long.toHexString(serialCode)  + "\"";
+    }
+
+    /**
+     * Gets all HTTP methods implemented across the application, that match the url pattern for the
+     * current request. This is useful in populating the HTTP Allow header when generating API
+     * responses
+     */
+    protected String getMethodsForRequestPattern(HttpServletRequest request,
+                                                 ApiRequestPathMethodService requestMethodService) {
+        if(requestMethodService != null) {
+            Optional<String> methodsForRequestPattern =
+                    requestMethodService.getMethodsForRequestPattern(request);
+            return methodsForRequestPattern.orElse(request.getMethod());
+        }else {
+            return request.getMethod();
+        }
+    }
+
+}
