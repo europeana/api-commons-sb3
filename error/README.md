@@ -4,10 +4,7 @@ There are 4 steps to start using the error module in a Spring-Boot 3 API:
 
 1. Make sure you have a class that adds the 2 required beans
 ```java
-    private static final String BEAN_I18N_SERVICE = "i18nService";
-    private static final String BEAN_I18N_MESSAGE_SOURCE = "messageSource";
-
-    @Bean(name = BEAN_I18N_MESSAGE_SOURCE)
+    @Bean(name = EuropeanaBeanNames.I18N_MESSAGE_SOURCE)
     public MessageSource i18nMessagesSource(){
         ReloadableResourceBundleMessageSource source = new ReloadableResourceBundleMessageSource();
         source.setBasename("classpath:messages");
@@ -15,7 +12,7 @@ There are 4 steps to start using the error module in a Spring-Boot 3 API:
         return source;
     }
 
-    @Bean(name = BEAN_I18N_SERVICE)
+    @Bean(name = EuropeanaBeanNames.I18N_SERVICE)
     public I18nService getI18nService() {
         return new I18nServiceImpl(i18nMessagesSource());
     }

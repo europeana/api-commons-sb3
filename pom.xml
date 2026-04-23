@@ -47,7 +47,7 @@
 
         <!-- Used in many modules -->
         <log4j2.version>2.25.4</log4j2.version>
-        <apache.commonsLang3.version>3.17.0</apache.commonsLang3.version>
+        <apache.commonsLang3.version>3.20.0</apache.commonsLang3.version>
 
         <spring-boot.version>4.0.5</spring-boot.version>
         <spring.version>7.0.6</spring.version> <!-- Make sure version matches with the one used by spring-boot -->

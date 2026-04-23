@@ -15,8 +15,6 @@ Steps to add authentication to a Spring-Boot 3 API:
 
 3. Make sure you have a class that `extends BaseAuthorizationService` and add something like the following:
 ```java
-    private static final String BEAN_CLIENT_DETAILS_SERVICE ="commons_oauth2_europeanaClientDetailsService";
-
     @Value("${auth.api.name:}")
     private String authApiName;
     
@@ -47,7 +45,7 @@ Steps to add authentication to a Spring-Boot 3 API:
         // not sure when this is used
     }
 
-    @Bean(name = BEAN_CLIENT_DETAILS_SERVICE)
+    @Bean(name = EuropeanaBeanNames.CLIENT_DETAILS_SERVICE)
     public EuropeanaClientDetailsService getClientDetailsService() {
         EuropeanaClientDetailsService clientDetails = new EuropeanaClientDetailsService();
         if (StringUtils.isNotEmpty(authTokenEndpoint) && StringUtils.isNotEmpty(authTokenGrantParams)) {

@@ -7,7 +7,7 @@ import eu.europeana.api.commons_sb.definitions.oauth.KeyValidationResult;
 import eu.europeana.api.commons_sb.exception.ApiKeyValidationException;
 import eu.europeana.api.commons_sb.exception.EuropeanaClientRegistrationException;
 import eu.europeana.api.commons_sb.http.HttpConnection;
-import eu.europeana.api.commons_sb.oauth2.EuropeanaBeanNames;
+import eu.europeana.api.commons_sb.definitions.EuropeanaBeanNames;
 import eu.europeana.api.commons_sb.oauth2.model.impl.ClientDetailsAdapter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;

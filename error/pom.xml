@@ -62,13 +62,6 @@
             <version>${jackson2.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/tools.jackson.core/jackson-core -->
-        <dependency>
-            <groupId>tools.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson3.version}</version>
-        </dependency>
-
         <!-- StringUtils -->
         <dependency>
             <groupId>org.apache.commons</groupId>
