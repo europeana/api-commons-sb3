@@ -16,7 +16,6 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 /**
  * Write RDF record in Turtle format
  */
-// Srishti :: TODO check if uri with spaces are handled in the new version
 public class TurtleRecordWriter implements AutoCloseable {
 
     private static final int KB = 1024;
@@ -25,8 +24,9 @@ public class TurtleRecordWriter implements AutoCloseable {
     private BufferedWriter bufferedWriter;
     private Map<String, String> map = new HashMap<>();
 
-    public TurtleRecordWriter(OutputStream out) {
+    public TurtleRecordWriter(OutputStream out) throws NoSuchFieldException, IllegalAccessException {
         bufferedWriter = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8), BUFFER_SIZE);
+        RiotRdfUtils.disableErrorForSpaceURI();
     }
 
     public void write(Model m ) throws IOException {
