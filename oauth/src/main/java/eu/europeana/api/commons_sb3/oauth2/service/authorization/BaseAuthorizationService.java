@@ -89,7 +89,6 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         } catch (EuropeanaClientRegistrationException e) {
             // invalid api key
             throw new ApplicationAuthenticationException(e.getMessage(), e.getCode(), e.getError(), HttpStatus.valueOf(e.getHttpStatusCode()));
-            //throw new ApplicationAuthenticationException(null, null, null, HttpStatus.valueOf(e.getResult().getHttpStatusCode()) , null, e.getResult());
         } catch (OAuth2Exception e) {
             // validation failed through API Key service issues
             // silently approve request
