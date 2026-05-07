@@ -498,4 +498,22 @@ public class OAuthUtils {
         return (authorization != null &&
                 authorization.regionMatches(true,0, (TYPE_BEARER + " "),0,7));
     }
+
+    /**
+     * Retrieves the details from the provided Authentication object if available.
+     *
+     * @param auth the Authentication object from which details are to be extracted.
+     *             If null, the method returns null.
+     * @return a map containing the details if the Authentication object has details
+     *         of type Map<String, String>, otherwise returns null.
+     */
+    public static Map<String, String> getDetails(Authentication auth) {
+        if (auth == null) return null;
+
+        Object details = auth.getDetails();
+        if (details instanceof Map<?, ?> map) {
+            return (Map<String, String>) details;
+        }
+        return null;
+    }
 }

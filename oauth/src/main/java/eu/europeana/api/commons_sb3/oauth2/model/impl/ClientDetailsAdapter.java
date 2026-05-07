@@ -1,6 +1,7 @@
 package eu.europeana.api.commons_sb3.oauth2.model.impl;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,8 +14,8 @@ public class ClientDetailsAdapter implements ClientDetails {
 
  	ApiKey apiKey;
 	private String wsKey;
+	Map<String, Object> additionalInformation;
 
-	
 	public ClientDetailsAdapter() {
 	}
 
@@ -89,7 +90,10 @@ public class ClientDetailsAdapter implements ClientDetails {
 
 	@Override
 	public Map<String, Object> getAdditionalInformation() {
-		return null;
+		if (additionalInformation == null ) {
+			this.additionalInformation = new HashMap<>();
+		}
+		return this.additionalInformation;
 	}
 
 	public ApiKey getApiKey() {
@@ -106,6 +110,10 @@ public class ClientDetailsAdapter implements ClientDetails {
 
 	public void setWsKey(String wsKey) {
 	    this.wsKey = wsKey;
+	}
+
+	public void setAdditionalInformation(Map<String, Object> additionalInformation) {
+		this.additionalInformation = additionalInformation;
 	}
 
 }

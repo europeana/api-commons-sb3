@@ -6,6 +6,7 @@ import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationEx
 import eu.europeana.api.commons_sb3.exception.ApiKeyExtractionException;
 import eu.europeana.api.commons_sb3.exception.AuthorizationExtractionException;
 import eu.europeana.api.commons_sb3.exception.EuropeanaClientRegistrationException;
+import eu.europeana.api.commons_sb3.oauth2.model.impl.EuropeanaAuthenticationToken;
 import eu.europeana.api.commons_sb3.oauth2.utils.OAuthUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.jwt.crypto.sign.RsaVerifier;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
+import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 
 import java.util.*;
@@ -69,6 +71,7 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
     private Authentication authorizeReadByApiKey(HttpServletRequest request)
             throws ApplicationAuthenticationException {
         String wsKey;
+        ClientDetails clientDetails = null;
         // extract api key with other methods
         try {
             wsKey = OAuthUtils.extractApiKey(request);
@@ -82,10 +85,11 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
 
         // validate api key
         try {
-            getClientDetailsService().loadClientByClientId(wsKey);
+            clientDetails = getClientDetailsService().loadClientByClientId(wsKey);
         } catch (EuropeanaClientRegistrationException e) {
             // invalid api key
-            throw new ApplicationAuthenticationException(null, null, null, HttpStatus.valueOf(e.getResult().getHttpStatusCode()) , null, e.getResult());
+            throw new ApplicationAuthenticationException(e.getMessage(), e.getCode(), e.getError(), HttpStatus.valueOf(e.getHttpStatusCode()));
+            //throw new ApplicationAuthenticationException(null, null, null, HttpStatus.valueOf(e.getResult().getHttpStatusCode()) , null, e.getResult());
         } catch (OAuth2Exception e) {
             // validation failed through API Key service issues
             // silently approve request
@@ -93,7 +97,11 @@ public abstract class BaseAuthorizationService implements AuthorizationService {
         }
 
         // anonymous user, only the client application is verified by API key
-        return OAuthUtils.buildReadOnlyAuthenticationToken(getApiName(), wsKey);
+        EuropeanaAuthenticationToken token =  OAuthUtils.buildReadOnlyAuthenticationToken(getApiName(), wsKey);
+        if (clientDetails != null) {
+           token.setDetails(clientDetails.getAdditionalInformation());
+        }
+        return token;
     }
 
     /**
