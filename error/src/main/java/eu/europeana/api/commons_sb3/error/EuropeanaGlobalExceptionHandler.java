@@ -1,13 +1,11 @@
 package eu.europeana.api.commons_sb3.error;
 
-import eu.europeana.api.commons_sb3.definitions.oauth.KeyValidationResult;
 import eu.europeana.api.commons_sb3.definitions.oauth.exception.ApiWriteLockException;
 import eu.europeana.api.commons_sb3.error.config.ErrorConfig;
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
 import eu.europeana.api.commons_sb3.error.exceptions.InvalidBodyException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -319,34 +317,21 @@ public class EuropeanaGlobalExceptionHandler {
     @ExceptionHandler(ApplicationAuthenticationException.class)
     public ResponseEntity<EuropeanaApiErrorResponse> clientRegistrationExceptionHandler(HttpServletRequest request,
                                                                                         ApplicationAuthenticationException ee) {
-        if (ee.getResult() != null) {
-            KeyValidationResult result = ee.getResult();
+        // get the status
+        int status = isInvalidOrDisabledErrorCode(ee.getErrorCode()) ?
+                HttpStatus.UNAUTHORIZED.value() : ee.getResponseStatus().value();
 
-            // get the status
-            int status = isInvalidOrDisabledErrorCode(result.getValidationError().getCode()) ?
-                    HttpStatus.UNAUTHORIZED.value() : result.getHttpStatusCode();
+        //If the error reason is not specified in the exception, use the default from the HttpStatus.
+        String error = (ee.getError() == null) ? ee.getResponseStatus().getReasonPhrase() : ee.getError();
 
-            return ResponseEntity.status(status)
-                    .headers(createHttpHeaders(request))
-                    .body(new EuropeanaApiErrorResponse.Builder(request, ee, stackTraceEnabled())
-                            .setStatus(result.getHttpStatusCode())
-                            .setError(result.getValidationError().getError())
-                            .setMessage(result.getValidationError().getMessage())
-                            .setCode(result.getValidationError().getCode())
-                            .build());
-        } else {
-            //If the error reason is not specified in the exception, use the default from the HttpStatus.
-            String error = (ee.getError() == null) ? ee.getResponseStatus().getReasonPhrase() : ee.getError();
-
-            return ResponseEntity.status(ee.getResponseStatus().value())
-                    .headers(createHttpHeaders(request))
-                    .body( new EuropeanaApiErrorResponse.Builder(request, ee, stackTraceEnabled())
-                            .setStatus(ee.getResponseStatus().value())
-                            .setError(error)
-                            .setMessage(buildResponseMessage(ee, ee.getI18nKey(), ee.getI18nParams()))
-                            .setCode(ee.getErrorCode())
-                            .build());
-        }
+        return ResponseEntity.status(status)
+                .headers(createHttpHeaders(request))         // todo see if we need ratelimit headers for 429 responses ehre
+                .body(new EuropeanaApiErrorResponse.Builder(request, ee, stackTraceEnabled())
+                        .setStatus(ee.getResponseStatus().value())
+                        .setError(error)
+                        .setMessage(buildResponseMessage(ee, ee.getI18nKey(), ee.getI18nParams()))
+                        .setCode(ee.getErrorCode())
+                        .build());
     }
 
     /**
