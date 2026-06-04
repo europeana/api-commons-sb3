@@ -6,12 +6,15 @@ import eu.europeana.api.commons_sb3.error.EuropeanaI18nApiException;
 import eu.europeana.api.commons_sb3.error.config.ErrorMessage;
 import eu.europeana.api.commons_sb3.error.exceptions.ApplicationAuthenticationException;
 import eu.europeana.api.commons_sb3.oauth2.service.authorization.AuthorizationService;
+import eu.europeana.api.commons_sb3.oauth2.utils.OAuthUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.MultiValueMap;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -26,7 +29,7 @@ public abstract class BaseRestController {
 
     /**
      * If apikey service url is empty, disable the authentication
-     * @return
+     * @return boolean true if url not empty else false
      */
     public boolean isAuthEnabled(String apikyServiceUrl) {
         return StringUtils.isNotEmpty(apikyServiceUrl);
@@ -70,7 +73,7 @@ public abstract class BaseRestController {
      *
      * @param etag    The current etag value
      * @param request The request containing If-Match header
-     * @throws EuropeanaI18nApiException
+     * @throws - EuropeanaI18nApiException
      */
     public void checkIfMatchHeader(String etag, HttpServletRequest request) throws EuropeanaI18nApiException {
         String ifMatchHeader = request.getHeader(CachingHeaders.IF_MATCH);
@@ -114,5 +117,25 @@ public abstract class BaseRestController {
             return request.getMethod();
         }
     }
+
+    /**
+     * Adds rate limit-related headers to the provided HTTP headers map based on the details extracted
+     * from the given authentication object.
+     *
+     * @param headers the HTTP headers to which the rate limit-related details will be added
+     * @param auth the authentication object containing details used to generate rate limit headers
+     */
+    public void addRateLimitHeaders(MultiValueMap<String, String> headers, Authentication auth) {
+        Map<String, String> details = OAuthUtils.getDetails(auth);
+        if (details != null) {
+            details.forEach((key, value) -> {
+                if (value != null) {
+                    headers.add(key, value.toString());
+                }
+            });
+        }
+    }
+
+
 
 }
