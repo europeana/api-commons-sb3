@@ -26,10 +26,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import eu.europeana.api.commons_sb3.error.i18n.I18nService;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import static eu.europeana.api.commons_sb3.error.config.ErrorConfig.BEAN_I18nService;
 
 /**
@@ -374,9 +372,8 @@ public class EuropeanaGlobalExceptionHandler {
         return StringUtils.equalsAny(errorCode, "401_key_invalid", "401_key_disabled");
     }
 
-
     protected HttpHeaders createHttpHeaders(HttpServletRequest httpRequest) {
-        return createHttpHeaders(httpRequest);
+        return createHttpHeaders(httpRequest, new HashMap<>());
     }
 
     /**
