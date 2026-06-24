@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -14,6 +17,7 @@ public class EuropeanaClientRegistrationException extends ClientRegistrationExce
   private int httpStatusCode;
   private String code;
   private String error;
+  private Map<String, Object> additionalInformation;
 
   public EuropeanaClientRegistrationException(String msg){
     super(msg);
@@ -46,5 +50,16 @@ public class EuropeanaClientRegistrationException extends ClientRegistrationExce
 
   public void setHttpStatusCode(int httpStatusCode) {
     this.httpStatusCode = httpStatusCode;
+  }
+
+  public Map<String, Object> getAdditionalInformation() {
+    if (additionalInformation == null ) {
+      this.additionalInformation = new HashMap<>();
+    }
+    return this.additionalInformation;
+  }
+
+  public void setAdditionalInformation(Map<String, Object> additionalInformation) {
+    this.additionalInformation = additionalInformation;
   }
 }

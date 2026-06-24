@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -24,10 +26,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import eu.europeana.api.commons_sb3.error.i18n.I18nService;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import static eu.europeana.api.commons_sb3.error.config.ErrorConfig.BEAN_I18nService;
 
 /**
@@ -325,7 +325,7 @@ public class EuropeanaGlobalExceptionHandler {
         String error = (ee.getError() == null) ? ee.getResponseStatus().getReasonPhrase() : ee.getError();
 
         return ResponseEntity.status(status)
-                .headers(createHttpHeaders(request))         // todo see if we need ratelimit headers for 429 responses ehre
+                .headers(createHttpHeaders(request, ee.getAdditionalInformation()))
                 .body(new EuropeanaApiErrorResponse.Builder(request, ee, stackTraceEnabled())
                         .setStatus(ee.getResponseStatus().value())
                         .setError(error)
@@ -372,16 +372,50 @@ public class EuropeanaGlobalExceptionHandler {
         return StringUtils.equalsAny(errorCode, "401_key_invalid", "401_key_disabled");
     }
 
-
     protected HttpHeaders createHttpHeaders(HttpServletRequest httpRequest) {
+        return createHttpHeaders(httpRequest, new HashMap<>());
+    }
+
+    /**
+     * Creates and returns an instance of {@link HttpHeaders} populated with the provided response
+     * headers and additional configurations for content type and allowed HTTP methods.
+     *
+     * The method enforces "application/json" as the content type in the headers and, if applicable,
+     * dynamically adds the "Allow" header based on available methods for the request's URL pattern.
+     *
+     * @param httpRequest the {@link HttpServletRequest} instance representing the incoming HTTP request
+     * @param additionalInformation a map containing response headers to be included in the {@link HttpHeaders}
+     * @return the populated {@link HttpHeaders} object
+     */
+    protected HttpHeaders createHttpHeaders(HttpServletRequest httpRequest, Map<String, Object> additionalInformation) {
         HttpHeaders headers = new HttpHeaders();
+
+        // add the response headers provided by the service
+        headers.addAll(getHeaders(additionalInformation));
+
         //enforce application/json as content type, it is the only serialization supported for exceptions
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         //autogenerate allow header if the service is configured
-        if(getRequestPathMethodService()!=null) {
+        if (getRequestPathMethodService()!=null) {
             String allowHeaderValue = getRequestPathMethodService().getMethodsForRequestPattern(httpRequest).orElse(httpRequest.getMethod());
             headers.add(HttpHeaders.ALLOW, allowHeaderValue);
+        }
+        return headers;
+    }
+
+
+    /**
+     * Converts the provided map of additional information into a multi-valued map of headers.
+     *
+     * @param additionalInformation a map containing key-value pairs to be converted into headers
+     * @return a multi-valued map where keys are string headers and values are string representations of the input map's values
+     */
+    private static MultiValueMap<String, String> getHeaders(Map<String, Object> additionalInformation) {
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+
+        for (Map.Entry<String, Object> entry : additionalInformation.entrySet()) {
+            headers.add(entry.getKey(), String.valueOf(entry.getValue()));
         }
         return headers;
     }
