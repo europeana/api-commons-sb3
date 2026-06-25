@@ -8,6 +8,10 @@ public class EnrichQuery {
     private String text;
     private String lang;
 
+    public EnrichQuery() {
+
+    }
+
     public EnrichQuery(String text, String lang) {
         this.text = text;
         this.lang = lang;
