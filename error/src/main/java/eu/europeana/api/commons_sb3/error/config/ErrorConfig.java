@@ -35,18 +35,19 @@ public class ErrorConfig {
     public static final String INVALID_ID            = "error.invalid_id";
     public static final String NOT_FOUND             = "error.not_found";
     public static final String ETAG_MISMATCH         = "error.etag_mismatch";
-    public static final String MODIFIED_SINCE         = "error.modified_since";
+    public static final String MODIFIED_SINCE        = "error.modified_since";
 
     public static final String EMPTY_APIKEY          = "error.empty_apikey";
     public static final String KEY_INVALID           = "error.key_invalid";
     public static final String TOKEN_INVALID         = "error.token_invalid";
 
-    public static final String LOCKED_MAINTENANCE      = "error.locked_maintenance";
-    public static final String NO_LOCK_IN_EFFECT       = "error.lock_not_in_effect";
+    public static final String LOCKED_MAINTENANCE    = "error.locked_maintenance";
+    public static final String NO_LOCK_IN_EFFECT     = "error.lock_not_in_effect";
 
     public static final String SERVER_ERROR_UNEXPECTED = "error.server_unexpected_error";
-
-    public static final String USER_NOT_AUTHORISED= "error.user_not_authorised";
+    public static final String USER_NOT_AUTHORISED   = "error.user_not_authorised";
+    public static final String SOLR_EXCEPTION        = "error.solr_exception";
+    public static final String SOLR_MALFORMED_QUERY_EXCEPTION = "error.solr_malformed_query_exception";
 
 
 }
