@@ -14,7 +14,7 @@ public class EnrichRequest {
 
     private String type;
     private List<EnrichQuery> query;
-    private int rows;
+    private Integer rows;
 
     public EnrichRequest() {
     }
@@ -41,11 +41,11 @@ public class EnrichRequest {
         this.query = query;
     }
 
-    public int getRows() {
+    public Integer getRows() {
         return rows;
     }
 
-    public void setRows(int rows) {
+    public void setRows(Integer rows) {
         this.rows = rows;
     }
 
