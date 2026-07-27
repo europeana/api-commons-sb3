@@ -13,13 +13,13 @@ import java.util.Objects;
 public class EnrichRequest {
 
     private String type;
-    private List<EnrichQuery> query;
+    private List<LanguageText> query;
     private Integer rows;
 
     public EnrichRequest() {
     }
 
-    public EnrichRequest(String type, List<EnrichQuery> query, int rows) {
+    public EnrichRequest(String type, List<LanguageText> query, Integer rows) {
         this.type = type;
         this.query = query;
         this.rows = rows;
@@ -33,11 +33,11 @@ public class EnrichRequest {
         this.type = type;
     }
 
-    public List<EnrichQuery> getQuery() {
+    public List<LanguageText> getQuery() {
         return query;
     }
 
-    public void setQuery(List<EnrichQuery> query) {
+    public void setQuery(List<LanguageText> query) {
         this.query = query;
     }
 
