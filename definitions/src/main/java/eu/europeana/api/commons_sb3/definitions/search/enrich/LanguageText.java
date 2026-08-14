@@ -1,11 +1,13 @@
 package eu.europeana.api.commons_sb3.definitions.search.enrich;
 
+import java.util.Optional;
+
 /**
  * Represents a query for enriching text data based on specific parameters.
  */
-public record LanguageText (String text, String lang) {
+public record LanguageText (String text, Optional<String> lang) {
 
-    public LanguageText(String text, String lang) {
+    public LanguageText(String text, Optional<String> lang) {
         this.text = text;
         this.lang = lang;
     }
@@ -16,7 +18,7 @@ public record LanguageText (String text, String lang) {
     }
 
     @Override
-    public String lang() {
+    public Optional<String> lang() {
         return lang;
     }
 }
