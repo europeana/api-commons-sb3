@@ -5,9 +5,9 @@ import java.util.Optional;
 /**
  * Represents a query for enriching text data based on specific parameters.
  */
-public record LanguageText (String text, Optional<String> lang) {
+public record LanguageText (String text, String lang) {
 
-    public LanguageText(String text, Optional<String> lang) {
+    public LanguageText(String text, String lang) {
         this.text = text;
         this.lang = lang;
     }
@@ -18,7 +18,7 @@ public record LanguageText (String text, Optional<String> lang) {
     }
 
     @Override
-    public Optional<String> lang() {
+    public String lang() {
         return lang;
     }
 }
